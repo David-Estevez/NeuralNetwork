@@ -37,9 +37,9 @@ int main()
     std::cout << "------------------" << std::endl;
 
     //-- Change weights:
-    miNeurona01.changeWeight(0, 1.2);
-    miNeurona01.changeWeight(1, 5);
-    miNeurona01.changeWeight(2, 1.25);
+    miNeurona01.setWeight(0, 1.2);
+    miNeurona01.setWeight(1, 5);
+    miNeurona01.setWeight(2, 1.25);
 
     std::cout << "Weight#1: " << miNeurona01.getWeight(0) << std::endl
 	      << "Weight#2: " << miNeurona01.getWeight(1) << std::endl
@@ -63,7 +63,7 @@ int main()
     newWeights.push_back(1.2);
     newWeights.push_back(-5);
 
-    miNeurona01.changeWeight( newWeights);
+    miNeurona01.setWeight( newWeights);
 
     std::cout << std::endl << "These are the new weights: " << std::endl;
     std::cout << "Weight#1: " << miNeurona01.getWeight(0) << std::endl
@@ -71,6 +71,7 @@ int main()
 	      << "Weight#3: " << miNeurona01.getWeight(2) << std::endl;
 
     std::cout << "------------------" << std::endl;
+
 
     //-- Debuggin' Layers:
     //-------------------------------------------------------------------------
@@ -90,8 +91,29 @@ int main()
     std::vector<double> result = myLayer03.getOutput();
     std::cout << "Output of Network (3, 2, 1): " << result[0] << std::endl;
 
-    Matrix myMatrix(3,3);
-    myMatrix.set(1, 1, 3.14);
-    std::cout << myMatrix.get(1,1);
+    std::cout << "------------------" << std::endl;
 
+    //-- Testing matrix:
+    //---------------------------------------------------------------------------
+    std::cout << "\n Matrix test:" << std::endl;
+    Matrix myMatrix01(2,3), myMatrix02(1, 2);
+
+    for (int i = 0; i < 3; i ++)
+	for (int j = 0; j < 2 ; j++)
+	    myMatrix01.set(j, i, i+j);
+
+    for (int i = 0; i < 2; i++)
+	myMatrix02.set(0, i, i);
+
+
+    std::cout << myMatrix01.get(1,1);
+
+    myLayer02.setWeights( myMatrix01);
+    myLayer03.setWeights( myMatrix02);
+    myLayer02.refresh();
+    myLayer03.refresh();
+    result =myLayer03.getOutput();
+    std::cout << "Output of Network (3, 2, 1): " << result[0] << std::endl;
+
+    std::cout << "------------------" << std::endl;
 }

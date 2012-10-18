@@ -87,7 +87,7 @@ double Neuron::getWeight(int index)
 }
 
 //-- Changes the weight of all connections at a time
-void Neuron::changeWeight( std::vector<double> newWeights)
+void Neuron::setWeight( std::vector<double> newWeights)
 {
     //-- Check if the same number of weights as connection have been given
     if ( newWeights.size() == dendrite.size() )
@@ -97,15 +97,15 @@ void Neuron::changeWeight( std::vector<double> newWeights)
     }
     else
     {
-	std::cerr << "Error: vector passed to function "
-		     "has no the same dimension as the connections vector." << std::endl;
+	std::cerr << "Error [Neuron]: vector passed to function "
+		     "has not the same dimension as the connections vector." << std::endl;
     }
 }
 
 
 
 //-- Changes the weight associated with a connection
-void Neuron::changeWeight(int index, double newWeight)
+void Neuron::setWeight(int index, double newWeight)
 {
     if (index < dendrite.size())
 	dendrite[index].weight = newWeight;

@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "neuron.h"
+#include "matrix.h"
 
 class Layer
 {
@@ -16,17 +17,18 @@ public:
     --*/
 
     //-- Getting output
-    void refresh();
+    void refresh();				 //-- Recalculates the output vector
     void setOutput( std::vector<double> output); //-- Just for debugging
-    std::vector<double> getOutput();
-    int getN() { return n;}
+    std::vector<double> getOutput();		 //-- Returns a the output vector
+    int getN() { return n;}			 //-- Returns the number of neurons in this layer
 
     //-- Connect with previous layer
     void connectLayer( Layer& );    //-- Connects this layer's neurons to the neurons of the previous layer
     void operator << ( Layer& );    //-- Same as connectLayer(), but nicer
 
     //-- Set weights to neurons
-    void setWeights( std::vector<double>); //-- Actually it need a vector of vectors (matrix)
+    void setWeights( Matrix theta);	    //-- Changes the weights of all neurons by the ones stored in theta
+					    //-- Note: each neuron's vector is stored in a row of the matrix
 
 private:
     //-- Atributes

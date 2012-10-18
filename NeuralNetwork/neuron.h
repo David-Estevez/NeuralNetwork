@@ -39,8 +39,8 @@ public:
     //-- += or <<
 
     //-- Insert / modify neuron's data
-    void changeWeight( std::vector<double> weights);//-- Changes the vale of all the weights of the neuron
-    void changeWeight(int i, double newWeight);	    //-- Changes the value of the weight of the ith dendrite
+    void setWeight( std::vector<double> weights);//-- Changes the vale of all the weights of the neuron
+    void setWeight(int i, double newWeight);	    //-- Changes the value of the weight of the ith dendrite
 
 
 

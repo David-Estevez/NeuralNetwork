@@ -64,7 +64,9 @@ void Layer::operator << ( Layer& prevLayer)
 }
 
 //-- Set weights to neurons
-void Layer::setWeights( std::vector<double> )
+void Layer::setWeights( Matrix theta )
 {
-    //-- Actually it needs a vector of vectors (matrix)
+    //-- Each neuron's weights are stored in rows
+    for(int i = 0; i < this->n; i++)
+	this->neurons[i].setWeight( theta.getRow(i));
 }
