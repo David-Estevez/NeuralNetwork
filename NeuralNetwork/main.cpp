@@ -106,7 +106,8 @@ int main()
 	myMatrix02.set(0, i, i);
 
 
-    std::cout << myMatrix01.get(1,1);
+    std::cout << "My matrix 01 is : " << myMatrix01.getRows() << " x " << myMatrix01.getCols() << std::endl;
+    std::cout << "My matrix 02 is : " << myMatrix02.getRows() << " x " << myMatrix02.getCols() << std::endl;
 
     myLayer02.setWeights( myMatrix01);
     myLayer03.setWeights( myMatrix02);

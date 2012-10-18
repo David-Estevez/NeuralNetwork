@@ -2,10 +2,13 @@
 
 Matrix::Matrix(int rows, int cols)
 {
+    this->rows = rows;
+    this->cols = cols;
+
     for (int i = 0; i < rows; i++)
     {
 	//-- Create a row:
-	double n[cols];
+	double * n =  new double[cols];
 
 	//-- Initialize to 0:
 	for (int j = 0; j < rows; j++)
@@ -14,6 +17,7 @@ Matrix::Matrix(int rows, int cols)
 	matrix.push_back( n );
     }
 }
+
 
 double Matrix::get(int row, int col)
 {
