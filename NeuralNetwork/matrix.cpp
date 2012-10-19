@@ -67,7 +67,8 @@ void Matrix::setRow( std::vector<double> row, int index)
     //-- Set a row
     if (index >= 0 && index < this->rows)
     {
-
+	for (int i = 0; i < this->cols; i++)
+	    *(matrix[index]+i) = row[i];
     }
 }
 
@@ -76,6 +77,7 @@ void Matrix::setCol( std::vector<double> col, int index)
     //-- Set a column
     if (index >= 0 && index < this->cols)
     {
-
+	for (int i = 0; i < this->rows; i++)
+	    *(matrix[i]+index) = col[i];
     }
 }
