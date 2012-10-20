@@ -10,11 +10,6 @@
 
 class Matrix
 {
-private:
-    int rows;
-    int cols;
-
-    std::vector<double *> matrix;
 
 public:
     Matrix(int rows, int cols);
@@ -50,6 +45,13 @@ public:
     Matrix& operator != (Matrix& );
 
     Matrix& transpose();
+
+private:
+    int rows;
+    int cols;
+
+    std::vector<double *> matrix;
+
 
 };
 

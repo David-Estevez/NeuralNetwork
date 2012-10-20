@@ -1,5 +1,7 @@
 #include "neuron.h"
 #include "layer.h"
+#include "neuralnetwork.h"
+
 #include "matrix.h"
 
 #include <iostream>
@@ -117,4 +119,12 @@ int main()
     std::cout << "Output of Network (3, 2, 1): " << result[0] << std::endl;
 
     std::cout << "------------------" << std::endl;
+
+    //-- Dimensions of the network:
+    std::vector<int> myDims;
+    myDims.push_back(400);
+    myDims.push_back(600);
+    myDims.push_back(10);
+
+    NeuralNetwork myNet( myDims);
 }
