@@ -23,12 +23,14 @@ public:
     Neuron();					    //-- Default constructor
 
     //-- Output functions
-    void setOutput(double); //-- D.E.B.U.G
+    void setOutput(double); //-- Mainly for debug
     double getOutput();				    //-- Returns the current value at the output
     void refresh();				    //-- Calculates the new output of the neuron given the input
 
     std::vector<double> getWeight();		    //-- Returns a vector containing the weights of the neuron
     double getWeight( int i);			    //-- Returns the value of the weight of the ith dendrite
+
+    int getNumDendrites();			    //-- Returns the number of connections of the neuron
 
     //-- Connection with other neurons
     void addConnection(Neuron& neuronToBeAdded);    //-- Adds a connection to another neuron in the network

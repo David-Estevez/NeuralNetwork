@@ -10,7 +10,7 @@
 class NeuralNetwork
 {
 public:
-    NeuralNetwork(int, int, ...);
+    NeuralNetwork( int, int, ...);
     NeuralNetwork( std::vector<int> );
 
     ~NeuralNetwork();
@@ -30,6 +30,8 @@ private:
     Layer *inputLayer;
     std::vector<Layer> hiddenLayer;
     Layer *outputLayer;
+
+    int l;  //-- Number of layers
 
     std::vector<double> output;
 

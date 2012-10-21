@@ -15,36 +15,41 @@ NeuralNetwork::NeuralNetwork( std::vector<int> neuronsInLayer)
     {
 	std::cerr<<"Error[Neuralnetwork]: fewer layers than allowed." << std::endl;
     }
-
-    //-- Create first and last layers
-    this->inputLayer = new Layer( neuronsInLayer[0]);
-    this->outputLayer = new Layer( neuronsInLayer[neuronsInLayer.size()-1]);
-
-    //-- Create hidden layers
-    for (int i = 1; i < neuronsInLayer.size()-1; i++)
-    {
-	Layer auxLayer( neuronsInLayer[i]);
-	this->hiddenLayer.push_back( auxLayer);
-    }
-
-    //-- Connect layers (I'm not sure that this works)
-    if (hiddenLayer.size() > 0)
-    {
-	for (int i = 1; i < hiddenLayer.size(); i++)
-	    hiddenLayer[i] << hiddenLayer[i-1];
-
-	hiddenLayer[0] << *inputLayer;
-	*outputLayer << hiddenLayer[hiddenLayer.size()-1];
-    }
     else
     {
-	//-- Connect output with input
-	*outputLayer << *inputLayer;
-    }
+	//-- Create first and last layers
+	this->inputLayer = new Layer( neuronsInLayer[0]);
+	this->outputLayer = new Layer( neuronsInLayer[neuronsInLayer.size()-1]);
 
-    //-- Create output vector, same dimension as output layer
-    for (int i = 0; i < outputLayer->getN(); i++)
-	this->output.push_back( 0);
+	//-- Create hidden layers
+	for (int i = 1; i < neuronsInLayer.size()-1; i++)
+	{
+	    Layer auxLayer( neuronsInLayer[i]);
+	    this->hiddenLayer.push_back( auxLayer);
+	}
+
+	//-- Connect layers (I'm not sure that this works because of pointers)
+	if (hiddenLayer.size() > 0)
+	{
+	    for (int i = 1; i < hiddenLayer.size(); i++)
+		hiddenLayer[i] << hiddenLayer[i-1];
+
+	    hiddenLayer[0] << *inputLayer;
+	    *outputLayer << hiddenLayer[hiddenLayer.size()-1];
+	}
+	else
+	{
+	    //-- Connect input with output
+	    *outputLayer << *inputLayer;
+	}
+
+	//-- Create output vector, same dimension as output layer
+	for (int i = 0; i < outputLayer->getN(); i++)
+	    this->output.push_back( 0);
+
+	//-- Set number of layers
+	this->l = neuronsInLayer.size();
+    }
 }
 
 //-- Destructor
@@ -60,7 +65,19 @@ NeuralNetwork::~NeuralNetwork()
 
 void NeuralNetwork::setInput(std::vector<double> input)
 {
+    //-- Set input vector to input layer
 
+    //-- Check dimensions:
+    if ( input.size() == inputLayer->getN())
+    {
+	//-- Set output to be the input vector:
+	inputLayer->setOutput( input );
+    }
+    else
+    {
+	std::cerr << "Error [NeuralNetwork]: input vector does not match number of neurons in input layer."
+		  << std::endl;
+    }
 }
 
 void NeuralNetwork::setWeights(std::vector<Matrix> theta)
@@ -72,7 +89,7 @@ void NeuralNetwork::setWeights(std::vector<Matrix> theta)
     else
     {
 	//-- This part has to be made with a paper in front of me, if not is impossible
-	//if (theta[0].getRows)
+	//if (theta[0].getNumRows)
     }
 }
 
@@ -88,7 +105,20 @@ std::vector<double> NeuralNetwork::getOutput()
 
 std::vector<Matrix> NeuralNetwork::getWeights()
 {
-    //-- This should return all the weights structured in a vector of matrices
+    //-- Create the vector to store the matrices:
+    std::vector<Matrix> theta;
+
+    //-- Note: input layer does not have a weight matrix assigned, as there is no previous layer.
+    //-- Note: in matrices, weights of each neurons are stored in rows.
+
+    //-- Store the hidden layers weight matrices
+    for (int i = 0; i < hiddenLayer.size(); i++)
+	theta.push_back( hiddenLayer[i].getWeights() );
+
+    //-- Store the output layer weight matrix
+    theta.push_back( outputLayer->getWeights() );
+
+    return theta;
 }
 
 
@@ -97,6 +127,16 @@ std::vector<Matrix> NeuralNetwork::getWeights()
 
 void NeuralNetwork::refresh()
 {
-    //-- This should refresh the output of the network
+    //-- Note: Input layer does not need refresh (there is no previous layer)
+
+    //-- Refresh hidden layers
+    for (int i = 0; i < hiddenLayer.size() ; i++)
+	hiddenLayer[i].refresh();
+
+    //-- Refresh output layer
+    outputLayer->refresh();
+
+    //-- Set network output:
+    output = outputLayer->getOutput();
 }
 

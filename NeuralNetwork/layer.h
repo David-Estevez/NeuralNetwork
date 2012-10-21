@@ -2,6 +2,8 @@
 #define LAYER_H
 
 #include <vector>
+#include <iostream>
+
 #include "neuron.h"
 #include "matrix.h"
 
@@ -16,19 +18,20 @@ public:
     void operator << (Neuron& neuron);
     --*/
 
-    //-- Getting output
-    void refresh();				 //-- Recalculates the output vector
+    //-- Input functions:
     void setOutput( std::vector<double> output); //-- Just for debugging
+    void setWeights( Matrix theta);		 //-- Changes the weights of all neurons by the ones stored in theta
+						 //-- Note: each neuron's vector is stored in a row of the matrix
+    //-- Output functions:
+    void refresh();				 //-- Recalculates the output vector
     std::vector<double> getOutput();		 //-- Returns a the output vector
-    int getN() { return n;}			 //-- Returns the number of neurons in this layer
+    int getN();					 //-- Returns the number of neurons in this layer
+    Matrix getWeights();			 //-- Returns the weights of all neurons in the layer
 
     //-- Connect with previous layer
-    void connectLayer( Layer& );    //-- Connects this layer's neurons to the neurons of the previous layer
-    void operator << ( Layer& );    //-- Same as connectLayer(), but nicer
+    void connectLayer(Layer& );    //-- Connects this layer's neurons to the neurons of the previous layer
+    void operator << (Layer& );    //-- Same as connectLayer(), but nicer
 
-    //-- Set weights to neurons
-    void setWeights( Matrix theta);	    //-- Changes the weights of all neurons by the ones stored in theta
-					    //-- Note: each neuron's vector is stored in a row of the matrix
 
 private:
     //-- Atributes

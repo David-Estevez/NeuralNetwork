@@ -15,10 +15,10 @@ public:
     Matrix(int rows, int cols);
 
     //-- Data interface:
-    int getRows() {return rows;}
-    int getCols() {return cols;}
-    void setRows(int rows) { this->rows = rows; }
-    void setCols(int cols) { this->cols = cols; }
+    int getNumRows() {return rows;}
+    int getNumCols() {return cols;}
+   // void setRows(int rows) { this->rows = rows; }  //-- This function seems weird to me, so I disabled it
+   // void setCols(int cols) { this->cols = cols; }
 
     double get(int row, int col);
     void set(int row, int col, double value);
