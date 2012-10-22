@@ -60,6 +60,8 @@ public:
 
     Matrix& transpose();
 
+    friend std::ostream& operator << ( std::ostream& out, Matrix& matrix);
+
 private:
     std::vector< std::vector<double *> > matrix;
 

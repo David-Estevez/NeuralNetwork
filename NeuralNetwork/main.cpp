@@ -108,8 +108,8 @@ int main()
 	myMatrix02.set(0, i, i);
 
 
-    std::cout << "My matrix 01 is : " << myMatrix01.getNumRows() << " x " << myMatrix01.getNumCols() << std::endl;
-    std::cout << "My matrix 02 is : " << myMatrix02.getNumRows() << " x " << myMatrix02.getNumCols() << std::endl;
+    std::cout << "My matrix 01 is : " << std::endl << myMatrix01 << std::endl;
+    std::cout << "My matrix 02 is : " << std::endl << myMatrix02 << std::endl;
 
     myLayer02.setWeights( myMatrix01);
     myLayer03.setWeights( myMatrix02);
@@ -127,5 +127,5 @@ int main()
     myDims.push_back(10);
 
     NeuralNetwork myNetwork( myDims);
-    std::cout << "Size in memoy: " << sizeof( myNetwork) << std::endl;
+    std::cout << "Size in memory: " << sizeof( myNetwork) << std::endl;
 }

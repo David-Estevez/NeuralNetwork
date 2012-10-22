@@ -166,3 +166,17 @@ void Matrix::setCol( std::vector<double *> col, int index)
     else
 	std::cerr << "Error [Matrix]: specified column does not exist.";
 }
+
+std::ostream& operator << ( std::ostream& out, Matrix& matrix)
+{
+    for (int i = 0; i < (int)matrix.matrix.size() ; i++)
+    {
+	out << "| ";
+	for (int j = 0; j < (int)matrix.matrix.at(i).size(); j++)
+    	    out << matrix.get(i,j) << " ";
+	out << "|" << std::endl;
+    }
+
+    return out;
+}
+
