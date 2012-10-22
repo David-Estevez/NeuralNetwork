@@ -48,7 +48,7 @@ void Layer::setWeights( Matrix theta )
     if ( theta.getNumRows() == neurons.size() && theta.getNumCols() == neurons[0].getNumDendrites() )
     {
 	for(int i = 0; i < this->n; i++)
-	    this->neurons[i].setWeight( theta.getRow(i));
+	    this->neurons[i].setWeight( theta.getRowValues(i));
     }
     else
     {

@@ -2,82 +2,167 @@
 
 Matrix::Matrix(int rows, int cols)
 {
-    this->rows = rows;
-    this->cols = cols;
-
     for (int i = 0; i < rows; i++)
     {
-	//-- Create a row:
-	double * n =  new double[cols];
+	std::vector<double *> aux(cols);
 
-	//-- Initialize to 0:
-	for (int j = 0; j < rows; j++)
-	    n[j] = 0;
+	for( int j = 0; j < cols; j++)
+	     {
+		 aux.at(j) = new double;
+		*aux.at(j) = 0;
+	     }
 
-	matrix.push_back( n );
+	matrix.push_back( aux );
     }
+}
+
+//Matrix::Matrix( Matrix& otherMatrix) {}
+
+/*Matrix::~Matrix()
+{
+    for (int i = 0; i < matrix.size(); i++)
+	for (int j = 0; j < matrix.at(i).size(); j++)
+	    delete matrix.at(i).at(j);
+}*/
+
+
+int Matrix::getNumRows()
+{
+    return matrix.size();
+}
+
+int Matrix::getNumCols()
+{
+    return matrix.at(0).size();
 }
 
 
 double Matrix::get(int row, int col)
 {
-    if ( (row >= 0 && row < this->rows) && (col >= 0 && col < this->cols))
-	return *(matrix[row]+col);
+    if ( (row >= 0 && row < matrix.size()) && (col >= 0 && col < matrix.at(row).size() ) )
+	return *matrix.at(row).at(col);
     else
+    {
+	std::cerr << "Error [Matrix]: index not valid.";
 	return 0;
+    }
 }
 
 void Matrix::set(int row, int col, double value)
 {
-    if ( (row >= 0 && row < this->rows) && (col >= 0 && col < this->cols))
-	*(matrix[row]+col) = value;
+    if ( (row >= 0 && row < matrix.size()) && (col >= 0 && col < matrix.at(row).size() ) )
+	*matrix.at(row).at(col) = value;
+    else
+	std::cerr << "Error [Matrix]: index not valid.";
 }
 
 
-std::vector<double> Matrix::getRow( int row)
+std::vector<double *> Matrix::getRow( int row)
+{
+    //-- Returns a given row
+
+    if (row >= 0 && row < matrix.size() )
+    {
+	return matrix.at(row);
+    }
+    else
+	std::cerr << "Error [Matrix]: specified row does not exist.";
+
+}
+
+std::vector<double> Matrix::getRowValues( int row)
 {
     std::vector<double> outRow;
 
-    //-- Returns a given row
-    if (row >= 0 && row < this->rows)
+    //-- Returns a given column
+    if (row >= 0 && row < matrix.size() )
     {
-	for (int i = 0; i < this->cols; i++)
-	    outRow.push_back( *(matrix[row]+i) );
+	for (int i = 0; i < matrix.at(0).size() ; i++)
+	    outRow.push_back( *matrix.at(row).at(i)  );
     }
+    else
+	std::cerr << "Error [Matrix]: specified row does not exist.";
 
     return outRow;
 }
 
-std::vector<double> Matrix::getCol( int col)
+
+std::vector<double *> Matrix::getCol( int col)
+{
+    std::vector<double *> outCol;
+
+    //-- Returns a given column
+    if (col >= 0 && col < matrix.at(0).size() )
+    {
+	for (int i = 0; i < matrix.size() ; i++)
+	    outCol.push_back( matrix.at(i).at(col)  );
+    }
+    else
+	std::cerr << "Error [Matrix]: specified column does not exist.";
+
+    return outCol;
+}
+
+std::vector<double> Matrix::getColValues( int col)
 {
     std::vector<double> outCol;
 
     //-- Returns a given column
-    if (col >= 0 && col < this->cols)
+    if (col >= 0 && col < matrix.at(0).size() )
     {
-	for (int i = 0; i < this->rows; i++)
-	    outCol.push_back( *( matrix[i]+col) );
+	for (int i = 0; i < matrix.size() ; i++)
+	    outCol.push_back( *matrix.at(i).at(col)  );
     }
+    else
+	std::cerr << "Error [Matrix]: specified column does not exist.";
 
     return outCol;
 }
 
 void Matrix::setRow( std::vector<double> row, int index)
 {
-    //-- Set a row
-    if (index >= 0 && index < this->rows)
+    //-- Set the values of a row
+    if (index >= 0 && index < matrix.size() )
     {
-	for (int i = 0; i < this->cols; i++)
-	    *(matrix[index]+i) = row[i];
+	for (int i = 0; i < matrix.at(0).size() ; i++)
+	    *matrix.at(index).at(i) = row.at(i);
     }
+    else
+	std::cerr << "Error [Matrix]: specified row does not exist.";
+}
+
+void Matrix::setRow( std::vector<double *> row, int index)
+{
+    //-- Set a row
+    if (index >= 0 && index < matrix.size() )
+    {
+	for (int i = 0; i < matrix.at(0).size() ; i++)
+	    matrix.at(index).at(i) = row.at(i);
+    }
+    else
+	std::cerr << "Error [Matrix]: specified row does not exist.";
 }
 
 void Matrix::setCol( std::vector<double> col, int index)
 {
-    //-- Set a column
-    if (index >= 0 && index < this->cols)
+    //-- Set the values of a column
+    if (index >= 0 && index < matrix.at(0).size() )
     {
-	for (int i = 0; i < this->rows; i++)
-	    *(matrix[i]+index) = col[i];
+	for (int i = 0; i < matrix.size() ; i++)
+	    *matrix.at(i).at(index) = col.at(i);
     }
+    else
+	std::cerr << "Error [Matrix]: specified column does not exist.";
+}
+
+void Matrix::setCol( std::vector<double *> col, int index)
+{
+    //-- Set a column
+    if (index >= 0 && index < matrix.at(0).size() )
+    {
+	for (int i = 0; i < matrix.size() ; i++)
+	    matrix.at(i).at(index) = col.at(i);
+    }
+    else
+	std::cerr << "Error [Matrix]: specified column does not exist.";
 }

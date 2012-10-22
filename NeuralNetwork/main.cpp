@@ -123,8 +123,9 @@ int main()
     //-- Dimensions of the network:
     std::vector<int> myDims;
     myDims.push_back(400);
-    myDims.push_back(600);
+    myDims.push_back(5000);
     myDims.push_back(10);
 
-    NeuralNetwork myNet( myDims);
+    NeuralNetwork myNetwork( myDims);
+    std::cout << "Size in memoy: " << sizeof( myNetwork) << std::endl;
 }
