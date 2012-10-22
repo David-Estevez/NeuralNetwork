@@ -80,6 +80,18 @@ void NeuralNetwork::setInput(std::vector<double> input)
     }
 }
 
+void NeuralNetwork::setInput(double *input, int size)
+{
+    //-- Set an array of double to be input vector of input layer
+
+    std::vector<double> aux;
+
+    for (int i = 0; i < size; i++)
+	aux.push_back( *(input + i) );
+
+    setInput(aux);
+}
+
 void NeuralNetwork::setWeights(std::vector<Matrix> theta)
 {
     //-- Check number of matrices
