@@ -55,11 +55,11 @@ void Layer::setWeights( Matrix theta )
     if ( theta.getNumRows() == (int) neurons.size() - 1 && theta.getNumCols() == neurons.at(1).getNumDendrites() )
     {
 	for(int i = 1; i < this->n; i++)
-	    this->neurons.at(i).setWeight( theta.getRowValues(i));
+	    this->neurons.at(i).setWeight( theta.getRowValues(i-1));
     }
     else
     {
-	std::cerr << "Error [Layer]: incorrect matrix dimensions. Expected a " << neurons.size() << "X"
+	std::cerr << "Error [Layer]: incorrect matrix dimensions. Expected a " << neurons.size() - 1 << "X"
 		  << neurons.at(1).getNumDendrites() << " matrix." << std::endl;
     }
 }
@@ -75,7 +75,7 @@ void Layer::refresh()
 	neurons.at(i).refresh();
 
     //-- Update vector output
-    for (int i = 0; i < (int) neurons.size(); i++)
+    for (int i = 0; i < (int) neurons.size() - 1; i++)
 	output.at(i)= neurons.at(i).getOutput();
 }
 
