@@ -24,7 +24,7 @@ public:
 
     //-- Output functions
     void setOutput(double); //-- Mainly for debug
-    double getOutput();				    //-- Returns the current value at the output
+    virtual double getOutput();				    //-- Returns the current value at the output
     void refresh();				    //-- Calculates the new output of the neuron given the input
 
     std::vector<double> getWeight();		    //-- Returns a vector containing the weights of the neuron
@@ -64,6 +64,12 @@ public:
 
 };
 
+//-- This is supposed to be a TEMPORAL solution
+class BiasUnit : public Neuron {
+    public:
+	BiasUnit() {}
+	double getOutput() { return 1.0; }
+};
 
 
 #endif // NEURON_H
