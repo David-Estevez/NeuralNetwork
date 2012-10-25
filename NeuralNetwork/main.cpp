@@ -100,14 +100,15 @@ int main()
     //-- Testing matrix:
     //---------------------------------------------------------------------------
     std::cout << "\n Matrix test:" << std::endl;
-    Matrix myMatrix01(2,3), myMatrix02(1, 2);
+    Matrix myMatrix01(2,4), myMatrix02(1, 3);
 
-    for (int i = 0; i < 3; i ++)
+    for (int i = 0; i < 4; i ++)
 	for (int j = 0; j < 2 ; j++)
 	    myMatrix01.set(j, i, i+j);
 
-    for (int i = 0; i < 2; i++)
-	myMatrix02.set(0, i, i);
+    for (int i = 0; i < 3; i++)
+	for (int j = 0; j < 1; j++)
+	    myMatrix02.set(j, i, i);
 
 
     std::cout << "My matrix 01 is : " << std::endl << myMatrix01 << std::endl;
@@ -117,7 +118,7 @@ int main()
     myLayer03.setWeights( myMatrix02);
     myLayer02.refresh();
     myLayer03.refresh();
-    result =myLayer03.getOutput();
+    result = myLayer03.getOutput();
     std::cout << "Output of Network (3, 2, 1): " << result[0] << std::endl;
 
     std::cout << "------------------" << std::endl;
@@ -150,4 +151,8 @@ int main()
     myNetwork.setWeights( thetaVector );
 
     std::vector<double> inputVector = returnInput();
+
+    myNetwork.setInput( inputVector );
+    myNetwork.refresh();
+    std::cout << "Output:> " << myNetwork.getOutput().at(0) << std::endl;
 }
