@@ -64,10 +64,11 @@ public:
 
 };
 
-class BiasUnit : private Neuron {
+//-- This is supposed to be a TEMPORAL solution
+class BiasUnit : public Neuron {
     public:
-        BiasUnit();
-        double getOutput() { return 1.0; }
+	BiasUnit() {}
+	double getOutput() { return 1.0; }
 };
 
 
