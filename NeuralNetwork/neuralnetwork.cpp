@@ -3,11 +3,6 @@
 
 //-- Constructors:
 
-NeuralNetwork::NeuralNetwork(int, int, ...)
-{
-    //-- I don't know yet how to deal with ... arguments
-}
-
 NeuralNetwork::NeuralNetwork( std::vector<int> neuronsInLayer)
 {
     //-- Check dimensions:
@@ -100,8 +95,12 @@ void NeuralNetwork::setWeights(std::vector<Matrix> theta)
 		  << "Had: " << theta.size() << " Expected: " << hiddenLayer.size() + 1 << std::endl;
     else
     {
-	//-- This part has to be made with a paper in front of me, if not is impossible
-	//if (theta[0].getNumRows)
+	for (int i = 0; i < (int) hiddenLayer.size(); i++)
+	{
+	    hiddenLayer.at(i).setWeights( theta.at(i));
+	}
+
+	outputLayer->setWeights( theta.back());
     }
 }
 

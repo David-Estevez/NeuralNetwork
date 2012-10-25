@@ -10,7 +10,6 @@
 class NeuralNetwork
 {
 public:
-    NeuralNetwork( int, int, ...);
     NeuralNetwork( std::vector<int> );
 
     ~NeuralNetwork();
@@ -18,10 +17,8 @@ public:
     //-- Input functions:
     void setInput( std::vector<double> input);
     void setInput( double * input, int size);
-    void setInput( double, ...);
 
     void setWeights( std::vector<Matrix> theta);
-    void setWeights( Matrix, Matrix, ...);
 
     //-- Output functions:
     std::vector<double> getOutput();
