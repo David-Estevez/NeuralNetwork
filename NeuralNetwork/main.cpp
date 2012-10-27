@@ -92,6 +92,9 @@ int main()
     myLayer03.connectLayer( myLayer02);
 
     //-- Calculate result
+    myLayer02.refresh();
+    myLayer03.refresh();
+
     std::vector<double> result = myLayer03.getOutput();
     std::cout << "Output of Network (3, 2, 1): " << result[0] << std::endl;
 
@@ -150,9 +153,16 @@ int main()
 
     myNetwork.setWeights( thetaVector );
 
-    std::vector<double> inputVector = returnInput();
 
-    myNetwork.setInput( inputVector );
+    myNetwork.setInput(  returnInput2() );
     myNetwork.refresh();
-    std::cout << "Output:> " << myNetwork.getOutput().at(0) << std::endl;
+
+    std::cout << "Output (input:number 3):> "
+	      << myNetwork.getOutput() << std::endl;
+
+    myNetwork.setInput( returnInput1() );
+    myNetwork.refresh();
+    std::cout << "Output (input:number 0):>"
+	      << myNetwork.getOutput() << std::endl;
+
 }

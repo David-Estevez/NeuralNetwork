@@ -68,5 +68,6 @@ private:
     Matrix();
 };
 
+std::ostream& operator << (std::ostream&, std::vector<double>);
 
 #endif // MATRIX_H

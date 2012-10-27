@@ -29,13 +29,13 @@ NeuralNetwork::NeuralNetwork( std::vector<int> neuronsInLayer)
 	    for (int i = 1; i < (int) hiddenLayer.size(); i++)
 		hiddenLayer[i] << hiddenLayer.at(i-1);
 
-	    hiddenLayer.at(0) << *inputLayer;
+	    hiddenLayer.at(0) << inputLayer;
 	    *outputLayer << hiddenLayer.at(hiddenLayer.size()-1);
 	}
 	else
 	{
 	    //-- Connect input with output
-	    *outputLayer << *inputLayer;
+	    *outputLayer << inputLayer;
 	}
 
 	//-- Create output vector, same dimension as output layer
@@ -63,6 +63,7 @@ void NeuralNetwork::setInput(std::vector<double> input)
     //-- Set input vector to input layer
 
     //-- Check dimensions:
+
     if ( (int) input.size() == inputLayer->getN() - 1)
     {
 	//-- Set output to be the input vector:
@@ -124,7 +125,7 @@ std::vector<Matrix> NeuralNetwork::getWeights()
 
     //-- Store the hidden layers weight matrices
     for (int i = 0; i < (int) hiddenLayer.size(); i++)
-	theta.push_back( hiddenLayer[i].getWeights() );
+	theta.push_back( hiddenLayer.at(i).getWeights() );
 
     //-- Store the output layer weight matrix
     theta.push_back( outputLayer->getWeights() );

@@ -35,8 +35,7 @@ void Neuron::refresh()
     //-- Sum up the activation of all the connected neurons times
     //-- their correspondent weight:
     for (int i = 0; i < (int) dendrite.size(); i++)
-	sum += dendrite[i].weight * dendrite[i].connection->getOutput();
-
+	sum += this->dendrite.at(i).weight * dendrite.at(i).connection->getOutput();
 
     //-- The value of the output is given by the activation function
     axon = activation(sum);
@@ -99,7 +98,7 @@ void Neuron::setWeight( std::vector<double> newWeights)
     if ( newWeights.size() == dendrite.size() )
     {
     for (int i = 0; i < (int) dendrite.size(); i++)
-	    dendrite[i].weight = newWeights[i];
+	    this->dendrite.at(i).weight = newWeights.at(i);
     }
     else
     {

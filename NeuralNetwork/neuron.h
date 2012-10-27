@@ -68,7 +68,7 @@ public:
 class BiasUnit : public Neuron {
     public:
 	BiasUnit() {}
-	double getOutput() { return 1.0; }
+	virtual double getOutput() { return (double) 1; }
 };
 
 

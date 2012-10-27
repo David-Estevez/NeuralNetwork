@@ -41,6 +41,10 @@ void Layer::setOutput(std::vector<double> output)
     //-- Debug function
     //-- Allows the user to set the output vector by hand:
     this->output = output;
+
+    //-- Neurons output need also to be changed:
+    for (int i = 1; i < (int) this->neurons.size() ; i++)
+	this->neurons.at(i).setOutput( output.at(i-1) );
 }
 
 
@@ -76,7 +80,7 @@ void Layer::refresh()
 
     //-- Update vector output
     for (int i = 0; i < (int) neurons.size() - 1; i++)
-	output.at(i)= neurons.at(i).getOutput();
+	output.at(i)= neurons.at(i+1).getOutput();
 }
 
 
@@ -95,7 +99,7 @@ Matrix Layer::getWeights()
     Matrix theta( n-1, neurons.at(1).getNumDendrites() );
 
     for (int i = 1; i < n ; i++)
-	theta.setRow( neurons.at(i).getWeight(), i );
+	theta.setRow( neurons.at(i).getWeight(), i-1 );
 
     return theta;
 
@@ -109,11 +113,22 @@ void Layer::connectLayer(Layer& prevLayer)
     //-- Connects this layer's neurons to the neurons of the previous layer
     //-- Bias unit cannot be connected to previous layer
 
-    for(int i = 1; i < n; i++)
+    for(int i = 1; i < this->n; i++)
 	for(int j = 0; j < prevLayer.getN(); j++)
 	    this->neurons.at(i) << prevLayer.neurons.at(j);
 }
 
+
+void Layer::connectLayer(Layer* prevLayer)
+{
+    //-- Connects this layer's neurons to the neurons of the previous layer
+    //-- Bias unit cannot be connected to previous layer
+
+    for(int i = 1; i < this->n; i++)
+	for(int j = 0; j < prevLayer->getN(); j++) {
+	    this->neurons.at(i) << prevLayer->neurons.at(j);
+}
+}
 
 void Layer::operator << (Layer& prevLayer)
 {
@@ -121,3 +136,7 @@ void Layer::operator << (Layer& prevLayer)
     connectLayer(prevLayer);
 }
 
+void Layer::operator <<( Layer* prevLayer)
+{
+    connectLayer(prevLayer);
+}
