@@ -2,20 +2,28 @@
 
 Matrix::Matrix(int rows, int cols)
 {
+    //-- Store dimensions
     this->rows = rows;
     this->cols = cols;
 
+    //-- Create storage for the matrix
     this->matrix = new double[rows*cols];
 
+    //-- Initialize the matrix to 0:
+    for(int i = 0; i < rows*cols; i++)
+	*(matrix+i) = 0;
 }
 
 Matrix::Matrix(const Matrix& otherMatrix)
 {
+    //-- Copy dimensions
     this->rows = otherMatrix.rows;
     this->cols = otherMatrix.cols;
 
+    //-- Create storage for the matrix
     this->matrix = new double[rows * cols];
 
+    //-- Copy the values of the matrix
     for(int i = 0; i < rows; i++)
 	for (int j = 0; j < cols; j++)
 	    this->set( i, j, otherMatrix.get(i, j) );
