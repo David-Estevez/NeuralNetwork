@@ -24,7 +24,7 @@ public:
 
     //-- Output functions
     void setOutput(double); //-- Mainly for debug
-    virtual double getOutput();				    //-- Returns the current value at the output
+    virtual double getOutput();			    //-- Returns the current value at the output
     void refresh();				    //-- Calculates the new output of the neuron given the input
 
     std::vector<double> getWeight();		    //-- Returns a vector containing the weights of the neuron
@@ -36,12 +36,8 @@ public:
     void addConnection(Neuron& neuronToBeAdded);    //-- Adds a connection to another neuron in the network
     void operator << (Neuron& neuronToBeAdded);	    //-- Same as addConnection, but shorter to write (and more visual)
 
-    //-- Discussion:
-    //-- Operator to overload to addConnection:
-    //-- += or <<
-
     //-- Insert / modify neuron's data
-    void setWeight( std::vector<double> weights);//-- Changes the vale of all the weights of the neuron
+    void setWeight( std::vector<double> weights);   //-- Changes the vale of all the weights of the neuron
     void setWeight(int i, double newWeight);	    //-- Changes the value of the weight of the ith dendrite
 
 
@@ -55,13 +51,10 @@ private:
     double randomWeight (double limit);	//-- Returns a random value to be assigned as a weight
 };
 
-class Dendrite
+struct Dendrite
 {
-
-public:
     Neuron* connection;
     double weight;
-
 };
 
 //-- This is supposed to be a TEMPORAL solution
