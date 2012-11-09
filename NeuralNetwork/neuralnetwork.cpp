@@ -3,44 +3,39 @@
 
 //-- Constructors:
 
-NeuralNetwork::NeuralNetwork(int, int, ...)
-{
-    //-- I don't know yet how to deal with ... arguments
-}
-
 NeuralNetwork::NeuralNetwork( std::vector<int> neuronsInLayer)
 {
     //-- Check dimensions:
-    if (neuronsInLayer.size() < 2)
+    if ( (int) neuronsInLayer.size() < 2)
     {
 	std::cerr<<"Error[Neuralnetwork]: fewer layers than allowed." << std::endl;
     }
     else
     {
 	//-- Create first and last layers
-	this->inputLayer = new Layer( neuronsInLayer[0]);
-	this->outputLayer = new Layer( neuronsInLayer[neuronsInLayer.size()-1]);
+	this->inputLayer = new Layer( neuronsInLayer.at(0));
+	this->outputLayer = new Layer( neuronsInLayer.back() );
 
 	//-- Create hidden layers
-	for (int i = 1; i < neuronsInLayer.size()-1; i++)
+	for (int i = 1; i < (int) neuronsInLayer.size()-1; i++)
 	{
-	    Layer auxLayer( neuronsInLayer[i]);
+	    Layer auxLayer( neuronsInLayer.at(i));
 	    this->hiddenLayer.push_back( auxLayer);
 	}
 
 	//-- Connect layers (I'm not sure that this works because of pointers)
 	if (hiddenLayer.size() > 0)
 	{
-	    for (int i = 1; i < hiddenLayer.size(); i++)
-		hiddenLayer[i] << hiddenLayer[i-1];
+	    for (int i = 1; i < (int) hiddenLayer.size(); i++)
+		hiddenLayer[i] << hiddenLayer.at(i-1);
 
-	    hiddenLayer[0] << *inputLayer;
-	    *outputLayer << hiddenLayer[hiddenLayer.size()-1];
+	    hiddenLayer.at(0) << inputLayer;
+	    *outputLayer << hiddenLayer.at(hiddenLayer.size()-1);
 	}
 	else
 	{
 	    //-- Connect input with output
-	    *outputLayer << *inputLayer;
+	    *outputLayer << inputLayer;
 	}
 
 	//-- Create output vector, same dimension as output layer
@@ -48,7 +43,7 @@ NeuralNetwork::NeuralNetwork( std::vector<int> neuronsInLayer)
 	    this->output.push_back( 0);
 
 	//-- Set number of layers
-	this->l = neuronsInLayer.size();
+	this->l = (int) neuronsInLayer.size();
     }
 }
 
@@ -68,7 +63,8 @@ void NeuralNetwork::setInput(std::vector<double> input)
     //-- Set input vector to input layer
 
     //-- Check dimensions:
-    if ( input.size() == inputLayer->getN())
+
+    if ( (int) input.size() == inputLayer->getN() - 1)
     {
 	//-- Set output to be the input vector:
 	inputLayer->setOutput( input );
@@ -100,8 +96,12 @@ void NeuralNetwork::setWeights(std::vector<Matrix> theta)
 		  << "Had: " << theta.size() << " Expected: " << hiddenLayer.size() + 1 << std::endl;
     else
     {
-	//-- This part has to be made with a paper in front of me, if not is impossible
-	//if (theta[0].getNumRows)
+	for (int i = 0; i < (int) hiddenLayer.size(); i++)
+	{
+	    hiddenLayer.at(i).setWeights( theta.at(i));
+	}
+
+	outputLayer->setWeights( theta.back());
     }
 }
 
@@ -124,8 +124,8 @@ std::vector<Matrix> NeuralNetwork::getWeights()
     //-- Note: in matrices, weights of each neurons are stored in rows.
 
     //-- Store the hidden layers weight matrices
-    for (int i = 0; i < hiddenLayer.size(); i++)
-	theta.push_back( hiddenLayer[i].getWeights() );
+    for (int i = 0; i < (int) hiddenLayer.size(); i++)
+	theta.push_back( hiddenLayer.at(i).getWeights() );
 
     //-- Store the output layer weight matrix
     theta.push_back( outputLayer->getWeights() );
@@ -142,8 +142,8 @@ void NeuralNetwork::refresh()
     //-- Note: Input layer does not need refresh (there is no previous layer)
 
     //-- Refresh hidden layers
-    for (int i = 0; i < hiddenLayer.size() ; i++)
-	hiddenLayer[i].refresh();
+    for (int i = 0; i < (int) hiddenLayer.size() ; i++)
+	hiddenLayer.at(i).refresh();
 
     //-- Refresh output layer
     outputLayer->refresh();

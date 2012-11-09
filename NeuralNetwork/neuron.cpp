@@ -34,9 +34,8 @@ void Neuron::refresh()
 
     //-- Sum up the activation of all the connected neurons times
     //-- their correspondent weight:
-    for (int i = 0; i < dendrite.size(); i++)
-	sum += dendrite[i].weight * dendrite[i].connection->getOutput();
-
+    for (int i = 0; i < (int) dendrite.size(); i++)
+	sum += this->dendrite.at(i).weight * dendrite.at(i).connection->getOutput();
 
     //-- The value of the output is given by the activation function
     axon = activation(sum);
@@ -68,7 +67,7 @@ std::vector<double> Neuron::getWeight()
 {
     std::vector<double> weights;
 
-    for (int i = 0; i < dendrite.size(); i++)
+    for (int i = 0; i < (int) dendrite.size(); i++)
 	weights.push_back(dendrite[i].weight);
 
     return weights;
@@ -77,7 +76,7 @@ std::vector<double> Neuron::getWeight()
 //-- Returns the current value of the connection # index
 double Neuron::getWeight(int index)
 {
-    if (index >= 0 && index < dendrite.size())
+    if (index >= 0 && index < (int) dendrite.size())
 	return dendrite[index].weight;
     else
     {
@@ -98,8 +97,8 @@ void Neuron::setWeight( std::vector<double> newWeights)
     //-- Check if the same number of weights as connections have been given
     if ( newWeights.size() == dendrite.size() )
     {
-	for (int i = 0; i < dendrite.size(); i++)
-	    dendrite[i].weight = newWeights[i];
+    for (int i = 0; i < (int) dendrite.size(); i++)
+	    this->dendrite.at(i).weight = newWeights.at(i);
     }
     else
     {
@@ -113,7 +112,7 @@ void Neuron::setWeight( std::vector<double> newWeights)
 //-- Changes the weight associated with a connection
 void Neuron::setWeight(int index, double newWeight)
 {
-    if (index >= 0 && index < dendrite.size())
+    if (index >= 0 && index < (int) dendrite.size())
 	dendrite[index].weight = newWeight;
     else
 	std::cerr << "Error [Neuron]: neuron with index "

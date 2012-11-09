@@ -4,6 +4,8 @@
 
 #include "matrix.h"
 
+#include "data.h"
+
 #include <iostream>
 
 
@@ -56,7 +58,7 @@ int main()
 
     std::cout << "These are the weights: " << std::endl;
 
-    for (int i = 0; i < myWeights.size(); i++)
+    for (int i = 0; i < (int) myWeights.size(); i++)
 	std::cout << "Weight#" << i+1 << ": " << myWeights[i] << std::endl;
 
     //-- Change the weights again:
@@ -90,6 +92,9 @@ int main()
     myLayer03.connectLayer( myLayer02);
 
     //-- Calculate result
+    myLayer02.refresh();
+    myLayer03.refresh();
+
     std::vector<double> result = myLayer03.getOutput();
     std::cout << "Output of Network (3, 2, 1): " << result[0] << std::endl;
 
@@ -98,14 +103,15 @@ int main()
     //-- Testing matrix:
     //---------------------------------------------------------------------------
     std::cout << "\n Matrix test:" << std::endl;
-    Matrix myMatrix01(2,3), myMatrix02(1, 2);
+    Matrix myMatrix01(2,4), myMatrix02(1, 3);
 
-    for (int i = 0; i < 3; i ++)
+    for (int i = 0; i < 4; i ++)
 	for (int j = 0; j < 2 ; j++)
 	    myMatrix01.set(j, i, i+j);
 
-    for (int i = 0; i < 2; i++)
-	myMatrix02.set(0, i, i);
+    for (int i = 0; i < 3; i++)
+	for (int j = 0; j < 1; j++)
+	    myMatrix02.set(j, i, i);
 
 
     std::cout << "My matrix 01 is : " << std::endl << myMatrix01 << std::endl;
@@ -115,17 +121,48 @@ int main()
     myLayer03.setWeights( myMatrix02);
     myLayer02.refresh();
     myLayer03.refresh();
-    result =myLayer03.getOutput();
+    result = myLayer03.getOutput();
     std::cout << "Output of Network (3, 2, 1): " << result[0] << std::endl;
 
     std::cout << "------------------" << std::endl;
 
+    //-- Testing neural network:
+
     //-- Dimensions of the network:
     std::vector<int> myDims;
     myDims.push_back(400);
-    myDims.push_back(5000);
+    myDims.push_back(25);
     myDims.push_back(10);
 
     NeuralNetwork myNetwork( myDims);
     std::cout << "Size in memory: " << sizeof( myNetwork) << std::endl;
+
+    //-- Defining theta matrices:
+    Matrix theta1 (25, 401);
+    theta1 = returnTheta1();
+    std::cout << "Size in memory: " << sizeof( theta1 ) << std::endl;
+
+    Matrix theta2( 10, 26);
+    theta2 = returnTheta2();
+    std::cout << "Size in memory: " << sizeof( theta2 ) << std::endl;
+
+    std::vector<Matrix> thetaVector;
+    thetaVector.push_back( theta1 );
+    thetaVector.push_back( theta2 );
+    std::cout << "Size in memory: " << sizeof( thetaVector ) << std::endl;
+
+    myNetwork.setWeights( thetaVector );
+
+
+    myNetwork.setInput(  returnInput2() );
+    myNetwork.refresh();
+
+    std::cout << "Output (input:number 3):> "
+	      << myNetwork.getOutput() << std::endl;
+
+    myNetwork.setInput( returnInput1() );
+    myNetwork.refresh();
+    std::cout << "Output (input:number 0):>"
+	      << myNetwork.getOutput() << std::endl;
+
 }

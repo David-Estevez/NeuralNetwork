@@ -14,8 +14,8 @@ class Matrix
 
 public:
     //-- Constructors
-    Matrix(int rows, int cols);
-    // Matrix( Matrix& otherMatrix);
+    Matrix(const int rows, const int cols);
+    Matrix(const Matrix& otherMatrix);
 
     //-- Destructor:
     ~Matrix();
@@ -26,7 +26,7 @@ public:
     int getNumRows() const;
     int getNumCols() const;
 
-    double& get(const int row,const int col) const;
+    double get(const int row,const int col) const;
 
     std::vector<double *> getRow(const int row) const;
     std::vector<double> getRowValues(const int row) const;
@@ -38,10 +38,7 @@ public:
     void set(const int row,const int col,const double value);
 
     void setRow(const std::vector<double> row, const int index);
-    void setRow(const std::vector<double *> row,const  int index);
-
     void setCol(const std::vector<double> col, const int index);
-    void setCol(const std::vector<double *> col, const int index);
 
     //-- Basic matrix operations: (to be implemented when/if needed)
     Matrix& operator + (Matrix& );
@@ -58,7 +55,8 @@ public:
     Matrix& operator == (Matrix& );
     Matrix& operator != (Matrix& );
 
-    Matrix& operator = (Matrix&);
+    void operator = (const Matrix&);
+
     Matrix& transpose();
 
     friend std::ostream& operator << ( std::ostream& out, Matrix& matrix);
@@ -71,5 +69,6 @@ private:
     Matrix();
 };
 
+std::ostream& operator << (std::ostream&, std::vector<double>);
 
 #endif // MATRIX_H

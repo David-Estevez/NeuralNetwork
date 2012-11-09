@@ -31,7 +31,8 @@ public:
     //-- Connect with previous layer
     void connectLayer(Layer& );    //-- Connects this layer's neurons to the neurons of the previous layer
     void operator << (Layer& );    //-- Same as connectLayer(), but nicer
-
+    void connectLayer(Layer* );    //-- Connects this layer's neurons to the neurons of the previous layer
+    void operator << (Layer* );    //-- Same as connectLayer(), but nicer
 
 private:
     //-- Atributes

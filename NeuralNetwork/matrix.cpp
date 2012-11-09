@@ -9,7 +9,17 @@ Matrix::Matrix(int rows, int cols)
 
 }
 
-//Matrix::Matrix( Matrix& otherMatrix) {}
+Matrix::Matrix(const Matrix& otherMatrix)
+{
+    this->rows = otherMatrix.rows;
+    this->cols = otherMatrix.cols;
+
+    this->matrix = new double[rows * cols];
+
+    for(int i = 0; i < rows; i++)
+	for (int j = 0; j < cols; j++)
+	    this->set( i, j, otherMatrix.get(i, j) );
+}
 
 Matrix::~Matrix()
 {
@@ -28,15 +38,15 @@ int Matrix::getNumCols() const
 }
 
 
-double& Matrix::get(const int row, const int col) const
+double Matrix::get(const int row, const int col) const
 {
     if ( (row >= 0 && row < rows) && (col >= 0 && col < cols ) )
     {
-	 return (matrix + row*cols + col);
+	 return *(matrix + row*cols + col);
     }
     else
     {
-	std::cerr << "Error [Matrix]: index not valid.";
+	std::cerr << "Error [Matrix]: index not valid." << std::endl;
 	return 0;
     }
 }
@@ -46,7 +56,7 @@ void Matrix::set(int row, int col, const double value)
     if ((row >= 0 && row < rows) && (col >= 0 && col < cols ) )
 	*(matrix + row*cols + col) = value;
     else
-	std::cerr << "Error [Matrix]: index not valid.";
+	std::cerr << "Error [Matrix]: index not valid." << std::endl;
 }
 
 
@@ -64,7 +74,7 @@ std::vector<double *> Matrix::getRow( const int row) const
 	    aux.push_back( matrix + row * cols + i);
     }
     else
-	std::cerr << "Error [Matrix]: specified row does not exist.";
+	std::cerr << "Error [Matrix]: specified row does not exist." << std::endl;
 
     return aux;
 }
@@ -83,7 +93,7 @@ std::vector<double> Matrix::getRowValues( const int row) const
 	    aux.push_back( *(matrix + row * cols + i) );
     }
     else
-	std::cerr << "Error [Matrix]: specified row does not exist.";
+	std::cerr << "Error [Matrix]: specified row does not exist." << std::endl;
 
     return aux;
 }
@@ -97,11 +107,11 @@ std::vector<double *> Matrix::getCol(const int col) const
     //-- Returns a given column
     if (col >= 0 && col < cols )
     {
-	for (int i = 0; i < matrix.size() ; i++)
+	for (int i = 0; i < rows ; i++)
 	   aux.push_back( matrix + i * cols + col );
     }
     else
-	std::cerr << "Error [Matrix]: specified column does not exist.";
+	std::cerr << "Error [Matrix]: specified column does not exist." << std::endl;
 
     return aux;
 }
@@ -114,11 +124,11 @@ std::vector<double *> Matrix::getCol(const int col) const
     //-- Returns a given column
     if (col >= 0 && col < cols )
     {
-	for (int i = 0; i < matrix.size() ; i++)
+	for (int i = 0; i < rows ; i++)
 	   aux.push_back( *(matrix + i * cols + col) );
     }
     else
-	std::cerr << "Error [Matrix]: specified column does not exist.";
+	std::cerr << "Error [Matrix]: specified column does not exist." << std::endl;
 
     return aux;
 }
@@ -132,19 +142,7 @@ void Matrix::setRow(const std::vector<double> row, const int index)
 	    *(matrix + index * cols + i)  = row.at(i);
     }
     else
-	std::cerr << "Error [Matrix]: specified row does not exist.";
-}
-
-void Matrix::setRow(const std::vector<double *> row, const int index)
-{
-    //-- Set a row
-    if (index >= 0 && index < rows )
-    {
-	for (int i = 0; i < cols ; i++)
-	    (matrix + index * cols + i)  = row.at(i);
-    }
-    else
-	std::cerr << "Error [Matrix]: specified row does not exist.";
+	std::cerr << "Error [Matrix]: specified row does not exist." << std::endl;
 }
 
 void Matrix::setCol(const std::vector<double> col, const int index)
@@ -156,27 +154,25 @@ void Matrix::setCol(const std::vector<double> col, const int index)
 	    *(matrix + i * cols + index) = col.at(i);
     }
     else
-	std::cerr << "Error [Matrix]: specified column does not exist.";
+	std::cerr << "Error [Matrix]: specified column does not exist." << std::endl;
 }
 
-void Matrix::setCol(const std::vector<double *> col,const int index)
+void Matrix::operator =(const Matrix& otherMatrix)
 {
-    //-- Set a column
-    if (index >= 0 && index < cols )
+    if ( this->rows == otherMatrix.rows && this->cols == otherMatrix.cols )
     {
-	for (int i = 0; i < rows ; i++)
-	    (matrix + i * cols + index) = col.at(i);
+	for(int i = 0; i < this->rows; i++)
+	    for (int j = 0; j < this->cols; j++)
+		this->set( i, j, otherMatrix.get(i, j) );
     }
-    else
-	std::cerr << "Error [Matrix]: specified column does not exist.";
 }
 
 std::ostream& operator << ( std::ostream& out, Matrix& matrix)
 {
-    for (int i = 0; i < rows ; i++)
+    for (int i = 0; i < matrix.rows ; i++)
     {
 	out << "| ";
-	for (int j = 0; j < cols; j++)
+	for (int j = 0; j < matrix.cols; j++)
     	    out << matrix.get(i,j) << " ";
 	out << "|" << std::endl;
     }
@@ -184,3 +180,12 @@ std::ostream& operator << ( std::ostream& out, Matrix& matrix)
     return out;
 }
 
+std::ostream& operator << ( std::ostream& out, std::vector<double> data)
+{
+    out << "[ ";
+    for ( int i = 0; i < (int) data.size(); i++)
+    {
+	out << data.at(i) << " ";
+    }
+    out << "]";
+}

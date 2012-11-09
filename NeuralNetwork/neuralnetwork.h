@@ -10,7 +10,6 @@
 class NeuralNetwork
 {
 public:
-    NeuralNetwork( int, int, ...);
     NeuralNetwork( std::vector<int> );
 
     ~NeuralNetwork();

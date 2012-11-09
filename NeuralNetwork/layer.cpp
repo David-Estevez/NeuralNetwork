@@ -8,10 +8,14 @@ Layer::Layer(int n)
     if (n > 0)
     {
 	//-- Set the number of neurons:
-	this->n = n;
+	this->n = n + 1; //-- Bias unit taken into account
+
+	//-- Adding bias unit:
+	BiasUnit biasUnit;
+	this->neurons.push_back( biasUnit );
 
 	//-- Create the neurons:
-	for (int i = 0; i < n; i++)
+	for (int i = 1; i < this->n; i++)
 	{
 	    //-- Create a new neuron
 	    Neuron newNeuron;
@@ -37,23 +41,30 @@ void Layer::setOutput(std::vector<double> output)
     //-- Debug function
     //-- Allows the user to set the output vector by hand:
     this->output = output;
+
+    //-- Neurons output need also to be changed:
+    for (int i = 1; i < (int) this->neurons.size() ; i++)
+	this->neurons.at(i).setOutput( output.at(i-1) );
 }
 
-//-- Set weights to neurons
+
 void Layer::setWeights( Matrix theta )
 {
+    //-- Set weights to neurons
+
     //-- Note: Each neuron's weights are stored in rows
+    //-- Bias unit has no weights because it has no connetions to previous layers
 
     //-- Check the dimensions of the matrix:
-    if ( theta.getNumRows() == neurons.size() && theta.getNumCols() == neurons[0].getNumDendrites() )
+    if ( theta.getNumRows() == (int) neurons.size() - 1 && theta.getNumCols() == neurons.at(1).getNumDendrites() )
     {
-	for(int i = 0; i < this->n; i++)
-	    this->neurons[i].setWeight( theta.getRowValues(i));
+	for(int i = 1; i < this->n; i++)
+	    this->neurons.at(i).setWeight( theta.getRowValues(i-1));
     }
     else
     {
-	std::cerr << "Error [Layer]: incorrect matrix dimensions. Expected a " << neurons.size() << "X"
-		  << neurons[0].getNumDendrites() << " matrix." << std::endl;
+	std::cerr << "Error [Layer]: incorrect matrix dimensions. Expected a " << neurons.size() - 1 << "X"
+		  << neurons.at(1).getNumDendrites() << " matrix." << std::endl;
     }
 }
 
@@ -63,13 +74,13 @@ void Layer::setWeights( Matrix theta )
 
 void Layer::refresh()
 {
-    //-- Update state of neurons
-    for (int i = 0; i < neurons.size(); i++)
-	neurons[i].refresh();
+    //-- Update state of neurons (not bias unit)
+    for (int i = 1; i < (int) neurons.size(); i++)
+	neurons.at(i).refresh();
 
     //-- Update vector output
-    for (int i = 0; i < neurons.size(); i++)
-	output[i] = neurons[i].getOutput();
+    for (int i = 0; i < (int) neurons.size() - 1; i++)
+	output.at(i)= neurons.at(i+1).getOutput();
 }
 
 
@@ -82,12 +93,13 @@ Matrix Layer::getWeights()
 {
     //-- Returns a matrix containing the weights of all connections of all neurons in
     //-- the layer. Each row corresponds to the weights of a single neuron.
+    //-- Bias unit has no connections, so it has no weights
 
     //-- Create a matrix to store the weights
-    Matrix theta( n, neurons[0].getNumDendrites() );
+    Matrix theta( n-1, neurons.at(1).getNumDendrites() );
 
-    for (int i = 0; i < n ; i++)
-	theta.setRow( neurons[i].getWeight(), i );
+    for (int i = 1; i < n ; i++)
+	theta.setRow( neurons.at(i).getWeight(), i-1 );
 
     return theta;
 
@@ -99,11 +111,24 @@ Matrix Layer::getWeights()
 void Layer::connectLayer(Layer& prevLayer)
 {
     //-- Connects this layer's neurons to the neurons of the previous layer
-    for(int i = 0; i < n; i++)
+    //-- Bias unit cannot be connected to previous layer
+
+    for(int i = 1; i < this->n; i++)
 	for(int j = 0; j < prevLayer.getN(); j++)
-	    this->neurons[i] << prevLayer.neurons[j];
+	    this->neurons.at(i) << prevLayer.neurons.at(j);
 }
 
+
+void Layer::connectLayer(Layer* prevLayer)
+{
+    //-- Connects this layer's neurons to the neurons of the previous layer
+    //-- Bias unit cannot be connected to previous layer
+
+    for(int i = 1; i < this->n; i++)
+	for(int j = 0; j < prevLayer->getN(); j++) {
+	    this->neurons.at(i) << prevLayer->neurons.at(j);
+}
+}
 
 void Layer::operator << (Layer& prevLayer)
 {
@@ -111,3 +136,7 @@ void Layer::operator << (Layer& prevLayer)
     connectLayer(prevLayer);
 }
 
+void Layer::operator <<( Layer* prevLayer)
+{
+    connectLayer(prevLayer);
+}
