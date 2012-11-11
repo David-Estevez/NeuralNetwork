@@ -15,7 +15,7 @@ void NNFileInput::loadTrainingExamples()
 
 }
 
-Matrix& NNFileInput::loadMatrix(const char *filePath)
+Matrix& NNFileInput::loadMatrix(const std::string filePath)
 {
     //--Variables to store:
     int rows = 0, cols = 0; //-- Matrix dimensions
@@ -28,7 +28,7 @@ Matrix& NNFileInput::loadMatrix(const char *filePath)
 
 
     //-- Open the file
-    std::fstream inputFile(filePath);
+    std::fstream inputFile( filePath.c_str() );
 
     if (inputFile == 0)
 	std::cerr << "ERROR";

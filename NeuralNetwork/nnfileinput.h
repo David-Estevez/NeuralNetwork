@@ -20,17 +20,22 @@ public:
     virtual void loadInput();
 
     //-- Load a matrix from a file:
-    Matrix& loadMatrix( const char *filePath);
+    Matrix& loadMatrix( const std::string filePath);
 
     //-- Store the file path:
-    void setWeightsFile( const char **filePath);
-    void setInputFile( const char *filePath);
-    void setTrainingSetFile( const char *filepath, const int n);
+    void addWeightsFile( const std::string filePath);
+    void setWeightsFile( const std::string filePath, const int n);
+
+    void setInputFile( const std::string filePath);
+
+    void addTrainingSetFile( const std::string filePath);
+    void setTrainingSetFile( const std::string filePath, const int n);
+
 private:
     //-- Variables storing file path
-    char **weightsFile;
-    char *inputFile;
-    char **trainingSetFile;
+    std::vector<std::string> weightsFile;
+    std::string inputFile;
+    std::vector<std::string> trainingSetFile;
 };
 
 #endif // NNFILEINPUT_H
