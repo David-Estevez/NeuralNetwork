@@ -14,34 +14,31 @@ class Matrix
 
 public:
     //-- Constructors
-    Matrix(int rows, int cols);
-    // Matrix( Matrix& otherMatrix);
+    Matrix(const int rows, const int cols);
+    Matrix(const Matrix& otherMatrix);
 
     //-- Destructor:
-   // ~Matrix();
+    ~Matrix();
 
     //-- Data interface:
 
     //-- Output functions:
-    int getNumRows();
-    int getNumCols();
+    int getNumRows() const;
+    int getNumCols() const;
 
-    double get(int row, int col);
+    double get(const int row,const int col) const;
 
-    std::vector<double *> getRow( int row);
-    std::vector<double> getRowValues( int row);
+    std::vector<double *> getRow(const int row) const;
+    std::vector<double> getRowValues(const int row) const;
 
-    std::vector<double *> getCol( int col);
-    std::vector<double> getColValues( int col);
+    std::vector<double *> getCol(const int col) const;
+    std::vector<double> getColValues(const int col) const;
 
     //-- Input functions
-    void set(int row, int col, double value);
+    void set(const int row,const int col,const double value);
 
-    void setRow( std::vector<double> row, int index);
-    void setRow( std::vector<double *> row, int index);
-
-    void setCol( std::vector<double> col, int index);
-    void setCol( std::vector<double *> col, int index);
+    void setRow(const std::vector<double> row, const int index);
+    void setCol(const std::vector<double> col, const int index);
 
     //-- Basic matrix operations: (to be implemented when/if needed)
     Matrix& operator + (Matrix& );
@@ -58,12 +55,16 @@ public:
     Matrix& operator == (Matrix& );
     Matrix& operator != (Matrix& );
 
+    void operator = (const Matrix&);
+
     Matrix& transpose();
 
     friend std::ostream& operator << ( std::ostream& out, Matrix& matrix);
 
 private:
-    std::vector< std::vector<double *> > matrix;
+    int cols, rows;
+
+    double *matrix;
 
     Matrix();
 };
