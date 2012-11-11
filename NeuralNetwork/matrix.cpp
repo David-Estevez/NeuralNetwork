@@ -210,4 +210,6 @@ std::ostream& operator << ( std::ostream& out, std::vector<double> data)
 	out << data.at(i) << " ";
     }
     out << "]";
+
+    return out;
 }

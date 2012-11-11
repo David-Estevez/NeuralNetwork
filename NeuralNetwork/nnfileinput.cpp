@@ -119,5 +119,5 @@ Matrix& NNFileInput::loadMatrix(const char *filePath)
     //-- Create a new matrix:
     Matrix *dataMatrix = new Matrix(data, rows, cols);
 
-    return dataMatrix;
+    return *dataMatrix;
 }
