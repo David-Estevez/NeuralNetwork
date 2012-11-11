@@ -5,17 +5,24 @@
 #include <vector>
 
 #include "neuralnetworkio.h"
-#include "NeuralNetwork"
+#include "neuralnetwork.h"
+#include "matrix.h"
 
 class NNInput: NeuralNetworkIO
 {
-public:
-    NNInput();
-    NNInput( const NeuralNetwork& nn): NeuralNetworkIO(nn) {}
+protected:
+    NNInput() {}
+    NNInput(NeuralNetwork& nn): NeuralNetworkIO(nn) {}
 
+    virtual void loadInput();
     virtual void loadWeights();
     virtual void loadTrainingExamples();
-    virtual void loadInput();
+
+ private:
+    std::vector<Matrix> weights;
+    std::vector<double> input;
+
+    //-- std::vector<TrainingExample> TS;
 };
 
 #endif // NNINPUT_H

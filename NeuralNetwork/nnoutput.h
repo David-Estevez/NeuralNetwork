@@ -6,8 +6,8 @@
 
 class NNOutput : public NeuralNetworkIO
 {
-public:
-    NNOutput();
+protected:
+    NNOutput() {}
     NNOutput( NeuralNetwork& nn): NeuralNetworkIO( nn) {}
 
     virtual void showWeights() = 0;

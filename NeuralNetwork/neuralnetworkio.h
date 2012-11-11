@@ -6,12 +6,11 @@
 class NeuralNetworkIO
 {
 protected:
-    NeuralNetworkIO();
-    NeuralNetworkIO(const NeuralNetwork& nn) { this->nn = &nn;}
+    NeuralNetworkIO() {}
+    NeuralNetworkIO(NeuralNetwork& nn) { this->nn = &nn;}
 
-    void connectToNeuralNetwork(const NeuralNetwork& nn) {this->nn = &nn;}
+    void connectToNeuralNetwork(NeuralNetwork& nn) {this->nn = &nn;}
 
-private:
     NeuralNetwork* nn;
 
 };

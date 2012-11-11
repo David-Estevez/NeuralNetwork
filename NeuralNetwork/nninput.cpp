@@ -1,5 +1,17 @@
 #include "nninput.h"
 
-NNInput::NNInput()
+void NNInput::loadWeights()
 {
+    nn->setWeights( weights );
+}
+
+void NNInput::loadInput()
+{
+    nn->setInput( input);
+}
+
+
+void NNInput::loadTrainingExamples()
+{
+
 }
