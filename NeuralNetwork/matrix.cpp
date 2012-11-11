@@ -29,6 +29,20 @@ Matrix::Matrix(const Matrix& otherMatrix)
 	    this->set( i, j, otherMatrix.get(i, j) );
 }
 
+Matrix::Matrix(const std::vector<double> dataVector, const int rows, const int cols)
+{
+    //--Store dimensions:
+    this->rows = rows;
+    this->cols = cols;
+
+    //-- Create storage for matrix
+    this->matrix = new double[ dataVector.size()];
+
+    //-- Copy elements:
+    for (int i = 0; i < (int) dataVector.size(); i++)
+	*matrix = dataVector.at(i);
+}
+
 Matrix::~Matrix()
 {
     delete [] matrix;

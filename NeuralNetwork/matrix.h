@@ -15,6 +15,7 @@ class Matrix
 public:
     //-- Constructors
     Matrix(const int rows, const int cols);
+    Matrix(const std::vector<double> dataVector,const int rows, const int cols);
     Matrix(const Matrix& otherMatrix);
 
     //-- Destructor:
