@@ -1,7 +1,6 @@
 #ifndef NNINPUT_H
 #define NNINPUT_H
 
-#include <iostream>
 #include <vector>
 
 #include "neuralnetworkio.h"
@@ -14,9 +13,9 @@ protected:
     NNInput() {}
     NNInput(NeuralNetwork& nn): NeuralNetworkIO(nn) {}
 
-    virtual void loadInput();
-    virtual void loadWeights();
-    virtual void loadTrainingExamples();
+    virtual void loadInput() = 0;
+    virtual void loadWeights() = 0;
+    virtual void loadTrainingExamples() = 0;
 
  private:
     std::vector<Matrix> weights;

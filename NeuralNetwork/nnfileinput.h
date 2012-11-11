@@ -1,6 +1,10 @@
 #ifndef NNFILEINPUT_H
 #define NNFILEINPUT_H
 
+#include <fstream>
+#include <vector>
+#include <cstdlib>
+
 #include "nninput.h"
 #include "neuralnetwork.h"
 #include "matrix.h"
@@ -15,11 +19,18 @@ public:
     virtual void loadTrainingExamples();
     virtual void loadInput();
 
-    //-- Funciones que cargan matrices desde ficheros
+    //-- Load a matrix from a file:
+    Matrix& loadMatrix( const char *filePath);
 
-    //-- Funciones para guardar la ruta de los ficheros
+    //-- Store the file path:
+    void setWeightsFile( const char **filePath);
+    void setInputFile( const char *filePath);
+    void setTrainingSetFile( const char *filepath, const int n);
 private:
-    //-- Variables que guardan la ruta de los ficheros
+    //-- Variables storing file path
+    char **weightsFile;
+    char *inputFile;
+    char **trainingSetFile;
 };
 
 #endif // NNFILEINPUT_H
