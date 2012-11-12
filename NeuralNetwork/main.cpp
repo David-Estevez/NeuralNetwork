@@ -25,5 +25,12 @@ int main()
 
     inputMod.setInputFile( "./input.txt");
 
+    inputMod.loadInput();
+    inputMod.loadWeights();
+
+    nn.refresh();
+
+    std::cout << nn.getOutput();
+
 
 }

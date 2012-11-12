@@ -38,11 +38,10 @@ Matrix& NNFileInput::loadMatrix(const std::string filePath)
 
 
     //-- Open the file
-    std::fstream inputFile( filePath.c_str() );
+    std::ifstream inputFile( filePath.c_str() );
 
-    if (inputFile == 0)
-	std::cerr << "ERROR";
-
+    if (inputFile.is_open())
+    {
     //-- Erase the buffer:
     for (int i = 0; i < BUFFER_SIZE; i++)
 	number[i] = '\0';
@@ -130,6 +129,13 @@ Matrix& NNFileInput::loadMatrix(const std::string filePath)
     Matrix *dataMatrix = new Matrix(data, rows, cols);
 
     return *dataMatrix;
+    }
+    else
+    {
+        std::cerr << "ERROR" << std::endl;
+
+        return 0;
+    }
 }
 
 
