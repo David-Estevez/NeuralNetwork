@@ -7,6 +7,9 @@
 #include "neuralnetwork.h"
 #include "matrix.h"
 
+//-- Temporal fix:
+struct TrainingExample;
+
 class NNInput: NeuralNetworkIO
 {
 protected:
@@ -17,11 +20,10 @@ protected:
     virtual void loadWeights() = 0;
     virtual void loadTrainingExamples() = 0;
 
- private:
     std::vector<Matrix> weights;
-    std::vector<double> input;
+    Matrix input;
 
-    //-- std::vector<TrainingExample> TS;
+    std::vector<TrainingExample> TS;
 };
 
 #endif // NNINPUT_H

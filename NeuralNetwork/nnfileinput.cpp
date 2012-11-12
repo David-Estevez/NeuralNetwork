@@ -2,17 +2,27 @@
 
 void NNFileInput::loadWeights()
 {
+    //-- Load weight matrices:
+    for (int i = 0; i < (int) weightsFile.size(); i++)
+	weights.push_back( loadMatrix( weightsFile.at(i) ) );
 
+    //-- Pass the matrices to the NeuralNetwork:
+    nn->setWeights( weights );
 }
 
 void NNFileInput::loadInput()
 {
+    //-- Load input vector
+    input = loadMatrix( inputFile ) ;
+
+    //-- Extract the vector from input and pass it to the NeuralNetwork:
+    nn->setInput( input.getRowValues(0) );
 
 }
 
 void NNFileInput::loadTrainingExamples()
 {
-
+    //-- Does not do anything right now
 }
 
 Matrix& NNFileInput::loadMatrix(const std::string filePath)
@@ -120,4 +130,31 @@ Matrix& NNFileInput::loadMatrix(const std::string filePath)
     Matrix *dataMatrix = new Matrix(data, rows, cols);
 
     return *dataMatrix;
+}
+
+
+//-- Functions for storing the file path
+void NNFileInput::addWeightsFile(const std::string filePath)
+{
+    weightsFile.push_back(filePath);
+}
+
+void NNFileInput::setWeightsFile(const std::string filePath, const int n)
+{
+    weightsFile.at( n) = filePath;
+}
+
+void NNFileInput::setInputFile(const std::string filePath)
+{
+    inputFile = filePath;
+}
+
+void NNFileInput::addTrainingSetFile(const std::string filePath)
+{
+    trainingSetFile.push_back( filePath);
+}
+
+void NNFileInput::setTrainingSetFile(const std::string filePath, const int n)
+{
+    trainingSetFile.at(n) = filePath;
 }
