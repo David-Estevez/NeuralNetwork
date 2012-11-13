@@ -10,9 +10,10 @@
 #include <iostream>
 
 
-int main()
+int main( int argc, char *argv[])
 {
-
+    if (argc == 2)
+    {
     //-- Debuggin' main routine::
     //--------------------------------------------------
 
@@ -27,7 +28,7 @@ int main()
     inputMod.addWeightsFile( "../Sample data/Theta1.txt");
     inputMod.addWeightsFile( "../Sample data/Theta2.txt");
 
-    inputMod.setInputFile( "../Sample data/input.txt");
+    inputMod.setInputFile( argv[1] );
 
     inputMod.loadInput();
     inputMod.loadWeights();
@@ -36,6 +37,10 @@ int main()
 
     std::cout << "System output for input file: " << std::endl
 	      << nn.getOutput() << std::endl;
-
+    }
+    else
+    {
+	std::cout << "Error: incorrect number of parameters" << std::cout;
+    }
     return 0;
 }
