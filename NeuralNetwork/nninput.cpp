@@ -8,7 +8,7 @@ NNInput::~NNInput()
 	if ( weights.at( weights.size() - i ) != 0 )
 	    delete weights.at( weights.size() - i);
 
-    if (intput != 0)
+    if (input != 0)
 	delete input;
 
 }

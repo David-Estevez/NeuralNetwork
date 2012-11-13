@@ -48,7 +48,7 @@ void Layer::setOutput(std::vector<double> output)
 }
 
 
-void Layer::setWeights( Matrix theta )
+void Layer::setWeights( Matrix *theta )
 {
     //-- Set weights to neurons
 
@@ -56,10 +56,10 @@ void Layer::setWeights( Matrix theta )
     //-- Bias unit has no weights because it has no connetions to previous layers
 
     //-- Check the dimensions of the matrix:
-    if ( theta.getNumRows() == (int) neurons.size() - 1 && theta.getNumCols() == neurons.at(1).getNumDendrites() )
+    if ( theta->getNumRows() == (int) neurons.size() - 1 && theta->getNumCols() == neurons.at(1).getNumDendrites() )
     {
 	for(int i = 1; i < this->n; i++)
-	    this->neurons.at(i).setWeight( theta.getRowValues(i-1));
+	    this->neurons.at(i).setWeight( theta->getRow(i-1) );
     }
     else
     {

@@ -132,7 +132,8 @@ Matrix* NNFileInput::loadMatrix(const std::string filePath)
     }
     else
     {
-        std::cerr << "ERROR" << std::endl;
+	std::cerr <<"[NNFileInput]Error: File \"" << filePath << "\"" << std::endl
+		  <<"[NNFileInput]Error: File could not be opened!" << std::endl;
 
         return 0;
     }

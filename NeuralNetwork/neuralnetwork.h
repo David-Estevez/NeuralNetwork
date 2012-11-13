@@ -18,7 +18,7 @@ public:
     void setInput( std::vector<double> input);
     void setInput( double * input, int size);
 
-    void setWeights( std::vector<Matrix> theta);
+    void setWeights( std::vector<Matrix *> theta);
 
     //-- Output functions:
     std::vector<double> getOutput();

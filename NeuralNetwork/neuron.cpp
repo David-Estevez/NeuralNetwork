@@ -10,6 +10,7 @@ void Neuron::setOutput(double value)
 
 Neuron::Neuron()
 {
+    /*** NOT NEEDED ANYmORE ***
     //-- Prepare random numbers:
     //------------------------------------------------------------
     //-- Declare variable to hold seconds on clock.
@@ -19,7 +20,7 @@ Neuron::Neuron()
     time(&seconds);
 
     //--Convert seconds to a unsigned integer.
-    srand((unsigned int) seconds);
+    srand((unsigned int) seconds); */
 }
 
 //-- Return current activation value:
@@ -35,7 +36,7 @@ void Neuron::refresh()
     //-- Sum up the activation of all the connected neurons times
     //-- their correspondent weight:
     for (int i = 0; i < (int) dendrite.size(); i++)
-	sum += this->dendrite.at(i).weight * dendrite.at(i).connection->getOutput();
+	sum += *(this->dendrite.at(i).weight) * dendrite.at(i).connection->getOutput();
 
     //-- The value of the output is given by the activation function
     axon = activation(sum);
@@ -48,7 +49,8 @@ void Neuron::addConnection(Neuron& neuronToBeAdded)
     //-- Create a temporal dendrite to store the connection:
     Dendrite newConnection;
     newConnection.connection = &neuronToBeAdded;		 //-- Assign direction of the neuron
-    newConnection.weight = randomWeight( RAND_WEIGHT_LIMIT );	 //-- Assign weight to that connection
+    newConnection.weight = 0;					 //-- While no weight matrix has been asigned,
+								 //-- value for connection is undefined (pointer to NULL)
 
     //-- Add that dendrite to the dendrite vector of our neuron:
     this->dendrite.push_back( newConnection);
@@ -68,7 +70,7 @@ std::vector<double> Neuron::getWeight()
     std::vector<double> weights;
 
     for (int i = 0; i < (int) dendrite.size(); i++)
-	weights.push_back(dendrite[i].weight);
+	weights.push_back( *(dendrite[i].weight) );
 
     return weights;
 }
@@ -77,7 +79,7 @@ std::vector<double> Neuron::getWeight()
 double Neuron::getWeight(int index)
 {
     if (index >= 0 && index < (int) dendrite.size())
-	return dendrite[index].weight;
+	return *(dendrite[index].weight);
     else
     {
 	std::cerr << "Error [Neuron]: index not valid." << std::endl;
@@ -92,7 +94,7 @@ int Neuron::getNumDendrites()
 }
 
 //-- Changes the weight of all connections at a time
-void Neuron::setWeight( std::vector<double> newWeights)
+void Neuron::setWeight( std::vector<double *> newWeights)
 {
     //-- Check if the same number of weights as connections have been given
     if ( newWeights.size() == dendrite.size() )
@@ -113,13 +115,23 @@ void Neuron::setWeight( std::vector<double> newWeights)
 void Neuron::setWeight(int index, double newWeight)
 {
     if (index >= 0 && index < (int) dendrite.size())
-	dendrite[index].weight = newWeight;
+	*(dendrite[index].weight) = newWeight;
     else
 	std::cerr << "Error [Neuron]: neuron with index "
 		  << index << "does not exist" << std::endl;
 
 }
 
+//-- Changes the weight associated with a connection
+void Neuron::setWeight(int index, double * newWeight)
+{
+    if (index >= 0 && index < (int) dendrite.size())
+	dendrite[index].weight = newWeight;
+    else
+	std::cerr << "Error [Neuron]: neuron with index "
+		  << index << "does not exist" << std::endl;
+
+}
 
 //-- Activation function of the neuron:
 double Neuron::activation(double n)

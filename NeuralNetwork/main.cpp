@@ -24,10 +24,10 @@ int main()
     NeuralNetwork nn( sizeofnetwork);
 
     NNFileInput inputMod( nn );
-    inputMod.addWeightsFile( "../sample data/Theta1.txt");
-    inputMod.addWeightsFile( "../sample data/Theta2.txt");
+    inputMod.addWeightsFile( "../Sample data/Theta1.txt");
+    inputMod.addWeightsFile( "../Sample data/Theta2.txt");
 
-    inputMod.setInputFile( "./input.txt");
+    inputMod.setInputFile( "../Sample data/input.txt");
 
     inputMod.loadInput();
     inputMod.loadWeights();

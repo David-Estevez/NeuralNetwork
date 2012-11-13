@@ -20,7 +20,7 @@ public:
 
     //-- Input functions:
     void setOutput( std::vector<double> output); //-- Just for debugging
-    void setWeights( Matrix theta);		 //-- Changes the weights of all neurons by the ones stored in theta
+    void setWeights( Matrix * theta);		 //-- Changes the weights of all neurons by the ones stored in theta
 						 //-- Note: each neuron's vector is stored in a row of the matrix
     //-- Output functions:
     void refresh();				 //-- Recalculates the output vector

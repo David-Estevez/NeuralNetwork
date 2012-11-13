@@ -88,7 +88,7 @@ void NeuralNetwork::setInput(double *input, int size)
     setInput(aux);
 }
 
-void NeuralNetwork::setWeights(std::vector<Matrix> theta)
+void NeuralNetwork::setWeights(std::vector<Matrix *> theta)
 {
     //-- Check number of matrices
     if (theta.size() != hiddenLayer.size() + 1) //-- Input layer is not connected to other layer, so it has no weights

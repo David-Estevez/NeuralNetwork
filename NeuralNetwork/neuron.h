@@ -24,7 +24,7 @@ public:
 
     //-- Output functions
     void setOutput(double); //-- Mainly for debug
-    virtual double getOutput();			    //-- Returns the current value at the output
+    virtual double getOutput();		    //-- Returns the current value at the output
     void refresh();				    //-- Calculates the new output of the neuron given the input
 
     std::vector<double> getWeight();		    //-- Returns a vector containing the weights of the neuron
@@ -37,8 +37,10 @@ public:
     void operator << (Neuron& neuronToBeAdded);	    //-- Same as addConnection, but shorter to write (and more visual)
 
     //-- Insert / modify neuron's data
-    void setWeight( std::vector<double> weights);   //-- Changes the vale of all the weights of the neuron
+    void setWeight( std::vector<double *> weights);   //-- Changes the vale of all the weights of the neuron
     void setWeight(int i, double newWeight);	    //-- Changes the value of the weight of the ith dendrite
+    void setWeight(int i, double * newWeight);	    //-- Changes the value of the weight of the ith dendrite
+
 
 
 
@@ -54,14 +56,15 @@ private:
 struct Dendrite
 {
     Neuron* connection;
-    double weight;
+    double* weight;
 };
 
 //-- This is supposed to be a TEMPORAL solution
 class BiasUnit : public Neuron {
     public:
 	BiasUnit() {}
-	virtual double getOutput() { return (double) 1; }
+	virtual double getOutput() { return 1.0; }
+
 };
 
 
