@@ -19,16 +19,6 @@ public:
     virtual void loadTrainingExamples();
     virtual void loadInput();
 
-
-private:
-    //-- Variables storing file path
-    std::vector<std::string> weightsFile;
-    std::string inputFile;
-    std::vector<std::string> trainingSetFile;
-
-    //-- Load a matrix from a file:
-    Matrix& loadMatrix( const std::string filePath);
-
     //-- Store the file path:
     void addWeightsFile( const std::string filePath);
     void setWeightsFile( const std::string filePath, const int n);
@@ -37,6 +27,17 @@ private:
 
     void addTrainingSetFile( const std::string filePath);
     void setTrainingSetFile( const std::string filePath, const int n);
+
+private:
+    //-- Variables storing file path
+    std::vector<std::string> weightsFile;
+    std::string inputFile;
+    std::vector<std::string> trainingSetFile;
+
+    //-- Load a matrix from a file:
+    Matrix* loadMatrix( const std::string filePath);
+    void loadVector( const std::string filePath, std::vector<double>& vector);
+
 
 };
 

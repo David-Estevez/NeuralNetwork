@@ -16,7 +16,11 @@ int main()
     //-- Debuggin' main routine::
     //--------------------------------------------------
 
-    std::vector<int> sizeofnetwork = { 400, 25, 10 };
+    std::vector<int> sizeofnetwork;
+    sizeofnetwork.push_back(400);
+    sizeofnetwork.push_back(25);
+    sizeofnetwork.push_back(10);
+
     NeuralNetwork nn( sizeofnetwork);
 
     NNFileInput inputMod( nn );

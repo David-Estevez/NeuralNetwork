@@ -4,19 +4,19 @@ void NNFileInput::loadWeights()
 {
     //-- Load weight matrices:
     for (int i = 0; i < (int) weightsFile.size(); i++)
-	weights.push_back( loadMatrix( weightsFile.at(i) ) );
+	weights.push_back( loadMatrix( weightsFile.at(i) ));
 
     //-- Pass the matrices to the NeuralNetwork:
     nn->setWeights( weights );
 }
 
 void NNFileInput::loadInput()
-{
+{   
     //-- Load input vector
     input = loadMatrix( inputFile ) ;
 
     //-- Extract the vector from input and pass it to the NeuralNetwork:
-    nn->setInput( input.getRowValues(0) );
+    nn->setInput( input->getColValues(0) );
 
 }
 
@@ -25,7 +25,7 @@ void NNFileInput::loadTrainingExamples()
     //-- Does not do anything right now
 }
 
-Matrix& NNFileInput::loadMatrix(const std::string filePath)
+Matrix* NNFileInput::loadMatrix(const std::string filePath)
 {
     //--Variables to store:
     int rows = 0, cols = 0; //-- Matrix dimensions
@@ -128,7 +128,7 @@ Matrix& NNFileInput::loadMatrix(const std::string filePath)
     //-- Create a new matrix:
     Matrix *dataMatrix = new Matrix(data, rows, cols);
 
-    return *dataMatrix;
+    return dataMatrix;
     }
     else
     {
@@ -138,6 +138,30 @@ Matrix& NNFileInput::loadMatrix(const std::string filePath)
     }
 }
 
+void loadVector(const std::string filePath , std::vector<double>& vector)
+{
+    //-- Stores (toDo)
+    //-- Open file:
+    std::ifstream file( filePath.c_str() );
+
+    double buffer;
+    vector.clear();
+
+    if (file.is_open())
+    {
+	while( file.good() )
+	{
+	    file >> buffer;
+	    vector.push_back( buffer );
+	}
+    file.close();
+    }
+    else
+    {
+	std::cerr << "[NNFileInput]Error: File could not be opened!" << std::endl;
+    }
+
+}
 
 //-- Functions for storing the file path
 void NNFileInput::addWeightsFile(const std::string filePath)
