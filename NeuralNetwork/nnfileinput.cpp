@@ -28,13 +28,13 @@ void NNFileInput::loadTrainingExamples()
 Matrix* NNFileInput::loadMatrix(const std::string filePath)
 {
     //--Variables to store:
-    int rows = 0, cols = 0; //-- Matrix dimensions
+    int rows = 0, cols = 0;	   //-- Matrix dimensions
     const int BUFFER_SIZE = 32;    //-- Characters to store in number
 
-    char ch;		    //-- Current character read
+    char ch;			    //-- Current character read
     char number[BUFFER_SIZE];	    //-- Number stored as characters
 
-    std::vector<double> data; //-- Vector containing data
+    std::vector<double> data;	    //-- Vector containing data
 
 
     //-- Open the file
@@ -116,9 +116,15 @@ Matrix* NNFileInput::loadMatrix(const std::string filePath)
 		 }
 	}
 
-	//-- New line detection
+	//-- New line detection / number of columns
 	if (ch == '\n' && !inputFile.eof())
+	{
+	    //-- For first row
+	    if ( rows == 0)
+		cols = data.size(); //-- Obtain the number of columns
+
 	    rows++;
+	}
     }
 
     //-- Close the file:

@@ -34,7 +34,8 @@ int main()
 
     nn.refresh();
 
-    std::cout << nn.getOutput();
+    std::cout << "System output for input file: " << std::endl
+	      << nn.getOutput() << std::endl;
 
-
+    return 0;
 }
