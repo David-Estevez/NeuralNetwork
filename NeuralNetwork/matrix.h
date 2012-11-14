@@ -1,7 +1,7 @@
-//-- Matrix.h
-//------------------------------------------
-//-- Adds simple support for matrices
-//------------------------------------------
+/*! \file myheader.h
+ *  \brief Matrix basic support.
+ *
+ */
 
 #ifndef MATRIX_H
 #define MATRIX_H
@@ -9,6 +9,11 @@
 #include <vector>
 #include <iostream>
 
+/*! \class Matrix
+ *  \brief Bidimensional matrix of doubles.
+ *
+ * It has functions for single place, row and column modification and return.
+ */
 class Matrix
 {
 
@@ -59,8 +64,11 @@ public:
     {
 	int i = 0;
 	while ( i < rows*cols )
+	{
 	    if ( *(matrix+i) != *(otherMat.matrix+i))
 		return false;
+	    i++;
+	}
 	return true;
     }
 
