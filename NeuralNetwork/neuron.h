@@ -4,13 +4,8 @@
 //-- General libraries:
 #include <vector>
 #include <math.h>
-#include <iostream> //-- Error messages
+#include <iostream> //-- For error messages
 
-//-- Random numbers:
-#include <cstdlib>
-#include <time.h>
-
-static const int RAND_WEIGHT_LIMIT = 10;
 
 //-- Class definition:
 
@@ -48,9 +43,7 @@ private:
     double axon;			//-- An axon is the part that sends the output in a real neuron
     std::vector<Dendrite> dendrite;	//-- A dendrite is an input from other neurons to one neuron
 
-
     double activation( double n);	//-- Calculates the activation function of the neuron
-    double randomWeight (double limit);	//-- Returns a random value to be assigned as a weight
 };
 
 struct Dendrite
@@ -63,7 +56,7 @@ struct Dendrite
 class BiasUnit : public Neuron {
     public:
 	BiasUnit() {}
-	virtual double getOutput() { return 1.0; }
+    virtual double getOutput() { return 1.0; }
 
 };
 

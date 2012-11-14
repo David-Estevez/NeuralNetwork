@@ -8,20 +8,7 @@ void Neuron::setOutput(double value)
 }
 //-------------------------------------------------------
 
-Neuron::Neuron()
-{
-    /*** NOT NEEDED ANYMORE ***
-    //-- Prepare random numbers:
-    //------------------------------------------------------------
-    //-- Declare variable to hold seconds on clock.
-    time_t seconds;
-
-    //-- Get value from system clock and place in seconds variable.
-    time(&seconds);
-
-    //--Convert seconds to a unsigned integer.
-    srand((unsigned int) seconds); */
-}
+Neuron::Neuron() { }
 
 //-- Return current activation value:
 double Neuron::getOutput()  {	return axon; }
@@ -36,10 +23,7 @@ void Neuron::refresh()
     //-- Sum up the activation of all the connected neurons times
     //-- their correspondent weight:
     for (int i = 0; i < (int) dendrite.size(); i++)
-    {
-	/*Debug*/
-	std::cout << sum << "+=" << *(this->dendrite.at(i).weight)  << "*" <<dendrite.at(i).connection->getOutput() << std::endl;
-	sum += *(this->dendrite.at(i).weight) * dendrite.at(i).connection->getOutput();}
+        sum += *(this->dendrite.at(i).weight) * dendrite.at(i).connection->getOutput();
 
     //-- The value of the output is given by the activation function
     axon = activation(sum);
@@ -143,11 +127,3 @@ double Neuron::activation(double n)
     return 1/(1+exp(-n));
 }
 
-
-double Neuron::randomWeight(double limit)
-{
-    //-- This function generates a random value for a weight
-    //-- taking n as a limit bound.
-
-    return 2*limit*((rand()/(float)RAND_MAX)-0.5);
-}

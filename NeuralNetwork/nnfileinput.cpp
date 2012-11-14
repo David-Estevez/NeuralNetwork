@@ -64,6 +64,9 @@ Matrix* NNFileInput::loadMatrix(const std::string filePath)
 	//-- Check if it is a number:
 	if (ch == '-')
 	{
+        //-- Read next character:
+        inputFile.get(ch);
+
 	    //-- For Negative numbers:
 	    if ( ch >= '0' && ch <= '9' )
 	    {
