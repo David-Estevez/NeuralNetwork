@@ -35,6 +35,8 @@ public:
     std::vector<double *> getCol(const int col) const;
     std::vector<double> getColValues(const int col) const;
 
+    std::vector<double> unroll();
+
     //-- Input functions
     void set(const int row,const int col,const double value);
 

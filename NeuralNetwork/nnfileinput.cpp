@@ -16,7 +16,7 @@ void NNFileInput::loadInput()
     input = loadMatrix( inputFile ) ;
 
     //-- Extract the vector from input and pass it to the NeuralNetwork:
-    nn->setInput( input->getColValues(0) );
+    nn->setInput( input->unroll() );
 
 }
 

@@ -138,7 +138,7 @@ std::vector<double *> Matrix::getCol(const int col) const
     return aux;
 }
 
-    std::vector<double> Matrix::getColValues(const int col) const
+std::vector<double> Matrix::getColValues(const int col) const
 {
     //-- Create auxiliar vector
     std::vector<double> aux;
@@ -153,6 +153,17 @@ std::vector<double *> Matrix::getCol(const int col) const
 	std::cerr << "Error [Matrix]: specified column does not exist." << std::endl;
 
     return aux;
+}
+
+std::vector<double> Matrix::unroll()
+{
+    //-- Create a vector
+    std::vector<double> unrolledVector;
+
+    for (int i = 0; i < rows * cols; i++)
+        unrolledVector.push_back( *(matrix+i) );
+
+    return unrolledVector;
 }
 
 void Matrix::setRow(const std::vector<double> row, const int index)
