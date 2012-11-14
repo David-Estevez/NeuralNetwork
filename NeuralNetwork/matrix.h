@@ -53,7 +53,15 @@ public:
     Matrix& operator -= (Matrix& );
     Matrix& operator *= (Matrix& );
 
-    Matrix& operator == (Matrix& );
+    bool operator == (Matrix& otherMat)
+    {
+	int i = 0;
+	while ( i < rows*cols )
+	    if ( *(matrix+i) != *(otherMat.matrix+i))
+		return false;
+	return true;
+    }
+
     Matrix& operator != (Matrix& );
 
     void operator = (const Matrix&);

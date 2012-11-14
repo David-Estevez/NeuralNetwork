@@ -40,7 +40,7 @@ Matrix::Matrix(const std::vector<double> dataVector, const int rows, const int c
 
     //-- Copy elements:
     for (int i = 0; i < (int) dataVector.size(); i++)
-	*matrix = dataVector.at(i);
+	*(matrix+i) = dataVector.at(i);
 }
 
 Matrix::~Matrix()

@@ -35,6 +35,7 @@ private:
     std::vector<std::string> trainingSetFile;
 
     //-- Load a matrix from a file:
+public:
     Matrix* loadMatrix( const std::string filePath);
     void loadVector( const std::string filePath, std::vector<double>& vector);
 

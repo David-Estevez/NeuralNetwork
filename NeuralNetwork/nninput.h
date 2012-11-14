@@ -15,6 +15,11 @@ std::vector<double> x, y;
 
 class NNInput: public NeuralNetworkIO
 {
+public:
+    Matrix& getWeights(int n){
+	return *weights.at(n);
+    }
+
 protected:
     NNInput() {}
     NNInput(NeuralNetwork& nn): NeuralNetworkIO(nn) {}

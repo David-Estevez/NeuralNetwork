@@ -10,7 +10,7 @@ void Neuron::setOutput(double value)
 
 Neuron::Neuron()
 {
-    /*** NOT NEEDED ANYmORE ***
+    /*** NOT NEEDED ANYMORE ***
     //-- Prepare random numbers:
     //------------------------------------------------------------
     //-- Declare variable to hold seconds on clock.
@@ -36,7 +36,10 @@ void Neuron::refresh()
     //-- Sum up the activation of all the connected neurons times
     //-- their correspondent weight:
     for (int i = 0; i < (int) dendrite.size(); i++)
-	sum += *(this->dendrite.at(i).weight) * dendrite.at(i).connection->getOutput();
+    {
+	/*Debug*/
+	std::cout << sum << "+=" << *(this->dendrite.at(i).weight)  << "*" <<dendrite.at(i).connection->getOutput() << std::endl;
+	sum += *(this->dendrite.at(i).weight) * dendrite.at(i).connection->getOutput();}
 
     //-- The value of the output is given by the activation function
     axon = activation(sum);

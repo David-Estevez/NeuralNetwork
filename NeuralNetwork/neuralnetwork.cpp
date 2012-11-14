@@ -143,7 +143,10 @@ void NeuralNetwork::refresh()
 
     //-- Refresh hidden layers
     for (int i = 0; i < (int) hiddenLayer.size() ; i++)
+    {
 	hiddenLayer.at(i).refresh();
+	std::cout << hiddenLayer.at(i).getOutput() << std::endl;
+    }
 
     //-- Refresh output layer
     outputLayer->refresh();
