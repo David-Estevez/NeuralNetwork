@@ -135,9 +135,35 @@ public:
 
     //-- Input functions
     //----------------------------------------------------------------------------------------
-    void set(const int row,const int col,const double value);
 
+    /**!
+      * \brief Set manually one value of the matrix.
+      *
+      * \param row Row selector.
+      * \param col Column selector.
+      * \param value Value to store.
+      */
+    void set(const int row, const int col, const double value);
+
+
+    /**!
+      * \brief Change all the values of a row with the values of a vector.
+      *
+      * \warning Dimensions must be compatible.
+      *
+      * \param row Values for the new row.
+      * \param index Index of the row to change values.
+      */
     void setRow(const std::vector<double> row, const int index);
+
+    /**!
+      * \brief Change all the values of a column with the values of a vector.
+      *
+      * \warning Dimensions must be compatible.
+      *
+      * \param col Values for the new column.
+      * \param index Index of the column to change values.
+      */
     void setCol(const std::vector<double> col, const int index);
 
 
@@ -165,22 +191,63 @@ public:
      */
     bool operator == (Matrix& otherMat);
 
-    bool operator != (Matrix& );
+    /*!
+     * \brief Checks if two matrices are different, element-wise.
+     *
+     *	Two matrices are different if any of their corresponing elements are different.
+     *
+     * \param otherMat Matrix we are comparing with this matrix.
+     * \return True if both are different, false otherwise.
+     *
+     */
+    bool operator != (Matrix& otherMat);
 
-    void operator = (const Matrix&);
+    /*!
+     * \brief Asign to this matrix the value of other matrix.
+     *
+     * \param otherMatrix Matrix from which values are assigned to this matrix.
+     */
+    void operator = (const Matrix& otherMatrix);
+
 
     Matrix& transpose();
 
+    /*!
+     * \brief Shows a matrix in an output stream.
+     *
+     * \param out Output stream to which we are passing the data that we want to
+     * represent.
+     * \param matrix Matrix which contains the data passed to the output stream.
+     */
     friend std::ostream& operator << ( std::ostream& out, Matrix& matrix);
 
 private:
+    /*! \var int cols
+     * \brief Stores the number of columns in matrix
+     */
+
+    /*! \var int rows
+      * \brief Stores the number of rows in matrix
+      */
+
     int cols, rows;
 
+    /*! \var double *matrix
+     *	\brief points to an array of doubles storing the values of the matrix elements.
+     */
     double *matrix;
 
+    /*! \brief Default constructor
+     */
     Matrix();
 };
 
-std::ostream& operator << (std::ostream&, std::vector<double>);
+/*!
+ * \brief Shows a vector in an output stream.
+ *
+ * \param out Output stream to which we are passing the data we want to represent.
+ * \param data Vector containing the data passed to the output stream.
+ */
+std::ostream& operator << (std::ostream& out, std::vector<double> data);
 
 #endif // MATRIX_H
