@@ -1,14 +1,12 @@
 #include "neuron.h"
 
 
-//--------------------------------------------------------
+Neuron::Neuron() { }
+
 void Neuron::setOutput(double value)
 {
     this->axon = value;
 }
-//-------------------------------------------------------
-
-Neuron::Neuron() { }
 
 //-- Return current activation value:
 double Neuron::getOutput()  {	return axon; }

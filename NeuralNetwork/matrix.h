@@ -91,7 +91,7 @@ public:
      */
     double get(const int row,const int col) const;
 
-    /*!
+     /*!
       * \brief Returns a vector of pointers to each element of a row of the matrix.
       *
       * \param row Row selection.
@@ -99,7 +99,7 @@ public:
       */
     std::vector<double *> getRow(const int row) const;
 
-    /*!
+     /*!
       * \brief Returns the values from a row of the matrix.
       *
       * \param row Row selection.
@@ -107,7 +107,7 @@ public:
       */
     std::vector<double> getRowValues(const int row) const;
 
-    /*!
+     /*!
       * \brief Returns a vector of pointers to each element of a column of the matrix.
       *
       * \param col Column selection.
@@ -115,7 +115,7 @@ public:
       */
     std::vector<double *> getCol(const int col) const;
 
-    /*!
+     /*!
       * \brief Returns the values from a column of the matrix.
       *
       * \param col Column selection.
@@ -123,7 +123,7 @@ public:
       */
     std::vector<double> getColValues(const int col) const;
 
-    /*!
+     /*!
       * \brief Returns a one-dimensional vector containing all the values from the matrix.
       *
       * Concatenates columns one after the other to form a one-dimensional vector.
@@ -136,7 +136,7 @@ public:
     //-- Input functions
     //----------------------------------------------------------------------------------------
 
-    /**!
+     /*!
       * \brief Set manually one value of the matrix.
       *
       * \param row Row selector.
@@ -146,7 +146,7 @@ public:
     void set(const int row, const int col, const double value);
 
 
-    /**!
+     /*!
       * \brief Change all the values of a row with the values of a vector.
       *
       * \warning Dimensions must be compatible.
@@ -156,7 +156,7 @@ public:
       */
     void setRow(const std::vector<double> row, const int index);
 
-    /**!
+     /*!
       * \brief Change all the values of a column with the values of a vector.
       *
       * \warning Dimensions must be compatible.
