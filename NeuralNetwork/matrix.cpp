@@ -191,7 +191,7 @@ void Matrix::setCol(const std::vector<double> col, const int index)
 }
 
 
-bool operator == (Matrix& otherMat)
+bool Matrix::operator == (Matrix& otherMat)
 {
     //-- Element-wise comparison:
     int i = 0;
@@ -205,10 +205,10 @@ bool operator == (Matrix& otherMat)
 }
 
 
-bool operator != (Matrix& otherMat)
+bool Matrix::operator != (Matrix& otherMat)
 {
     //-- If it is not equal, then it is different
-    return !(this == otherMat);
+    return !(*this == otherMat);
 }
 
 

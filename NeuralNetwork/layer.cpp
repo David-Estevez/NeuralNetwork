@@ -84,9 +84,15 @@ void Layer::refresh()
 }
 
 
-std::vector<double> Layer::getOutput()	{   return output; }
+std::vector<double> Layer::getOutput()
+{
+    return output;
+}
 
-int Layer::getN()   {	return n;}
+int Layer::getN()
+{
+    return n;
+}
 
 
 Matrix Layer::getWeights()
@@ -125,9 +131,8 @@ void Layer::connectLayer(Layer* prevLayer)
     //-- Bias unit cannot be connected to previous layer
 
     for(int i = 1; i < this->n; i++)
-	for(int j = 0; j < prevLayer->getN(); j++) {
+	for(int j = 0; j < prevLayer->getN(); j++)
 	    this->neurons.at(i) << prevLayer->neurons.at(j);
-}
 }
 
 void Layer::operator << (Layer& prevLayer)

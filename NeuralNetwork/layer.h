@@ -1,3 +1,13 @@
+/*! \file layer.h
+ *  \brief Defines layers of the neural network, composed by several neurons, and their interactions.
+ *
+ *
+ *
+ * \author David Estévez Fernández ( http://github.com/David-Estevez )
+ * \date Nov 17th, 2012
+ *
+ */
+
 #ifndef LAYER_H
 #define LAYER_H
 
@@ -7,40 +17,146 @@
 #include "neuron.h"
 #include "matrix.h"
 
+
+
+/*!
+ * \class Layer
+ * \brief Group of neurons sharing the same level.
+ *
+ */
 class Layer
 {
 public:
-    //-- Constructor
+    //-- Constructors
+    //---------------------------------------------------------------------------
+    /*!
+     * \brief Creates a Layer composed by n neurons plus a bias unit (n+1 neurons)
+     *
+     * \param n Number of neurons in this Layer (Excluding bias unit).
+     */
     Layer(int n);
 
-    /*-- Adding neurons (future expansion?)
-    void addNeuron( Neuron& neuron);
-    void operator << (Neuron& neuron);
-    --*/
 
     //-- Input functions:
-    void setOutput( std::vector<double> output); //-- Just for debugging
-    void setWeights( Matrix * theta);		 //-- Changes the weights of all neurons by the ones stored in theta
-						 //-- Note: each neuron's vector is stored in a row of the matrix
-    //-- Output functions:
-    void refresh();				 //-- Recalculates the output vector
-    std::vector<double> getOutput();		 //-- Returns a the output vector
-    int getN();					 //-- Returns the number of neurons in this layer
-    Matrix getWeights();			 //-- Returns the weights of all neurons in the layer
+    //---------------------------------------------------------------------------
 
-    //-- Connect with previous layer
-    void connectLayer(Layer& );    //-- Connects this layer's neurons to the neurons of the previous layer
-    void operator << (Layer& );    //-- Same as connectLayer(), but nicer
-    void connectLayer(Layer* );    //-- Connects this layer's neurons to the neurons of the previous layer
-    void operator << (Layer* );    //-- Same as connectLayer(), but nicer
+    /*!
+     * \brief Sets the output vector of the layer.
+     *
+     * This is used in the input layer, to place the input of the network in a
+     * Layer.
+     *
+     * \param output Vector to set as output of this Layer.
+     *
+     */
+    void setOutput( std::vector<double> output);
+
+    /*!
+     * \brief Sets the weights of all neurons in the layer to be the ones stored
+     * in Matrix theta.
+     *
+     * \note Each neuron's vector is stored in a row of the matrix. The bias unit
+     * does not have any weights, as no previous neuron connects with it.
+     *
+     * \param theta Pointer to a Matrix storing the weights of the Layer.
+     */
+    void setWeights( Matrix * theta);
+
+
+
+    //-- Output functions:
+    //-----------------------------------------------------------------------------
+
+    /*!
+     * \brief Recalulates the output vector.
+     *
+     * Refreshes each one of the neurons in the layer, except the bias unit.
+     */
+    void refresh();
+
+    /*!
+     * \brief Returns the output vector for this layer.
+     *
+     * As calculations within the network are carried out by neurons and not by
+     * layers, this function as only debug purposes.
+     *
+     * \return Vector containing the output of the Layer.
+     */
+    std::vector<double> getOutput();
+
+    /*!
+     * \brief Return the number of neurons in this Layer (including bias unit).
+     *
+     * \return Number of neurons in this Layer (including bias unit).
+     */
+    int getN();
+
+    /*!
+     * \brief Returns the weights of all neurons in the layer.
+     *
+     * Returns a matrix containing the weights of all connections of all neurons
+     * in the layer. Each row corresponds to the weights of a single neuron.
+     * Bias unit has no connections, so it has no weights.
+     *
+     * \todo I think this should return a pointer to the matrix of weights.
+     *
+     * \return Matrix containing weights of all neurons in layer.
+     */
+    Matrix getWeights();
+
+    //-- Connecting layers:
+    //-----------------------------------------------------------------------------
+    /*!
+     * \brief Connect this layer's neurons to the neurons of the previous layer.
+     *
+     * \param prevLayer Layer to which this Layer will be connected.
+     */
+    void connectLayer(Layer& prevLayer);
+
+    /*!
+     * \brief Connect this layer's neurons to the neurons of the previous layer.
+     *
+     * \param prevLayer Layer to which this Layer will be connected.
+     */
+    void operator << (Layer& prevLayer);
+
+    /*!
+     * \brief Connect this layer's neurons to the neurons of the previous layer.
+     *
+     * \param prevLayer Pointer to Layer to which this Layer will be connected.
+     */
+    void connectLayer(Layer* prevLayer);
+
+    /*!
+     * \brief Connect this layer's neurons to the neurons of the previous layer.
+     *
+     * \param prevLayer Pointer to Layer to which this Layer will be connected.
+     */
+    void operator << (Layer* prevLAyer);
+
 
 private:
-    //-- Atributes
-    std::vector<Neuron> neurons;    //-- Stores the neurons in this layer
-    std::vector<double> output;	    //-- Activation vector of the layer
-    int n;			    //-- Number of neurons in this layer
+    /*!
+     * \var std::vector<Neuron> neurons
+     * \brief Stores the neurons in this Layer
+     */
+    std::vector<Neuron> neurons;
 
-    //-- Default constructor is private, to hide it:
+    /*!
+     * \var std::vector<double> output
+     * \brief Stores output vector of the Layer.
+     */
+    std::vector<double> output;
+
+    /*!
+     * \var int n
+     * \brief Number of neurons in this Layer (including bias unit).
+     */
+    int n;
+
+    /*!
+     * \brief Default constructor
+     */
     Layer();
 };
 
