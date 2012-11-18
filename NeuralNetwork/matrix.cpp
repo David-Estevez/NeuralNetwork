@@ -31,21 +31,32 @@ Matrix::Matrix(const Matrix& otherMatrix)
 
 Matrix::Matrix(const std::vector<double> dataVector, const int rows, const int cols)
 {
-    //--Store dimensions:
-    this->rows = rows;
-    this->cols = cols;
+    //-- Check dimensions of vector and new matrix to be consistent:
+    if ( dataVector.size() == rows*cols)
+    {
+	//--Store dimensions:
+	this->rows = rows;
+	this->cols = cols;
 
-    //-- Create storage for matrix
-    this->matrix = new double[ dataVector.size()];
+	//-- Create storage for matrix
+	this->matrix = new double[ dataVector.size()];
 
-    //-- Copy elements:
-    for (int i = 0; i < (int) dataVector.size(); i++)
-	*(matrix+i) = dataVector.at(i);
+	//-- Copy elements:
+	for (int i = 0; i < (int) dataVector.size(); i++)
+	    *(matrix+i) = dataVector.at(i);
+    }
+    else
+    {
+	//-- Display error message:
+	std::cerr << "[Matrix] Error: vector dimensions not consistent with matrix dimensions." << std::endl;
+    }
 }
 
 Matrix::~Matrix()
 {
-    delete [] matrix;
+    //-- Deallocate memory if allocated:
+    if (matrix != 0)
+	delete [] matrix;
 }
 
 
