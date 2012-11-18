@@ -1,8 +1,8 @@
 /*! \file nninput.h
  *  \brief NeuralNetwork input interface.
  *
- * Generic input interface of a neural network to communicate
- * and exchange data with the outside (STD input, input files, etc).
+ * Generic input interface of a NeuralNetwork to communicate
+ * and get data from the outside (STD input, input files, etc).
  *
  * \author David Estévez Fernández ( http://github.com/David-Estevez )
  * \date Nov 17th, 2012
@@ -25,10 +25,10 @@ std::vector<double> x, y;
 };
 
 /*! \class NNInput
- *  \brief  Generic input interface of a neural network to communicate
+ *  \brief  Generic input interface of a NeuralNetwork to communicate
  * and exchange data with the outside (STD input, input files, etc).
  *
- * All classes that implement an input interface with the neural network
+ * All classes that implement an input interface with the NeuralNetwork
  * should inherit from this one.
  *
  */
