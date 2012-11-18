@@ -2,6 +2,7 @@
 #include "layer.h"
 #include "neuralnetwork.h"
 #include "nnfileinput.h"
+#include "nnstdoutput.h"
 
 #include "matrix.h"
 
@@ -34,8 +35,9 @@ int main( int argc, char *argv[])
 
     nn.refresh();
 
-    std::cout << "System output for input file:" << std::endl
-	      << nn.getOutput() << std::endl;
+    NNStdOutput outputMod( nn );
+
+    outputMod.outputOutput();
 
     }
     else

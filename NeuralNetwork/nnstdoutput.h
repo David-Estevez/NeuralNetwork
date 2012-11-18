@@ -12,6 +12,7 @@
 #define NNSTDOUTPUT_H
 
 #include <iostream>
+#include <iomanip>
 #include <vector>
 
 #include "nnoutput.h"
