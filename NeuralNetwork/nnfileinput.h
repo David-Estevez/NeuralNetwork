@@ -1,5 +1,5 @@
 /*! \file nninput.h
- *  \brief File support for data input NeuralNetwork.
+ *  \brief File support for  NeuralNetwork data input.
  *
  * Loads the data for the input, weights and training examples from
  * different files.

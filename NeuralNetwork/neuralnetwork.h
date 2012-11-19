@@ -127,6 +127,16 @@ public:
      */
     void refresh();
 
+    /*!
+     * \brief Return number of layers.
+     *
+     * \return Number of layers, l.
+     */
+    int getL()
+    {
+	return l;
+    }
+
 private:
     /*! \var std::vector<double> output
      * \brief Vector containing the output data.

@@ -3,6 +3,7 @@
 #include "neuralnetwork.h"
 #include "nnfileinput.h"
 #include "nnstdoutput.h"
+#include "nnfileoutput.h"
 
 #include "matrix.h"
 
@@ -17,6 +18,7 @@ int main( int argc, char *argv[])
     //-- Debuggin' main routine::
     //--------------------------------------------------
 
+    //-- Create network:
     std::vector<int> sizeofnetwork;
     sizeofnetwork.push_back(400);
     sizeofnetwork.push_back(25);
@@ -24,24 +26,33 @@ int main( int argc, char *argv[])
 
     NeuralNetwork nn( sizeofnetwork);
 
+    //-- Create input module
     NNFileInput inputMod( nn );
     inputMod.addWeightsFile( "../Sample data/Theta1.txt");
     inputMod.addWeightsFile( "../Sample data/Theta2.txt");
 
     inputMod.setInputFile( argv[1] );
 
+    //-- Load data
     inputMod.loadInput();
     inputMod.loadWeights();
 
     nn.refresh();
 
+    //-- Create std output module:
     NNStdOutput outputMod( nn );
-
 
     outputMod.outputInput();
     outputMod.outputGuess();
-    //outputMod.outputWeights();
 
+    NNFileOutput outputMod2( nn);
+    outputMod2.setWeightsFile( "../Test/myFile.txt");
+    outputMod2.setInputFile( "../Test/myInput.txt");
+    outputMod2.setGuessFile( "../Test/guess.txt");
+
+    outputMod2.outputWeights();
+    outputMod2.outputInput();
+    outputMod2.outputGuess();
 
     }
     else
