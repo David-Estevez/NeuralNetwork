@@ -60,7 +60,17 @@ protected:
      * output this value somehow (STD output, file, etc).
      *
      */
-    virtual void outputOutput() = 0;
+    virtual void outputGuess() = 0;
+
+
+    /*!
+     * \brief Takes input vector data from the NeuralNetwork and sends it to some
+     * output.
+     *
+     * This function should load the input vector from the NeuralNetwork, and
+     * output this value somehow (STD output, file, etc).
+     */
+    virtual void outputInput() = 0;
 };
 
 #endif // NNOUTPUT_H

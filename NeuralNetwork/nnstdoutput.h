@@ -58,7 +58,13 @@ public:
      * the std output.
      *
      */
-    virtual void outputOutput();
+    virtual void outputGuess();
+
+    /*!
+     * \brief Takes input vector data from the NeuralNetwork and displays it on
+     * the std output.
+     */
+    virtual void outputInput();
 };
 
 #endif // NNSTDOUTPUT_H

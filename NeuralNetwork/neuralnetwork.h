@@ -115,6 +115,12 @@ public:
      */
     std::vector<Matrix> getWeights();
 
+    /*! \brief Returns the input of the network.
+     *
+     * \return Current input vector of the network.
+     */
+    std::vector<double> getInput();
+
     /*!
      * \brief Updates the output of the network.
      *

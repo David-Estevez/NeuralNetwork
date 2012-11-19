@@ -237,10 +237,9 @@ std::ostream& operator << ( std::ostream& out, Matrix& matrix)
 {
     for (int i = 0; i < matrix.rows ; i++)
     {
-	out << "| ";
 	for (int j = 0; j < matrix.cols; j++)
     	    out << matrix.get(i,j) << " ";
-	out << "|" << std::endl;
+	out << std::endl;
     }
 
     return out;

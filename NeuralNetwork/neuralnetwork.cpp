@@ -141,7 +141,10 @@ std::vector<Matrix> NeuralNetwork::getWeights()
     return theta;
 }
 
-
+std::vector<double> NeuralNetwork::getInput()
+{
+    return inputLayer->getOutput();
+}
 
 //-- Other functions
 

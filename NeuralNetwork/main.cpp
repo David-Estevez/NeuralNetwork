@@ -37,12 +37,16 @@ int main( int argc, char *argv[])
 
     NNStdOutput outputMod( nn );
 
-    outputMod.outputOutput();
+
+    outputMod.outputInput();
+    outputMod.outputGuess();
+    //outputMod.outputWeights();
+
 
     }
     else
     {
-	std::cout << "Error: incorrect number of parameters" << std::cout;
+	std::cout << "Error: incorrect number of parameters" << std::endl;
     }
     return 0;
 }
