@@ -92,8 +92,6 @@ public:
      *
      * \param filePath String containing the path to the file.
      *
-     * \todo Add support for input as a row vector, column vector o matrix to be
-     * rolled to a vector.
      */
     void setInputFile( const std::string filePath);
 

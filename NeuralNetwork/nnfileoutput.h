@@ -129,7 +129,6 @@ private:
 
     /*! \var std::string inputFile
      * \brief String containing the path to the input file.
-     * \todo this
      */
     std::string inputFile;
 

@@ -44,6 +44,7 @@ NeuralNetwork::NeuralNetwork( std::vector<int> neuronsInLayer)
 
 	//-- Set number of layers
 	this->l = (int) neuronsInLayer.size();
+
     }
 }
 
@@ -116,6 +117,9 @@ void NeuralNetwork::setWeights(std::vector<Matrix *> theta)
 	}
 
 	outputLayer->setWeights( theta.back());
+
+	//-- Save memory direction of matrices
+	weights = theta;
     }
 }
 
@@ -129,22 +133,12 @@ std::vector<double> NeuralNetwork::getOutput()
 }
 
 
-std::vector<Matrix> NeuralNetwork::getWeights()
+std::vector<Matrix *> NeuralNetwork::getWeights()
 {
-    //-- Create the vector to store the matrices:
-    std::vector<Matrix> theta;
-
     //-- Note: input layer does not have a weight matrix assigned, as there is no previous layer.
     //-- Note: in matrices, weights of each neurons are stored in rows.
 
-    //-- Store the hidden layers weight matrices
-    for (int i = 0; i < (int) hiddenLayer.size(); i++)
-	theta.push_back( hiddenLayer.at(i).getWeights() );
-
-    //-- Store the output layer weight matrix
-    theta.push_back( outputLayer->getWeights() );
-
-    return theta;
+    return weights;
 }
 
 std::vector<double> NeuralNetwork::getInput()

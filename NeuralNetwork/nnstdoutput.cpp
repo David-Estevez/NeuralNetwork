@@ -11,7 +11,7 @@ void NNStdOutput::outputWeights()
     for (int i = 0; i < (int) nn->getWeights().size(); i++)
     {
 	std::cout << "Weight matrix for layer " << i+1 << ":" << std::endl;
-	std::cout << nn->getWeights().at(i) << std::endl;
+	std::cout << *nn->getWeights().at(i) << std::endl;
     }
 }
 
