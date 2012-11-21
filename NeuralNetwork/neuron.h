@@ -194,19 +194,4 @@ struct Dendrite
     double* weight;
 };
 
-/*!
- * \class BiasUnit
- * \brief Neuron whose output is always 1.
- *
- * \warning This new class is a temporal solution and therefore it will be soon erased.
- * \todo Change the implementation of layer to use usual neurons instead of this class.
- */
-class BiasUnit : public Neuron {
-    public:
-	BiasUnit() {}
-    virtual double getOutput() { return 1.0; }
-
-};
-
-
 #endif // NEURON_H

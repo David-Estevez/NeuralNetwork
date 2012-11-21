@@ -11,7 +11,8 @@ Layer::Layer(int n)
 	this->n = n + 1; //-- Bias unit taken into account
 
 	//-- Adding bias unit:
-	BiasUnit biasUnit;
+	Neuron biasUnit;
+	biasUnit.setOutput( 1.0 ); //-- Bias unit always outputs '1'
 	this->neurons.push_back( biasUnit );
 
 	//-- Create the neurons:
