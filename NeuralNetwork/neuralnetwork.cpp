@@ -67,6 +67,9 @@ void NeuralNetwork::setInput(std::vector<double> input)
     {
 	//-- Set output to be the input vector:
 	inputLayer->setOutput( input );
+
+	//-- Update network guess
+	refresh();
     }
     else
     {
@@ -88,6 +91,9 @@ void NeuralNetwork::setInput(double *input, int size)
 	    aux.push_back( *(input + i) );
 
 	setInput(aux);
+
+	//-- Update network guess
+	refresh();
     }
     else
     {

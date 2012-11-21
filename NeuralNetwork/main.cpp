@@ -34,10 +34,9 @@ int main( int argc, char *argv[])
     inputMod.setInputFile( argv[1] );
 
     //-- Load data
-    inputMod.loadInput();
     inputMod.loadWeights();
+    inputMod.loadInput();
 
-    nn.refresh();
 
     //-- Create std output module:
     NNStdOutput outputMod( nn );

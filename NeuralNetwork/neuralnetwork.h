@@ -22,8 +22,6 @@
  *
  * Several architectures of neural network can be created with this class.
  *
- * \todo Refresh network automatically when input changes (refresh does not need to
- * be explicitely called from outside).
  */
 class NeuralNetwork
 {
@@ -122,12 +120,6 @@ public:
     std::vector<double> getInput();
 
     /*!
-     * \brief Updates the output of the network.
-     *
-     */
-    void refresh();
-
-    /*!
      * \brief Return number of layers.
      *
      * \return Number of layers, l.
@@ -145,6 +137,12 @@ private:
      * the input data belongs to the category represented by each output neuron.
      */
     std::vector<double> output;
+
+    /*!
+     * \brief Updates the output of the network.
+     *
+     */
+    void refresh();
 
     //! Default constructor
     NeuralNetwork();
