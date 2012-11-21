@@ -99,8 +99,8 @@ public:
      */
     std::vector<double> getOutput();
 
-    /*! \brief Get a vector containing several matrices with the values of all weights of
-     * all neurons of the network.
+    /*! \brief Get a vector containing several the direction of the weight matrices stored in
+     * memory.
      *
      * The weights are stored in matrices, and there is a matrix for each layer that connects
      * with a previous one (i.e. the input layer has no weights associated).
@@ -111,7 +111,7 @@ public:
      *
      * \return Vector containing the weight matrices.
      */
-    std::vector<Matrix> getWeights();
+    std::vector<Matrix *> getWeights();
 
     /*! \brief Returns the input of the network.
      *
@@ -137,6 +137,11 @@ private:
      * the input data belongs to the category represented by each output neuron.
      */
     std::vector<double> output;
+
+    /*! \var std::vector<Matrix *> weights
+     * \brief Vector containing pointers to the weight matrices
+     */
+    std::vector<Matrix *> weights;
 
     /*!
      * \brief Updates the output of the network.

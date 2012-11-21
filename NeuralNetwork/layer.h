@@ -98,8 +98,6 @@ public:
      * in the layer. Each row corresponds to the weights of a single neuron.
      * Bias unit has no connections, so it has no weights.
      *
-     * \todo I think this should return a pointer to the matrix of weights.
-     *
      * \return Matrix containing weights of all neurons in layer.
      */
     Matrix getWeights();
@@ -132,7 +130,7 @@ public:
      *
      * \param prevLayer Pointer to Layer to which this Layer will be connected.
      */
-    void operator << (Layer* prevLAyer);
+    void operator << (Layer* prevLayer);
 
 
 private:
