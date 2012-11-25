@@ -16,13 +16,9 @@
 
 #include "neuralnetworkio.h"
 #include "neuralnetwork.h"
+#include "nntrainer.h"
 #include "matrix.h"
 
-//-- Temporal fix:
-struct TrainingExample
-{
-std::vector<double> x, y;
-};
 
 /*! \class NNInput
  *  \brief  Generic input interface of a NeuralNetwork to communicate
