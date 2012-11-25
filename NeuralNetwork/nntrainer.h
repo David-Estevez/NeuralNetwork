@@ -81,7 +81,7 @@ protected:
     void randomWeights();
 
 private:
-    TrainingExample* trainingSet;
+    std::vector<TrainingExample>* trainingSet;
 
     double sigmoid(double n);
     double sigmoidGradient(double n);

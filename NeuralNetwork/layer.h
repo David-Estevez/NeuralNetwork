@@ -130,7 +130,7 @@ public:
      *
      * \param prevLayer Pointer to Layer to which this Layer will be connected.
      */
-    void operator << (Layer* prevLAyer);
+    void operator << (Layer* prevLayer);
 
 
 private:
