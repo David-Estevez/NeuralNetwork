@@ -22,7 +22,89 @@ void NNFileInput::loadInput()
 
 void NNFileInput::loadTrainingExamples()
 {
-    //-- Does not do anything right now
+    //-- Check number of input files:
+    if ( trainingSetFile.size() != 2 )
+    {
+	std::cerr << "Error [NNFileInput]: number of training set files different from 2."
+		  << std::endl;
+    }
+    else
+    {
+	//-- Load both files as matrices:
+	Matrix* matrix1 = loadMatrix( trainingSetFile.at(0) );
+	Matrix* matrix2 = loadMatrix( trainingSetFile.at(1) );
+
+	//-- Get dimensions of matrices:
+	int dimx1 = matrix1->getCol(0).size();
+	int dimy1 = matrix1->getRow(0).size();
+
+	int dimx2 = matrix2->getCol(0).size();
+	int dimy2 = matrix2->getRow(0).size();
+
+	//-- Get dimensions of Neural Network:
+	int inputSize = nn->getDimensions().at(0);
+	int outputSize = nn->getDimensions().back();
+
+	//-- Find orientation of matrices and number of training examples:
+	bool inputAsRows, outputAsRows;
+	int numExamples = 0;
+
+	if ( dimx1 == inputSize || dimy1 == inputSize)
+	{
+	    if (dimx1 == inputSize)
+		inputAsRows = true;
+	    else
+		inputAsRows = false;
+	}
+	else
+	{
+	    //-- Error: nonconsistent dimensions
+	}
+
+	if (dimx2 == outputSize || dimy2 == outputSize )
+	{
+	    if (dimx2 == inputSize)
+		outputAsRows = true;
+	    else
+		outputAsRows = false;
+	}
+	else
+	{
+	    //-- Error: nonconsistent dimensions
+	}
+
+	//-- Store data:
+	for (int i = 0; i < numExamples; i++)
+	{
+	    //-- Create temporal vectors
+	    std::vector inputVector, outputVector;
+
+	    //-- Load input data into vector
+	    if (inputAsRows)
+		inputVector = matrix1->getRowValues( i );
+	    else
+		inputVector = matrix1->getColValues( i );
+
+	    //-- Load output data into vector
+	    if (outputAsRows)
+		outputVector = matrix2->getRowValues( i );
+	    else
+		outputVector = matrix2->getColValues( i );
+
+	    //-- Create a new training example:
+	    TrainingExample ts;
+	    ts.x = inputVector;
+	    ts.y = outputVector;
+
+	    //-- Append it to the training set
+	    trainingSet.push_back( ts );
+	}
+
+	//-- Deallocate memory
+	delete matrix1;
+	delete matrix2;
+
+    }
 }
 
 Matrix* NNFileInput::loadMatrix(const std::string filePath)
