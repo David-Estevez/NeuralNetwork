@@ -12,6 +12,7 @@ NeuralNetwork::NeuralNetwork( std::vector<int> neuronsInLayer)
     }
     else
     {
+
 	//-- Create first and last layers
 	this->inputLayer = new Layer( neuronsInLayer.at(0));
 	this->outputLayer = new Layer( neuronsInLayer.back() );
@@ -42,7 +43,8 @@ NeuralNetwork::NeuralNetwork( std::vector<int> neuronsInLayer)
 	for (int i = 0; i < outputLayer->getN(); i++)
 	    this->output.push_back( 0);
 
-	//-- Set number of layers
+	//-- Set network dimensions
+	this->dimensions = neuronsInLayer;
 	this->l = (int) neuronsInLayer.size();
     }
 }
@@ -141,7 +143,34 @@ std::vector<Matrix> NeuralNetwork::getWeights()
     return theta;
 }
 
+std::vector<int> NeuralNetwork::getDimensions()
+{
+    return dimensions;
+}
 
+std::vector<double> NeuralNetwork::getActivation( int n)
+{
+    //-- If index is valid
+    if ( n < (int) dimensions.size() )
+    {
+	//-- Select layer:
+	if ( n == 0)
+	    return inputLayer->getOutput();
+
+	else if ( n == (int) dimensions.size() - 1)
+	    return outputLayer->getOutput();
+
+	else
+	{
+	    hiddenLayer.at(n-1).getOutput();
+	}
+    }
+    else
+    {
+	//-- Display error message
+	std::cerr << "Error[NeuralNetwork]: layer index not valid." << std::endl;
+    }
+}
 
 //-- Other functions
 
