@@ -19,6 +19,7 @@
 #include "neuralnetwork.h"
 #include "neuralnetworkio.h"
 
+
 /*! \struct TrainingExample
  * \brief A given input for the network and the expected output for
  * that input.

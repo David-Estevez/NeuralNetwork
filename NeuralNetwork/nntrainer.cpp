@@ -1,5 +1,6 @@
 #include "nntrainer.h"
 
+
 //-- Constructors & Destructor
 //----------------------------------------------------------------
 NNTrainer::NNTrainer()
@@ -56,3 +57,4 @@ double NNTrainer::calculateRandomRange(int layer)
 	//-- Error
     }
 }
+
