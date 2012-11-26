@@ -55,6 +55,8 @@ public:
     /*!
      * \brief Loads the weights of the NeuralNetwork from a file, and sends them
      * to the network.
+     *
+     * \todo If dimensions are nonconsistent, it stills tries to load the data.
      */
     virtual void loadTrainingExamples();
 

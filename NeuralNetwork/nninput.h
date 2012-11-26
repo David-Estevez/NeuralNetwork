@@ -102,11 +102,11 @@ protected:
      */
     Matrix *input;
 
-    /*! \var std::vector<TrainingExample> trainingExample
+    /*! \var std::vector<TrainingExample> trainingSet
      * \brief Vector containing the training examples that will be passed to
      * the NeuralNetwork
      */
-    std::vector<TrainingExample> trainingExample;
+    std::vector<TrainingExample> trainingSet;
 };
 
 #endif // NNINPUT_H

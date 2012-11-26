@@ -28,14 +28,21 @@ int main( int argc, char *argv[])
 
     //-- Create input module
     NNFileInput inputMod( nn );
+
+    //-- Add file paths
     inputMod.addWeightsFile( "../Sample data/Theta1.txt");
     inputMod.addWeightsFile( "../Sample data/Theta2.txt");
 
     inputMod.setInputFile( argv[1] );
 
+    inputMod.addTrainingSetFile( "../Sample data/examples_input.txt");
+    inputMod.addTrainingSetFile( "../Sample data/examples_output_2.txt");
+
     //-- Load data
     inputMod.loadWeights();
     inputMod.loadInput();
+    inputMod.loadTrainingExamples();
+
 
 
     //-- Create std output module:
