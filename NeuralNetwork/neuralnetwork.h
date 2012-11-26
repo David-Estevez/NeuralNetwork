@@ -5,7 +5,7 @@
  * and classify data.
  *
  * \author David Estévez Fernández ( http://github.com/David-Estevez )
- * \date Nov 17th, 2012
+ * \date Nov 25th, 2012
  *
  */
 #ifndef NEURALNETWORK_H
@@ -115,11 +115,25 @@ public:
      */
     std::vector<Matrix> getWeights();
 
+
     /*! \brief Returns the input of the network.
      *
      * \return Current input vector of the network.
      */
     std::vector<double> getInput();
+
+    /*! \brief Returns a vector containing the network dimensions.
+     *
+     * \return Vector containing the network dimensions.
+     */
+    std::vector<int> getDimensions();
+
+    /*! \brief Returns the activation vector of layer n.
+     *
+     * \return Activation vector of layer n.
+     */
+    std::vector<double> getActivation( int n);
+
 
     /*!
      * \brief Updates the output of the network.
@@ -172,6 +186,10 @@ private:
      */
     int l;
 
+    /*! \var std::vector<int> dimensions
+     * \brief Vector containing the dimensions of the NeuralNetwork
+     */
+    std::vector<int> dimensions;
 };
 
 #endif // NEURALNETWORK_H

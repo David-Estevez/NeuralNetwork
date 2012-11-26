@@ -33,9 +33,13 @@ int main( int argc, char *argv[])
 
     inputMod.setInputFile( argv[1] );
 
+    inputMod.addTrainingSetFile( "../Sample data/examples_input.txt");
+    inputMod.addTrainingSetFile( "../Sample data/examples_output_2.txt");
+
     //-- Load data
     inputMod.loadInput();
     inputMod.loadWeights();
+    inputMod.loadTrainingExamples();
 
     nn.refresh();
 
@@ -53,6 +57,9 @@ int main( int argc, char *argv[])
     outputMod2.outputWeights();
     outputMod2.outputInput();
     outputMod2.outputGuess();
+
+    for( int i = 0; i < 5000; i+=500)
+std::cout << inputMod.trainingSet.at(i).y << std::endl;
 
     }
     else

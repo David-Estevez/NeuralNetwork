@@ -35,17 +35,16 @@ void NNFileInput::loadTrainingExamples()
 	Matrix* matrix2 = loadMatrix( trainingSetFile.at(1) );
 
 	//-- Get dimensions of matrices:
-	int dimx1 = matrix1->getCol(0).size();
-	int dimy1 = matrix1->getRow(0).size();
-
-	int dimx2 = matrix2->getCol(0).size();
-	int dimy2 = matrix2->getRow(0).size();
+	int dimx1 = matrix1->getNumCols();
+	int dimy1 = matrix1->getNumRows();
+	int dimx2 = matrix2->getNumCols();
+	int dimy2 = matrix2->getNumRows();
 
 	//-- Get dimensions of Neural Network:
 	int inputSize = nn->getDimensions().at(0);
 	int outputSize = nn->getDimensions().back();
 
-	//-- Find orientation of matrices and number of training examples:
+	//-- Find orientation of matrices:
 	bool inputAsRows, outputAsRows;
 	int numExamples = 0;
 
@@ -58,26 +57,45 @@ void NNFileInput::loadTrainingExamples()
 	}
 	else
 	{
-	    //-- Error: nonconsistent dimensions
+	    std::cerr << "Error [NNFileInput]: input matrix nonconsistent with neural network input size."
+		      << std::endl;
 	}
 
 	if (dimx2 == outputSize || dimy2 == outputSize )
 	{
-	    if (dimx2 == inputSize)
+	    if (dimx2 == outputSize)
 		outputAsRows = true;
 	    else
 		outputAsRows = false;
 	}
 	else
 	{
-	    //-- Error: nonconsistent dimensions
+	    std::cerr << "Error [NNFileInput]: input matrix nonconsistent with neural network output size."
+		      << std::endl;
+	}
+
+	//-- Get number of training examples:
+	if (  ( inputAsRows &&  outputAsRows && dimy1 == dimy2 ) ||
+	      ( inputAsRows && !outputAsRows && dimy1 == dimx2 )    )
+	{
+	    numExamples = dimy1;
+	}
+	else if ( ( !inputAsRows &&  outputAsRows && dimx1 == dimy2 ) ||
+		  ( !inputAsRows && !outputAsRows && dimx1 == dimx2 ) )
+	{
+	    numExamples = dimx1;
+	}
+	else
+	{
+	    std::cerr << "Error [NNFileInput]: number of examples is not the same in both files."
+		      << std::endl;
 	}
 
 	//-- Store data:
 	for (int i = 0; i < numExamples; i++)
 	{
 	    //-- Create temporal vectors
-	    std::vector inputVector, outputVector;
+	    std::vector<double> inputVector, outputVector;
 
 	    //-- Load input data into vector
 	    if (inputAsRows)
