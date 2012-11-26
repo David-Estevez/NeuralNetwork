@@ -105,7 +105,7 @@ protected:
      * as a Matrix.
      */
     Matrix *input;
-public:
+
     /*! \var std::vector<TrainingExample> trainingSet
      * \brief Vector containing the training examples that will be passed to
      * the NeuralNetwork

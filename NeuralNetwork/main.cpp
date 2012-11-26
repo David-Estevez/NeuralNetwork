@@ -28,6 +28,8 @@ int main( int argc, char *argv[])
 
     //-- Create input module
     NNFileInput inputMod( nn );
+
+    //-- Add file paths
     inputMod.addWeightsFile( "../Sample data/Theta1.txt");
     inputMod.addWeightsFile( "../Sample data/Theta2.txt");
 
@@ -57,9 +59,6 @@ int main( int argc, char *argv[])
     outputMod2.outputWeights();
     outputMod2.outputInput();
     outputMod2.outputGuess();
-
-    for( int i = 0; i < 5000; i+=500)
-std::cout << inputMod.trainingSet.at(i).y << std::endl;
 
     }
     else
