@@ -14,6 +14,7 @@
 
 #include <vector>
 #include <iostream>
+#include <cmath>
 
 #include "neuralnetwork.h"
 #include "neuralnetworkio.h"
@@ -61,7 +62,7 @@ public:
     ~NNTrainer();
 
     //-- Interface with other modules
-    //--------------------------------------------------
+    //-------------------------------------------------------------------------
     /*!
      * \brief Obtain the training set for training the NeuralNetwork
      */
@@ -74,6 +75,8 @@ public:
     virtual void trainNetwork() = 0;
 
 protected:
+    //-- Cost and gradient calculations
+    //-------------------------------------------------------------------------
     /*!
      * \brief Returns the cost of all the examples with the current weight set.
      *
@@ -121,6 +124,8 @@ private:
     std::vector<double> weightSet;
 
 
+    //-- Internal math calculations:
+    //-----------------------------------------------------------------------------------
     /*!
      * \brief Calculates the sigmoid function of a number.
      */
@@ -134,8 +139,12 @@ private:
     /*!
      * \brief Calculates the range of the random weights taking into account the network
      * dimensions.
+     *
+     * \param layer Index of the current layer. Index starts at 0. Input layer is not a valid
+     * layer as it has no weights associated.
+     *
      */
-    double calculateRandomRange( );
+    double calculateRandomRange(int layer );
 
 };
 
