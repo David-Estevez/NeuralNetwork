@@ -19,7 +19,8 @@
 #include "neuralnetworkio.h"
 
 /*! \struct TrainingExample
- * \brief Description
+ * \brief A given input for the network and the expected output for
+ * that input.
  */
 struct TrainingExample
 {
@@ -73,19 +74,67 @@ public:
     virtual void trainNetwork() = 0;
 
 protected:
+    /*!
+     * \brief Returns the cost of all the examples with the current weight set.
+     *
+     * \return Cost of all the training examples with current weight set
+     */
     double costFunction();
 
+    /*!
+     * \brief Returns the gradient of the cost function with the current weight set.
+     *
+     * \return Gradient of cost function given the current weight set.
+     */
     std::vector<double> gradient();
-    bool checkGradient(); //-- Debugs
 
+    /*!
+     * \brief Calculates the numerical gradient to check the gradient implementation.
+     *
+     * This function is used for debugging.
+     *
+     * \warning This way of calculating the gradient is expensive computationally. It
+     * should be used only in small test networks for testing the backpropagation
+     * implementation, not for optimization of weight set.
+     */
+    bool checkGradient();
+
+    /*!
+     * \brief Generates a new random weight set for training.
+     *
+     * Generates an appropiate random weights set before training, taking into account
+     * the network dimensions.
+     */
     void randomWeights();
 
 private:
+    /*!
+     * \var std::vector<TrainingExample>* trainingSet;
+     * \brief Pointer to the training set loaded into memory.
+     */
     std::vector<TrainingExample>* trainingSet;
 
+    /*!
+     * \var std::vector<double> weightSet
+     * \brief Unrolled vector containing all the weights of the neural network.
+     */
+    std::vector<double> weightSet;
+
+
+    /*!
+     * \brief Calculates the sigmoid function of a number.
+     */
     double sigmoid(double n);
+
+    /*!
+     * \brief Calculates the derivative of the sigmoid function at point n.
+     */
     double sigmoidGradient(double n);
 
+    /*!
+     * \brief Calculates the range of the random weights taking into account the network
+     * dimensions.
+     */
     double calculateRandomRange( );
 
 };
