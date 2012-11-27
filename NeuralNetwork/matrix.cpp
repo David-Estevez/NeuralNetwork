@@ -256,3 +256,16 @@ std::ostream& operator << ( std::ostream& out, std::vector<double> data)
 
     return out;
 }
+
+std::ostream& operator << ( std::ostream& out, std::vector<int> data)
+{
+    out << "[ ";
+    for ( int i = 0; i < (int) data.size(); i++)
+    {
+	out << data.at(i) << " ";
+    }
+    out << "]";
+
+    return out;
+}
+

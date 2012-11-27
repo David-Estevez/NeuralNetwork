@@ -247,7 +247,10 @@ private:
  *
  * \param out Output stream to which we are passing the data we want to represent.
  * \param data Vector containing the data passed to the output stream.
+ *
+ * \todo Make this function to be a template.
  */
 std::ostream& operator << (std::ostream& out, std::vector<double> data);
+std::ostream& operator << (std::ostream& out, std::vector<int> data);
 
 #endif // MATRIX_H

@@ -24,7 +24,7 @@ NeuralNetwork::NeuralNetwork( std::vector<int> neuronsInLayer)
 	    this->hiddenLayer.push_back( auxLayer);
 	}
 
-	//-- Connect layers (I'm not sure that this works because of pointers)
+	//-- Connect layers
 	if (hiddenLayer.size() > 0)
 	{
 	    for (int i = 1; i < (int) hiddenLayer.size(); i++)
@@ -44,6 +44,9 @@ NeuralNetwork::NeuralNetwork( std::vector<int> neuronsInLayer)
 	    this->output.push_back( 0);
 
 	//-- Set network dimensions
+	/*
+	for (int i = 0; i < (int) neuronsInLayer.size() ; i++)
+	    this->dimensions.push_back( neuronsInLayer.at(i) + 1);*/
 	this->dimensions = neuronsInLayer;
 	this->l = (int) neuronsInLayer.size();
 

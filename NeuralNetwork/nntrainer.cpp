@@ -25,12 +25,13 @@ void NNTrainer::getTrainingExamples(std::vector<TrainingExample> &trainingSet)
  void NNTrainer::trainNetwork()
  {
      std::cout <<"Current cost: " <<  costFunction() << std::endl;
+     std::cout <<"Current cost: (with regularization)" <<  costFunction(1) << std::endl;
  }
 
 //-- Cost and gradient calculations
 //-------------------------------------------------------------------------
 
-double NNTrainer::costFunction()
+double NNTrainer::costFunction( double lambda)
 {
    double cost = 0;
    int numExamples = trainingSet->size();
@@ -47,7 +48,25 @@ double NNTrainer::costFunction()
 
    cost /= numExamples;
 
-   //-- Add regularization terms:
+   //-- Regularization
+   //------------------------------------------------------------------------
+   if (lambda != 0)
+   {
+       //-- Don't do calculations if lambda is not set
+       double regCost = 0;
+	std::cout << nn->getL() << " " << numExamples << std::endl;
+	std::cout << nn->getDimensions() << std::endl;
+       for (int i = 1; i <  nn->getL()-1; i++)			//-- Input layer has no weight matrix associated
+	   for (int j = 1; j < nn->getDimensions().at(i); j++)
+	       for (int k = 0; k < nn->getDimensions().at(i-1) + 1; k++ ){
+		   regCost += pow( nn->getWeights().at(i-1)->get( j, k), 2);
+		  // std::cout << regCost << std::endl;
+	       }
+
+       regCost *= (lambda / (2 * numExamples ) );
+
+       cost+=regCost;
+   }
 
    return cost;
 }

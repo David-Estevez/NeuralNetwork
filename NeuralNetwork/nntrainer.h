@@ -88,9 +88,10 @@ protected:
     /*!
      * \brief Returns the cost of all the examples with the current weight set.
      *
+     * \param lambda Regularization term coefficient
      * \return Cost of all the training examples with current weight set
      */
-    double costFunction();
+    double costFunction( double lambda = 0);
 
     /*!
      * \brief Returns the gradient of the cost function with the current weight set.
