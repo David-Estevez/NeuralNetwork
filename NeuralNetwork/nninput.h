@@ -87,7 +87,7 @@ protected:
      */
     virtual void loadTrainingExamples() = 0;
 
-
+public: //-- Fix this later --//
     //-- Data storage:
     //------------------------------------------------------------------
     /*! \var std::vector<Matrix *> weights

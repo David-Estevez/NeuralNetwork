@@ -16,6 +16,10 @@
 #include <iostream>
 #include <cmath>
 
+//-- Random numbers:
+#include <cstdlib>
+#include <ctime>
+
 #include "neuralnetwork.h"
 #include "neuralnetworkio.h"
 
@@ -55,12 +59,14 @@ public:
      *
      * \param nn NeuralNetwork to connect to.
      */
-    NNTrainer( NeuralNetwork& nn): NeuralNetworkIO( nn ) {}
+    NNTrainer( NeuralNetwork& nn);
 
     /*!
      * \brief Default destructor.
+     *
+     * \todo Implement or remove.
      */
-    ~NNTrainer();
+    ~NNTrainer() {}
 
     //-- Interface with other modules
     //-------------------------------------------------------------------------
@@ -72,8 +78,9 @@ public:
     /*!
      * \brief Trains the weigths of the NeuralNetwork
      *
+     * \todo Remove debug routines.
      */
-    virtual void trainNetwork() = 0;
+    virtual void trainNetwork();
 
 protected:
     //-- Cost and gradient calculations
@@ -146,6 +153,12 @@ private:
      *
      */
     double calculateRandomRange(int layer );
+
+    //-- Random number
+    /*!
+      * \brief Uses the current time to initialize a seed for random numbers.
+      */
+    void initializeRandomSeed();
 
 };
 

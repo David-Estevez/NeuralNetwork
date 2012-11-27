@@ -43,7 +43,9 @@ int main( int argc, char *argv[])
     inputMod.loadInput();
     inputMod.loadTrainingExamples();
 
-
+    NNTrainer trainer( nn);
+    trainer.getTrainingExamples( inputMod.trainingSet );
+    trainer.trainNetwork();
 
     //-- Create std output module:
     NNStdOutput outputMod( nn );
@@ -59,6 +61,8 @@ int main( int argc, char *argv[])
     outputMod2.outputWeights();
     outputMod2.outputInput();
     outputMod2.outputGuess();
+
+
 
     }
     else
