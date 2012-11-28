@@ -55,14 +55,7 @@ public:
     Matrix& operator -= (Matrix& );
     Matrix& operator *= (Matrix& );
 
-    bool operator == (Matrix& otherMat)
-    {
-	int i = 0;
-	while ( i < rows*cols )
-	    if ( *(matrix+i) != *(otherMat.matrix+i))
-		return false;
-	return true;
-    }
+    bool operator == (Matrix& otherMat);
 
     Matrix& operator != (Matrix& );
 

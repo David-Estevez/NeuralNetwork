@@ -201,6 +201,89 @@ void Matrix::setCol(const std::vector<double> col, const int index)
 	std::cerr << "Error [Matrix]: specified column does not exist." << std::endl;
 }
 
+Matrix& Matrix::operator +( Matrix& m)
+{
+    if ( this->cols == m.cols && this->rows == m.rows)
+    {
+	for (int i = 0; i < this->cols * this->rows; i++)
+	    this->matrix[i] = this->matrix[i] + m.matrix[i];
+    }
+    else
+    {
+	std::cerr << "Error [Matrix]: matrices don't have the same dimensions"
+		  << std::endl;
+    }
+
+    return *this;
+}
+
+Matrix& Matrix::operator -( Matrix& m)
+{
+    if ( this->cols == m.cols && this->rows == m.rows)
+    {
+	for (int i = 0; i < this->cols * this->rows; i++)
+	    this->matrix[i] = this->matrix[i] - m.matrix[i];
+    }
+    else
+    {
+	std::cerr << "Error [Matrix]: matrices don't have the same dimensions"
+		  << std::endl;
+    }
+
+    return *this;
+}
+
+Matrix& Matrix::operator *( Matrix& m)
+{
+    if ( this->cols == m.rows )
+    {
+	Matrix result = new Matrix( this->rows, m.cols );
+
+	for (int i = 0; i < this->cols; i++)
+	    for (int j = 0; j < m.rows; j)
+		for (int k = 0; k )
+
+    }
+    else
+    {
+	std::cerr << "Error [Matrix]: matrices don't have compatible dimensions"
+		  << std::endl;
+	return *this;
+    }
+}
+
+Matrix& Matrix::operator *( double n)
+{
+
+    for (int i = 0; i < this->cols * this->rows; i++)
+	this->matrix[i] = this->matrix[i] * n;
+
+    return *this;
+}
+
+Matrix& Matrix::operator /( double n)
+{
+
+    for (int i = 0; i < this->cols * this->rows; i++)
+	this->matrix[i] = this->matrix[i] / n;
+
+    return *this;
+}
+
+bool Matrix::operator == (Matrix& otherMat)
+{
+    int i = 0;
+    while ( i < rows*cols )
+	if ( *(matrix+i) != *(otherMat.matrix+i))
+	    return false;
+    return true;
+}
+
+Matrix& Matrix::transpose()
+{
+    //-- To be done later
+}
+
 void Matrix::operator =(const Matrix& otherMatrix)
 {
     if ( this->rows == otherMatrix.rows && this->cols == otherMatrix.cols )
@@ -215,15 +298,17 @@ std::ostream& operator << ( std::ostream& out, Matrix& matrix)
 {
     for (int i = 0; i < matrix.rows ; i++)
     {
-	out << "| ";
 	for (int j = 0; j < matrix.cols; j++)
     	    out << matrix.get(i,j) << " ";
-	out << "|" << std::endl;
+	out  << std::endl;
     }
 
     return out;
 }
 
+
+//-- Vector
+//---------------------------------------------------------------------------
 std::ostream& operator << ( std::ostream& out, std::vector<double> data)
 {
     out << "[ ";
