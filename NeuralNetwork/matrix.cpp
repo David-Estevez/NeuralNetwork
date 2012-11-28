@@ -289,6 +289,8 @@ Matrix Matrix::operator /( double n)
     return result;
 }
 
+//-- Comparison operators
+//--------------------------------------------------------------------
 
 bool Matrix::operator == (Matrix& otherMat)
 {
@@ -311,6 +313,8 @@ bool Matrix::operator != (Matrix& otherMat)
 }
 
 
+//-- Asignation operator
+//------------------------------------------------------------------------
 void Matrix::operator =(const Matrix& otherMatrix)
 {
     if ( this->rows == otherMatrix.rows && this->cols == otherMatrix.cols )
@@ -321,6 +325,62 @@ void Matrix::operator =(const Matrix& otherMatrix)
     }
 }
 
+
+//-- Operator + = operators:
+//------------------------------------------------------------------------------
+
+Matrix& Matrix::operator += (Matrix& m)
+{
+    if ( this->cols == m.cols && this->rows == m.rows)
+    {
+	for (int i = 0; i < this->cols * this->rows; i++)
+	     this->matrix[i] += m.matrix[i];
+    }
+    else
+    {
+	std::cerr << "Error [Matrix]: matrices don't have the same dimensions"
+		  << std::endl;
+    }
+
+    return *this;
+}
+
+Matrix& Matrix::operator -= (Matrix& m)
+{
+    if ( this->cols == m.cols && this->rows == m.rows)
+    {
+	for (int i = 0; i < this->cols * this->rows; i++)
+	     this->matrix[i] -= m.matrix[i];
+    }
+    else
+    {
+	std::cerr << "Error [Matrix]: matrices don't have the same dimensions"
+		  << std::endl;
+    }
+
+    return *this;
+}
+
+Matrix& Matrix::operator *= (double n)
+{
+    for (int i = 0; i < this->cols * this->rows; i++)
+	this->matrix[i] *= n;
+
+    return *this;
+}
+
+Matrix& Matrix::operator /= (double n)
+{
+    for (int i = 0; i < this->cols * this->rows; i++)
+	this->matrix[i] /= n;
+
+    return *this;
+}
+
+
+
+//-- Other matrix operations:
+//-----------------------------------------------------------------------------
 Matrix Matrix::transpose()
 {
     //-- Create new matrix
