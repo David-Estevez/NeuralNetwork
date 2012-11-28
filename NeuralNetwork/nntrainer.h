@@ -71,16 +71,23 @@ public:
     //-- Interface with other modules
     //-------------------------------------------------------------------------
     /*!
-     * \brief Obtain the training set for training the NeuralNetwork
+     * \brief Obtain the training set for training the NeuralNetwork.
      */
     void getTrainingExamples( std::vector<TrainingExample>& trainingSet );
 
     /*!
-     * \brief Trains the weigths of the NeuralNetwork
+     * \brief Trains the weigths of the NeuralNetwork.
      *
      * \todo Remove debug routines.
      */
     virtual void trainNetwork();
+
+    /*!
+     * \brief Shows the ability of the current weights to fit a given training set.
+     *
+     * \return A value between 0 and 1.
+     */
+    double accuracy();
 
 protected:
     //-- Cost and gradient calculations

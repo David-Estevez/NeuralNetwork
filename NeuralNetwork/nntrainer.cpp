@@ -26,6 +26,7 @@ void NNTrainer::getTrainingExamples(std::vector<TrainingExample> &trainingSet)
  {
      std::cout <<"Current cost: " <<  costFunction() << std::endl;
      std::cout <<"Current cost: (with regularization)" <<  costFunction(1) << std::endl;
+     std::cout << "Accuracy: " << accuracy() << std::endl;
  }
 
 //-- Cost and gradient calculations
@@ -85,6 +86,42 @@ void NNTrainer::randomWeights()
 		nn->getWeights().at(i-1)->set( j, k, 2*limit*((rand()/(float)RAND_MAX)-0.5) );
     }
 
+}
+
+double NNTrainer::accuracy()
+{
+    int guessedOk = 0;
+    int numExamples = trainingSet->size();
+
+    for (int i = 0; i < numExamples ; i++)
+    {
+	//-- Set the input to the network:
+	nn->setInput( trainingSet->at(i).x );
+
+	//-- Look for the highest value:
+	int highest = 0;
+	double highestValue = nn->getOutput().at(0);
+
+	for (int j = 1; j < (int) nn->getOutput().size() ; j++)
+	    if ( nn->getOutput().at(j) > highestValue)
+	    {
+		highest = j;
+		highestValue = nn->getOutput().at(j);
+	    }
+
+	//while( true )
+	{
+
+
+	}
+	for (int  j = 0; j < (int) nn->getOutput().size(); j++)
+	    if (( j == highest && trainingSet->at(i).y.at(j) != 1) || ( j != highest && trainingSet->at(i).y.at(j) != 0))
+		    continue;
+
+	guessedOk++;
+     }
+
+    return guessedOk / (double) numExamples;
 }
 
 //-- Internal math calculations:
