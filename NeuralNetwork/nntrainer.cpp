@@ -54,14 +54,12 @@ double NNTrainer::costFunction( double lambda)
    {
        //-- Don't do calculations if lambda is not set
        double regCost = 0;
-	std::cout << nn->getL() << " " << numExamples << std::endl;
-	std::cout << nn->getDimensions() << std::endl;
-       for (int i = 1; i <  nn->getL()-1; i++)			//-- Input layer has no weight matrix associated
-	   for (int j = 1; j < nn->getDimensions().at(i); j++)
-	       for (int k = 0; k < nn->getDimensions().at(i-1) + 1; k++ ){
+
+       for (int i = 1; i <  nn->getL(); i++)					//-- Input layer has no weight matrix associated
+	   for (int j = 0; j < nn->getDimensions().at(i); j++)
+	       for (int k = 1; k < nn->getDimensions().at(i-1) + 1; k++ )	//-- We don't regularize bias units
 		   regCost += pow( nn->getWeights().at(i-1)->get( j, k), 2);
-		  // std::cout << regCost << std::endl;
-	       }
+
 
        regCost *= (lambda / (2 * numExamples ) );
 
@@ -78,8 +76,15 @@ std::vector<double> NNTrainer::gradient()
 
 void NNTrainer::randomWeights()
 {
-    double limit;
-    2*limit*((rand()/(float)RAND_MAX)-0.5);
+    for (int i = 1; i <  nn->getL(); i++)					//-- Input layer has no weight matrix associated
+    {
+	  double limit = calculateRandomRange( i );
+	  std::cout << limit << std::endl;
+	  for (int j = 0; j < nn->getDimensions().at(i); j++)
+	    for (int k = 0; k < nn->getDimensions().at(i-1) + 1; k++ )
+		nn->getWeights().at(i-1)->set( j, k, 2*limit*((rand()/(float)RAND_MAX)-0.5) );
+    }
+
 }
 
 //-- Internal math calculations:
@@ -96,16 +101,17 @@ double NNTrainer::sigmoidGradient(double n)
 
 double NNTrainer::calculateRandomRange(int layer)
 {
-    if ( layer > 0 )
+    if ( layer > 0 && layer <= nn->getWeights().size() )
     {
 	int l_in = nn->getWeights().at(layer-1)->getNumCols();
 	int l_out = nn->getWeights().at(layer-1)->getNumRows();
-
-	return sqrt( 6 / (l_in + l_out));
+	std::cout << "l_in:" << l_in << " l_out:" << l_out << std::endl;
+	return sqrt( 6 / (double) (l_in + l_out));
     }
     else
     {
-	//-- Error
+	std::cerr << "Error [NNTrainer]: layer selected is out of range [1 , "
+		  << nn->getWeights().size() << ")" << std::endl;
     }
 }
 

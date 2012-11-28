@@ -110,7 +110,7 @@ protected:
      * implementation, not for optimization of weight set.
      */
     bool checkGradient();
-
+public:
     /*!
      * \brief Generates a new random weight set for training.
      *
