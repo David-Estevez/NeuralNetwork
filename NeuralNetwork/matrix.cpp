@@ -202,12 +202,15 @@ void Matrix::setCol(const std::vector<double> col, const int index)
 }
 
 
-Matrix& Matrix::operator +( Matrix& m)
+Matrix Matrix::operator +( Matrix& m)
 {
+    //-- Create new matrix
+    Matrix result( this->rows, this->cols);
+
     if ( this->cols == m.cols && this->rows == m.rows)
     {
 	for (int i = 0; i < this->cols * this->rows; i++)
-	    this->matrix[i] = this->matrix[i] + m.matrix[i];
+	    result.matrix[i] = this->matrix[i] + m.matrix[i];
     }
     else
     {
@@ -215,11 +218,14 @@ Matrix& Matrix::operator +( Matrix& m)
 		  << std::endl;
     }
 
-    return *this;
+    return result;
 }
 
-Matrix& Matrix::operator -( Matrix& m)
+Matrix Matrix::operator -( Matrix& m)
 {
+    //-- Create new matrix
+    Matrix result( this->rows, this->cols);
+
     if ( this->cols == m.cols && this->rows == m.rows)
     {
 	for (int i = 0; i < this->cols * this->rows; i++)
@@ -231,19 +237,27 @@ Matrix& Matrix::operator -( Matrix& m)
 		  << std::endl;
     }
 
-    return *this;
+    return result;
 }
 
-Matrix& Matrix::operator *( Matrix& m)
+Matrix Matrix::operator *( Matrix& m)
 {
+
     if ( this->cols == m.rows )
     {
-	Matrix result = new Matrix( this->rows, m.cols );
+	Matrix result( this->rows, m.cols );
 
-	for (int i = 0; i < this->cols; i++)
-	    for (int j = 0; j < m.rows; j)
-		for (int k = 0; k )
-		//_- I was working here xD
+	for (int i = 0; i < this->rows; i++)
+	    for (int j = 0; j < m.cols; j++)
+	    {
+		double sum = 0;
+
+		for (int k = 0; k < this->cols; k ++)
+		    sum+= matrix[i * cols + k] * m.matrix[ k * m.cols + j];
+
+		result.matrix[ i * m.cols + j] = sum;
+	    }
+	return result;
     }
     else
     {
@@ -253,22 +267,26 @@ Matrix& Matrix::operator *( Matrix& m)
     }
 }
 
-Matrix& Matrix::operator *( double n)
+Matrix Matrix::operator *( double n)
 {
+    //-- Create new matrix
+    Matrix result( this->rows, this->cols);
 
     for (int i = 0; i < this->cols * this->rows; i++)
 	this->matrix[i] = this->matrix[i] * n;
 
-    return *this;
+    return result;
 }
 
-Matrix& Matrix::operator /( double n)
+Matrix Matrix::operator /( double n)
 {
+    //-- Create new matrix
+    Matrix result( this->rows, this->cols);
 
     for (int i = 0; i < this->cols * this->rows; i++)
 	this->matrix[i] = this->matrix[i] / n;
 
-    return *this;
+    return result;
 }
 
 
@@ -303,9 +321,16 @@ void Matrix::operator =(const Matrix& otherMatrix)
     }
 }
 
-Matrix& Matrix::transpose()
+Matrix Matrix::transpose()
 {
-    //-- To be done later
+    //-- Create new matrix
+    Matrix result( cols, rows);
+
+    for (int i = 0; i < rows; i++)
+	for (int j = 0; j < cols; j++)
+	    result.set(j,i, *(matrix + i * cols + j) );
+
+    return result;
 }
 
 

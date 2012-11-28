@@ -169,12 +169,12 @@ public:
 
     //-- Basic matrix operations: (to be implemented when/if needed)
     //---------------------------------------------------------------------------------------
-    Matrix& operator + (Matrix& );
-    Matrix& operator - (Matrix& );
-    Matrix& operator * (Matrix& );
+    Matrix operator + (Matrix& );
+    Matrix operator - (Matrix& );
+    Matrix operator * (Matrix& );
 
-    Matrix& operator * (double );
-    Matrix& operator / (double );
+    Matrix operator * (double );
+    Matrix operator / (double );
 
     Matrix& operator += (Matrix& );
     Matrix& operator -= (Matrix& );
@@ -211,7 +211,7 @@ public:
     void operator = (const Matrix& otherMatrix);
 
 
-    Matrix& transpose();
+    Matrix transpose();
 
     /*!
      * \brief Shows a matrix in an output stream.
