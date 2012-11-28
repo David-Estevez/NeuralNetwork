@@ -63,7 +63,6 @@ void NeuralNetwork::setInput(std::vector<double> input)
     //-- Set input vector to input layer
 
     //-- Check dimensions:
-
     if ( (int) input.size() == inputLayer->getN() - 1)
     {
 	//-- Set output to be the input vector:
@@ -80,17 +79,26 @@ void NeuralNetwork::setInput(double *input, int size)
 {
     //-- Set an array of double to be input vector of input layer
 
-    std::vector<double> aux;
+    //-- Check dimensions:
+    if ( size == inputLayer->getN()-1)
+    {
+	std::vector<double> aux;
 
-    for (int i = 0; i < size; i++)
-	aux.push_back( *(input + i) );
+	for (int i = 0; i < size; i++)
+	    aux.push_back( *(input + i) );
 
-    setInput(aux);
+	setInput(aux);
+    }
+    else
+    {
+	std::cerr << "Error [NeuralNetwork]: input array dimension does not match number of neurons in input layer."
+		  << std::endl;
+    }
 }
 
 void NeuralNetwork::setWeights(std::vector<Matrix *> theta)
 {
-    //-- Check number of matrices
+    //-- Check number of matrices and dimensions
     if (theta.size() != hiddenLayer.size() + 1) //-- Input layer is not connected to other layer, so it has no weights
 	std::cerr << "Error[NeuralNetwork]: number of theta matrices does not match." << std::endl
 		  << "Had: " << theta.size() << " Expected: " << hiddenLayer.size() + 1 << std::endl;
@@ -133,7 +141,10 @@ std::vector<Matrix> NeuralNetwork::getWeights()
     return theta;
 }
 
-
+std::vector<double> NeuralNetwork::getInput()
+{
+    return inputLayer->getOutput();
+}
 
 //-- Other functions
 

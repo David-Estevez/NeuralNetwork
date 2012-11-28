@@ -201,6 +201,7 @@ void Matrix::setCol(const std::vector<double> col, const int index)
 	std::cerr << "Error [Matrix]: specified column does not exist." << std::endl;
 }
 
+
 Matrix& Matrix::operator +( Matrix& m)
 {
     if ( this->cols == m.cols && this->rows == m.rows)
@@ -242,7 +243,7 @@ Matrix& Matrix::operator *( Matrix& m)
 	for (int i = 0; i < this->cols; i++)
 	    for (int j = 0; j < m.rows; j)
 		for (int k = 0; k )
-
+		//_- I was working here xD
     }
     else
     {
@@ -270,19 +271,27 @@ Matrix& Matrix::operator /( double n)
     return *this;
 }
 
+
 bool Matrix::operator == (Matrix& otherMat)
 {
+    //-- Element-wise comparison:
     int i = 0;
     while ( i < rows*cols )
+    {
 	if ( *(matrix+i) != *(otherMat.matrix+i))
 	    return false;
+	i++;
+    }
     return true;
 }
 
-Matrix& Matrix::transpose()
+
+bool Matrix::operator != (Matrix& otherMat)
 {
-    //-- To be done later
+    //-- If it is not equal, then it is different
+    return !(*this == otherMat);
 }
+
 
 void Matrix::operator =(const Matrix& otherMatrix)
 {
@@ -294,13 +303,20 @@ void Matrix::operator =(const Matrix& otherMatrix)
     }
 }
 
+Matrix& Matrix::transpose()
+{
+    //-- To be done later
+}
+
+
 std::ostream& operator << ( std::ostream& out, Matrix& matrix)
 {
     for (int i = 0; i < matrix.rows ; i++)
     {
 	for (int j = 0; j < matrix.cols; j++)
     	    out << matrix.get(i,j) << " ";
-	out  << std::endl;
+
+	out << std::endl;
     }
 
     return out;

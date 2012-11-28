@@ -148,31 +148,6 @@ Matrix* NNFileInput::loadMatrix(const std::string filePath)
     }
 }
 
-void loadVector(const std::string filePath , std::vector<double>& vector)
-{
-    //-- Stores (toDo)
-    //-- Open file:
-    std::ifstream file( filePath.c_str() );
-
-    double buffer;
-    vector.clear();
-
-    if (file.is_open())
-    {
-	while( file.good() )
-	{
-	    file >> buffer;
-	    vector.push_back( buffer );
-	}
-    file.close();
-    }
-    else
-    {
-	std::cerr << "[NNFileInput]Error: File could not be opened!" << std::endl;
-    }
-
-}
-
 //-- Functions for storing the file path
 void NNFileInput::addWeightsFile(const std::string filePath)
 {
