@@ -201,7 +201,6 @@ void Matrix::setCol(const std::vector<double> col, const int index)
 	std::cerr << "Error [Matrix]: specified column does not exist." << std::endl;
 }
 
-
 bool Matrix::operator == (Matrix& otherMat)
 {
     //-- Element-wise comparison:

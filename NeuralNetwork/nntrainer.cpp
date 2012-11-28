@@ -72,7 +72,25 @@ double NNTrainer::costFunction( double lambda)
 
 std::vector<double> NNTrainer::gradient()
 {
-    //-- Calculates the gradient
+    //-- Create n matrices with the dimensions of the weight matrices:
+    std::vector<Matrix> Delta;
+
+    for (int i = 0; i < (int) nn->getWeights().size(); i++)
+	Delta.push_back( Matrix( nn->getWeights().at(i)->getNumRows(), nn->getWeights().at(i)->getNumCols() ));
+
+    //-- Iterate over all training examples
+    for (int i = 0; i < (int) trainingSet->size(); i++)
+    {
+	//-- First layer
+
+	//-- Intermediate layer
+
+	//-- Last layer
+    }
+
+    //-- Divide by m the matrix
+
+
 }
 
 void NNTrainer::randomWeights()
