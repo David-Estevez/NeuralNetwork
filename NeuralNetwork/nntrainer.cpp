@@ -80,7 +80,6 @@ void NNTrainer::randomWeights()
     for (int i = 1; i <  nn->getL(); i++)					//-- Input layer has no weight matrix associated
     {
 	  double limit = calculateRandomRange( i );
-	  std::cout << limit << std::endl;
 	  for (int j = 0; j < nn->getDimensions().at(i); j++)
 	    for (int k = 0; k < nn->getDimensions().at(i-1) + 1; k++ )
 		nn->getWeights().at(i-1)->set( j, k, 2*limit*((rand()/(float)RAND_MAX)-0.5) );
@@ -109,17 +108,29 @@ double NNTrainer::accuracy()
 		highestValue = nn->getOutput().at(j);
 	    }
 
-	//while( true )
+	int j = 0;
+	while( true )
 	{
-
-
-	}
-	for (int  j = 0; j < (int) nn->getOutput().size(); j++)
 	    if (( j == highest && trainingSet->at(i).y.at(j) != 1) || ( j != highest && trainingSet->at(i).y.at(j) != 0))
-		    continue;
-
-	guessedOk++;
-     }
+	    {
+		break;
+	    }
+	    else
+	    {
+		if ( (j == trainingSet->at(i).y.size() -1  ) && ( ( j == highest && trainingSet->at(i).y.at(j) == 1) || ( j != highest && trainingSet->at(i).y.at(j) == 0)) )
+		{
+		    guessedOk++;
+		    break;
+		}
+		else
+		{
+		    if ( j == trainingSet->at(i).y.size() - 1 )
+			break;
+		}
+		j++;
+	    }
+	}
+    }
 
     return guessedOk / (double) numExamples;
 }
@@ -142,7 +153,7 @@ double NNTrainer::calculateRandomRange(int layer)
     {
 	int l_in = nn->getWeights().at(layer-1)->getNumCols();
 	int l_out = nn->getWeights().at(layer-1)->getNumRows();
-	std::cout << "l_in:" << l_in << " l_out:" << l_out << std::endl;
+
 	return sqrt( 6 / (double) (l_in + l_out));
     }
     else
