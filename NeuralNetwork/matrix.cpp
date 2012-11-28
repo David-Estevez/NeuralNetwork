@@ -201,6 +201,97 @@ void Matrix::setCol(const std::vector<double> col, const int index)
 	std::cerr << "Error [Matrix]: specified column does not exist." << std::endl;
 }
 
+
+Matrix Matrix::operator +( Matrix& m)
+{
+    //-- Create new matrix
+    Matrix result( this->rows, this->cols);
+
+    if ( this->cols == m.cols && this->rows == m.rows)
+    {
+	for (int i = 0; i < this->cols * this->rows; i++)
+	    result.matrix[i] = this->matrix[i] + m.matrix[i];
+    }
+    else
+    {
+	std::cerr << "Error [Matrix]: matrices don't have the same dimensions"
+		  << std::endl;
+    }
+
+    return result;
+}
+
+Matrix Matrix::operator -( Matrix& m)
+{
+    //-- Create new matrix
+    Matrix result( this->rows, this->cols);
+
+    if ( this->cols == m.cols && this->rows == m.rows)
+    {
+	for (int i = 0; i < this->cols * this->rows; i++)
+	    this->matrix[i] = this->matrix[i] - m.matrix[i];
+    }
+    else
+    {
+	std::cerr << "Error [Matrix]: matrices don't have the same dimensions"
+		  << std::endl;
+    }
+
+    return result;
+}
+
+Matrix Matrix::operator *( Matrix& m)
+{
+
+    if ( this->cols == m.rows )
+    {
+	Matrix result( this->rows, m.cols );
+
+	for (int i = 0; i < this->rows; i++)
+	    for (int j = 0; j < m.cols; j++)
+	    {
+		double sum = 0;
+
+		for (int k = 0; k < this->cols; k ++)
+		    sum+= matrix[i * cols + k] * m.matrix[ k * m.cols + j];
+
+		result.matrix[ i * m.cols + j] = sum;
+	    }
+	return result;
+    }
+    else
+    {
+	std::cerr << "Error [Matrix]: matrices don't have compatible dimensions"
+		  << std::endl;
+	return *this;
+    }
+}
+
+Matrix Matrix::operator *( double n)
+{
+    //-- Create new matrix
+    Matrix result( this->rows, this->cols);
+
+    for (int i = 0; i < this->cols * this->rows; i++)
+	this->matrix[i] = this->matrix[i] * n;
+
+    return result;
+}
+
+Matrix Matrix::operator /( double n)
+{
+    //-- Create new matrix
+    Matrix result( this->rows, this->cols);
+
+    for (int i = 0; i < this->cols * this->rows; i++)
+	this->matrix[i] = this->matrix[i] / n;
+
+    return result;
+}
+
+//-- Comparison operators
+//--------------------------------------------------------------------
+
 bool Matrix::operator == (Matrix& otherMat)
 {
     //-- Element-wise comparison:
@@ -222,6 +313,8 @@ bool Matrix::operator != (Matrix& otherMat)
 }
 
 
+//-- Asignation operator
+//------------------------------------------------------------------------
 void Matrix::operator =(const Matrix& otherMatrix)
 {
     if ( this->rows == otherMatrix.rows && this->cols == otherMatrix.cols )
@@ -232,18 +325,91 @@ void Matrix::operator =(const Matrix& otherMatrix)
     }
 }
 
+
+//-- Operator + = operators:
+//------------------------------------------------------------------------------
+
+Matrix& Matrix::operator += (Matrix& m)
+{
+    if ( this->cols == m.cols && this->rows == m.rows)
+    {
+	for (int i = 0; i < this->cols * this->rows; i++)
+	     this->matrix[i] += m.matrix[i];
+    }
+    else
+    {
+	std::cerr << "Error [Matrix]: matrices don't have the same dimensions"
+		  << std::endl;
+    }
+
+    return *this;
+}
+
+Matrix& Matrix::operator -= (Matrix& m)
+{
+    if ( this->cols == m.cols && this->rows == m.rows)
+    {
+	for (int i = 0; i < this->cols * this->rows; i++)
+	     this->matrix[i] -= m.matrix[i];
+    }
+    else
+    {
+	std::cerr << "Error [Matrix]: matrices don't have the same dimensions"
+		  << std::endl;
+    }
+
+    return *this;
+}
+
+Matrix& Matrix::operator *= (double n)
+{
+    for (int i = 0; i < this->cols * this->rows; i++)
+	this->matrix[i] *= n;
+
+    return *this;
+}
+
+Matrix& Matrix::operator /= (double n)
+{
+    for (int i = 0; i < this->cols * this->rows; i++)
+	this->matrix[i] /= n;
+
+    return *this;
+}
+
+
+
+//-- Other matrix operations:
+//-----------------------------------------------------------------------------
+Matrix Matrix::transpose()
+{
+    //-- Create new matrix
+    Matrix result( cols, rows);
+
+    for (int i = 0; i < rows; i++)
+	for (int j = 0; j < cols; j++)
+	    result.set(j,i, *(matrix + i * cols + j) );
+
+    return result;
+}
+
+
 std::ostream& operator << ( std::ostream& out, Matrix& matrix)
 {
     for (int i = 0; i < matrix.rows ; i++)
     {
 	for (int j = 0; j < matrix.cols; j++)
     	    out << matrix.get(i,j) << " ";
+
 	out << std::endl;
     }
 
     return out;
 }
 
+
+//-- Vector
+//---------------------------------------------------------------------------
 std::ostream& operator << ( std::ostream& out, std::vector<double> data)
 {
     out << "[ ";

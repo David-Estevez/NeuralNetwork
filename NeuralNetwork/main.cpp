@@ -26,7 +26,7 @@ int main( int argc, char *argv[])
 
     NeuralNetwork nn( sizeofnetwork);
 
-    //-- Create input module
+   //-- Create input module
     NNFileInput inputMod( nn );
 
     //-- Add file paths
@@ -64,6 +64,7 @@ int main( int argc, char *argv[])
    // outputMod2.outputWeights();
    // outputMod2.outputInput();
    // outputMod2.outputGuess();
+
 
 
 
