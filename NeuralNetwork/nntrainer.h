@@ -148,9 +148,19 @@ private:
     double sigmoid(double n);
 
     /*!
+     * \brief Calculates the sigmoid function of a vector.
+     */
+    std::vector<double> sigmoid(std::vector<double> n);
+
+    /*!
      * \brief Calculates the derivative of the sigmoid function at point n.
      */
     double sigmoidGradient(double n);
+
+    /*!
+     * \brief Calculates the derivative of the sigmoid function at points in vector n.
+     */
+    std::vector<double> sigmoidGradient(std::vector<double> n);
 
     /*!
      * \brief Calculates the range of the random weights taking into account the network

@@ -160,9 +160,29 @@ double NNTrainer::sigmoid(double n)
     return 1/( 1 + exp(-n));
 }
 
+std::vector<double> NNTrainer::sigmoid(std::vector<double> n)
+{
+    std::vector<double> result;
+
+    for (int i = 0; i < (int) n.size(); i++)
+	result.push_back( sigmoid(n.at(i) ));
+
+    return result;
+}
+
 double NNTrainer::sigmoidGradient(double n)
 {
     return sigmoid(n) * (1-sigmoid(n));
+}
+
+std::vector<double> NNTrainer::sigmoidGradient(std::vector<double> n)
+{
+    std::vector<double> result;
+
+    for (int i = 0; i < (int) n.size(); i++)
+	result.push_back( sigmoid( n.at(i) ) * (1-sigmoid( n.at(i) )) );
+
+    return result;
 }
 
 double NNTrainer::calculateRandomRange(int layer)
