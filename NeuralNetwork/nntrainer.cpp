@@ -77,7 +77,7 @@ std::vector<double> NNTrainer::gradient()
     //-- Create n matrices with the dimensions of the weight matrices:
     std::vector<Matrix> Delta;
 
-    for (int i = 0; i < nn->getWeights().size(); i++)
+    for (int i = 0; i < (int) nn->getWeights().size(); i++)
 	Delta.push_back( Matrix( nn->getWeights().at(i)->getNumRows(), nn->getWeights().at(i)->getNumCols() ));
 
     //-- Iterate over all training examples
@@ -87,30 +87,62 @@ std::vector<double> NNTrainer::gradient()
 	nn->setInput( trainingSet->at(i).x );
 
 	//-- Create vector to store the increments:
-	std::vector<Matrix> delta;
+	//-- Increments will be stored in reverse order (i.e. the last increment first)
+	std::vector<Matrix> inc;
 
-	//-- Output layer
+	//-- Increment for output layer
 	Matrix output = Matrix(nn->getOutput(), nn->getOutput().size(), 1);
 	Matrix y = Matrix(trainingSet->at(i).y , trainingSet->at(i).y.size(), 1);
 
-	delta.push_back( output - y);
+	inc.push_back( output - y);
 
-	//-- hidden layers
+	//-- Increment for hidden layers
 	for (int l = nn->getL() - 2; l > 0; l--)
 	{
 
-	    Matrix aux1 = nn->getWeights().at(l)->transpose() * delta.back();
+	    Matrix aux1 = nn->getWeights().at(l)->transpose() * inc.back();
 	    Matrix aux2( aux1.getNumRows()-1, aux1.getNumCols());
 
 	    for (int j = 0; j < aux2.getNumCols(); j++)
 		for (int k = 0; k < aux2.getNumRows(); k++)
 		    aux2.set( k, j, aux1.get(k+1, j) * sigmoidGradient( nn->getActivation(l).at(k)) );
+
+	    inc.push_back( aux2 );
 	}
-	//-- Input layer
+
+	//-- Input layer has no error associated (has no weights associated)
+
+	//-- Accumulate error:
+	for (int l = 0; l < (int) Delta.size(); l++)
+	{
+	    Matrix aux1( Delta.at(l).getNumRows(), Delta.at(l).getNumCols() );
+
+	    for (int j = 0; j < aux1.getNumRows(); j++)
+		aux1.set( j, 0, inc.at( inc.size()- l -1).get( j, 0) );
+
+	    for (int j = 0; j < aux1.getNumRows(); j++)
+		for (int k = 1; k < aux1.getNumCols(); k++)
+		    aux1.set( j, k, inc.at( inc.size()- l -1).get( j, 0) * nn->getActivation(l).at(k-1));
+
+	    Delta.at(l) += aux1;
+	}
+
 
     }
-std::vector<double> vector;
-return vector;
+
+    //-- Divide by number of training examples:
+    for (int l = 0; l < (int) Delta.size(); l++)
+	Delta.at(l) /= numExamples;
+
+    //-- Unroll gradient:
+    std::vector<double> unrolled = Delta.front().unroll();
+
+    for (int l = 1; l < (int) Delta.size(); l++)
+	for (int j = 0; j < Delta.at(l).getNumRows(); j++)
+	    for (int k = 0; k < Delta.at(l).getNumCols(); k++)
+		unrolled.push_back( Delta.at(l).get(j, k));
+
+return unrolled;
 
 }
 
@@ -208,7 +240,7 @@ std::vector<double> NNTrainer::sigmoidGradient(std::vector<double> n)
 
 double NNTrainer::calculateRandomRange(int layer)
 {
-    if ( layer > 0 && layer <= nn->getWeights().size() )
+    if ( layer > 0 && layer <= (int) nn->getWeights().size() )
     {
 	int l_in = nn->getWeights().at(layer-1)->getNumCols();
 	int l_out = nn->getWeights().at(layer-1)->getNumRows();
@@ -220,6 +252,8 @@ double NNTrainer::calculateRandomRange(int layer)
 	std::cerr << "Error [NNTrainer]: layer selected is out of range [1 , "
 		  << nn->getWeights().size() << ")" << std::endl;
     }
+
+    return 0;
 }
 
 //-- Random numbers
