@@ -154,6 +154,9 @@ private:
 
     /*!
      * \brief Calculates the derivative of the sigmoid function at point n.
+     *
+     * \note This is not the actual derivative, only works if the input is the output
+     * of the sigmoid function, i.e. the input is output of the activation function.
      */
     double sigmoidGradient(double n);
 

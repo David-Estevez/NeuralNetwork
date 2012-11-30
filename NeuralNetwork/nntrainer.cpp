@@ -27,6 +27,7 @@ void NNTrainer::getTrainingExamples(std::vector<TrainingExample> &trainingSet)
      std::cout <<"Current cost: " <<  costFunction() << std::endl;
      std::cout <<"Current cost: (with regularization)" <<  costFunction(1) << std::endl;
      std::cout << "Accuracy: " << accuracy() << std::endl;
+     gradient();
  }
 
 //-- Cost and gradient calculations
@@ -72,11 +73,11 @@ double NNTrainer::costFunction( double lambda)
 
 std::vector<double> NNTrainer::gradient()
 {
-    int numExamples = nn->getWeights().size();
+    int numExamples = trainingSet->size();
     //-- Create n matrices with the dimensions of the weight matrices:
     std::vector<Matrix> Delta;
 
-    for (int i = 0; i < numExamples; i++)
+    for (int i = 0; i < nn->getWeights().size(); i++)
 	Delta.push_back( Matrix( nn->getWeights().at(i)->getNumRows(), nn->getWeights().at(i)->getNumCols() ));
 
     //-- Iterate over all training examples
@@ -92,12 +93,24 @@ std::vector<double> NNTrainer::gradient()
 	Matrix output = Matrix(nn->getOutput(), nn->getOutput().size(), 1);
 	Matrix y = Matrix(trainingSet->at(i).y , trainingSet->at(i).y.size(), 1);
 
-	delta.push_back(output - y);
+	delta.push_back( output - y);
+
 	//-- hidden layers
+	for (int l = nn->getL() - 2; l > 0; l--)
+	{
 
-	//-- Last layer
+	    Matrix aux1 = nn->getWeights().at(l)->transpose() * delta.back();
+	    Matrix aux2( aux1.getNumRows()-1, aux1.getNumCols());
+
+	    for (int j = 0; j < aux2.getNumCols(); j++)
+		for (int k = 0; k < aux2.getNumRows(); k++)
+		    aux2.set( k, j, aux1.get(k+1, j) * sigmoidGradient( nn->getActivation(l).at(k)) );
+	}
+	//-- Input layer
+
     }
-
+std::vector<double> vector;
+return vector;
 
 }
 
@@ -180,7 +193,7 @@ std::vector<double> NNTrainer::sigmoid(std::vector<double> n)
 
 double NNTrainer::sigmoidGradient(double n)
 {
-    return sigmoid(n) * (1-sigmoid(n));
+    return n * (1 - n);
 }
 
 std::vector<double> NNTrainer::sigmoidGradient(std::vector<double> n)

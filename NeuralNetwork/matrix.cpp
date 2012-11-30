@@ -29,6 +29,7 @@ Matrix::Matrix(const Matrix& otherMatrix)
 	    this->set( i, j, otherMatrix.get(i, j) );
 }
 
+
 Matrix::Matrix(const std::vector<double> dataVector, const int rows, const int cols)
 {
     //-- Check dimensions of vector and new matrix to be consistent:
@@ -229,7 +230,7 @@ Matrix Matrix::operator -( Matrix& m)
     if ( this->cols == m.cols && this->rows == m.rows)
     {
 	for (int i = 0; i < this->cols * this->rows; i++)
-	    this->matrix[i] = this->matrix[i] - m.matrix[i];
+	    result.matrix[i] = this->matrix[i] - m.matrix[i];
     }
     else
     {

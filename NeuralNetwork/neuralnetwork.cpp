@@ -160,18 +160,18 @@ std::vector<int> NeuralNetwork::getDimensions()
 std::vector<double> NeuralNetwork::getActivation( int n)
 {
     //-- If index is valid
-    if ( n < (int) dimensions.size() )
+    if ( n < l )
     {
 	//-- Select layer:
 	if ( n == 0)
 	    return inputLayer->getOutput();
 
-	else if ( n == (int) dimensions.size() - 1)
+	else if ( n == l - 1)
 	    return outputLayer->getOutput();
 
 	else
 	{
-	    hiddenLayer.at(n-1).getOutput();
+	    return hiddenLayer.at(n-1).getOutput();
 	}
     }
     else
