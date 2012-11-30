@@ -116,7 +116,8 @@ protected:
      * should be used only in small test networks for testing the backpropagation
      * implementation, not for optimization of weight set.
      */
-    bool checkGradient();
+   std::vector<double> checkGradient();
+
 public:
     /*!
      * \brief Generates a new random weight set for training.

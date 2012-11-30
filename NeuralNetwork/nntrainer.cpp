@@ -27,7 +27,12 @@ void NNTrainer::getTrainingExamples(std::vector<TrainingExample> &trainingSet)
      std::cout <<"Current cost: " <<  costFunction() << std::endl;
      std::cout <<"Current cost: (with regularization)" <<  costFunction(1) << std::endl;
      std::cout << "Accuracy: " << accuracy() << std::endl;
-     gradient();
+     std::cout << "Calculating gradient, please wait..." << std::endl;
+     clock_t t = clock();
+   //  gradient();
+     checkGradient();
+     t = clock() - t;
+     std::cout << "Done. It took: " << ( (float)t) / CLOCKS_PER_SEC << " seconds." << std::endl;
  }
 
 //-- Cost and gradient calculations
@@ -144,6 +149,66 @@ std::vector<double> NNTrainer::gradient()
 
 return unrolled;
 
+}
+
+std::vector<double> NNTrainer::checkGradient()
+{
+    //-- Increment to be applied:
+    const double epsilon = 1e-4;
+    const double lambda = 0;
+
+    //-- Gradient vector
+    std::vector<double> gradient;
+
+    //-- Calculate gradient numerically:
+    for (int i = 0; i < (int) nn->getWeights().size(); i++)
+	for (int j = 0; j < nn->getWeights().at(i)->getNumRows(); j++  )
+	    for (int k = 0; k < nn->getWeights().at(i)->getNumCols(); k++  )
+	    {
+		//-- Copy weights matrices:
+		std::vector<Matrix *> thetaPlus, thetaMinus;
+
+		for (int ind = 0; ind < (int) nn->getWeights().size(); ind++)
+		{
+		    Matrix * aux1 = new Matrix( nn->getWeights().at(ind)->getNumRows(), nn->getWeights().at(ind)->getNumCols() );
+		    Matrix * aux2 = new Matrix( nn->getWeights().at(ind)->getNumRows(), nn->getWeights().at(ind)->getNumCols() );
+
+		    *aux1 = *nn->getWeights().at(ind);
+		    *aux2 = *nn->getWeights().at(ind);
+
+		    thetaPlus.push_back(  aux1 );
+		    thetaMinus.push_back( aux2 );
+		}
+
+		//-- Add/substract epsilon
+		thetaPlus.at(i)->set( j, k, thetaPlus.at(i)->get( j, k) + epsilon );
+		thetaPlus.at(i)->set( j, k, thetaPlus.at(i)->get( j, k) + epsilon );
+
+		//-- Store previous weights:
+		std::vector<Matrix *> prevWeights = nn->getWeights();
+
+		//-- Calulate costs of thetaPlus:
+		nn->setWeights( thetaPlus );
+		double costPlus = costFunction( lambda );
+
+		nn->setWeights( thetaMinus );
+		double costMinus = costFunction( lambda );
+
+		//-- Restore original weights:
+		nn->setWeights( prevWeights );
+
+		//-- Calculate element:
+		gradient.push_back( (  costPlus - costMinus )/ ( 2* epsilon) );
+
+		//-- Delete vectors:
+		for (int ind = nn->getWeights().size()-1; ind >= 0; ind--)
+		{
+		    delete thetaPlus.at(ind);
+		    delete thetaMinus.at(ind);
+		}
+
+
+	    }
 }
 
 void NNTrainer::randomWeights()
