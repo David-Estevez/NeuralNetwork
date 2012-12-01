@@ -43,18 +43,12 @@ int main( int argc, char *argv[])
     inputMod.loadInput();
     inputMod.loadTrainingExamples();
 
-    NNTrainer trainer( nn);
-    trainer.getTrainingExamples( inputMod.trainingSet );
-    trainer.trainNetwork();
-
-    trainer.randomWeights();
-    trainer.trainNetwork();
 
     //-- Create std output module:
     NNStdOutput outputMod( nn );
 
-   // outputMod.outputInput();
-   // outputMod.outputGuess();
+    outputMod.outputInput();
+    outputMod.outputGuess();
 
     NNFileOutput outputMod2( nn);
     outputMod2.setWeightsFile( "../Test/myFile.txt");

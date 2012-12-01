@@ -78,9 +78,8 @@ public:
     /*!
      * \brief Trains the weigths of the NeuralNetwork.
      *
-     * \todo Remove debug routines.
      */
-    virtual void trainNetwork();
+    virtual void trainNetwork() = 0;
 
     /*!
      * \brief Shows the ability of the current weights to fit a given training set.
@@ -116,7 +115,14 @@ protected:
      * should be used only in small test networks for testing the backpropagation
      * implementation, not for optimization of weight set.
      */
-   std::vector<double> checkGradient();
+   std::vector<double> numericalGradient();
+
+   /*!
+    * \brief Checks the computation of gradients with backprop in a small neural network.
+    *
+    * This funciont is used for debugging.
+    */
+   bool checkGradient();
 
 public:
     /*!
@@ -137,6 +143,8 @@ private:
     /*!
      * \var std::vector<double> weightSet
      * \brief Unrolled vector containing all the weights of the neural network.
+     *
+     * \todo Erase it if not used
      */
     std::vector<double> weightSet;
 

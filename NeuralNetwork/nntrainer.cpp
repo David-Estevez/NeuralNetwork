@@ -21,20 +21,6 @@ void NNTrainer::getTrainingExamples(std::vector<TrainingExample> &trainingSet)
     this->trainingSet = &trainingSet;
 }
 
-//-- Training
- void NNTrainer::trainNetwork()
- {
-     std::cout <<"Current cost: " <<  costFunction() << std::endl;
-     std::cout <<"Current cost: (with regularization)" <<  costFunction(1) << std::endl;
-     std::cout << "Accuracy: " << accuracy() << std::endl;
-     std::cout << "Calculating gradient, please wait..." << std::endl;
-     clock_t t = clock();
-   //  gradient();
-     checkGradient();
-     t = clock() - t;
-     std::cout << "Done. It took: " << ( (float)t) / CLOCKS_PER_SEC << " seconds." << std::endl;
- }
-
 //-- Cost and gradient calculations
 //-------------------------------------------------------------------------
 
@@ -151,7 +137,7 @@ return unrolled;
 
 }
 
-std::vector<double> NNTrainer::checkGradient()
+std::vector<double> NNTrainer::numericalGradient()
 {
     //-- Increment to be applied:
     const double epsilon = 1e-4;
@@ -207,8 +193,114 @@ std::vector<double> NNTrainer::checkGradient()
 		    delete thetaMinus.at(ind);
 		}
 
-
 	    }
+    return gradient;
+}
+
+bool NNTrainer::checkGradient()
+{
+    //-- Routine to check the gradient
+    //------------------------------------------------------------------------------------
+    //-- Store the previous configuration:
+    NeuralNetwork* prevNN = nn;
+    std::vector<Matrix *> prevWeights = nn->getWeights();
+    std::vector<TrainingExample> *prevTraining = trainingSet;
+
+    //-- New configuration:
+
+    //--New neural network:
+    int array[] = {3, 5, 3};
+    std::vector<int> newDim(array, array+sizeof(array)/sizeof(int));
+
+    NeuralNetwork newNN( newDim );
+
+    //-- New weight matrices:
+    Matrix mat1( 5, 4), mat2( 3, 6);
+    std::vector< Matrix *> newWeights;
+    newWeights.push_back( &mat1);
+    newWeights.push_back( &mat2);
+
+    //-- Set new configuration:
+    newNN.setWeights( newWeights);
+    nn = &newNN;
+
+
+    //-- New training set (random, of course)
+    std::vector<TrainingExample> newTS;
+
+    for (int i = 0; i < 5; i++)
+    {
+	//-- Construct input
+	std::vector<double> x;
+
+	for(int j = 0; j < 3; j++)
+	{
+	    x.push_back( 2* 0.14 *((rand()/(float)RAND_MAX)-0.5) );
+	}
+
+	//-- Construct expected output:
+	std::vector<double> y;
+	for(int j = 0; j < 3; j++)
+	{
+	    if ( j == i )
+		y.push_back(1);
+	    else if ( i > j && i-3 == j)
+		y.push_back(1);
+	    else
+		y.push_back(0);
+	}
+
+	//-- Construct training example:
+	TrainingExample aux;
+	aux.x = x;
+	aux.y = y;
+
+	//-- Append example:
+	newTS.push_back( aux);
+    }
+    //-- Set new training set
+    trainingSet = &newTS;
+
+    //-- Randomize weights:
+    randomWeights();
+
+       //-- Calculate gradients:
+    std::vector<double> backprop = gradient();
+    std::vector<double> numerical = numericalGradient();
+
+    std::cout << "Backprop gradient:" << std::endl;
+    std::cout << backprop << std::endl;
+    std::cout << "Numerical gradient:" << std::endl;
+    std::cout << numerical << std::endl;
+
+    //-- Calculate relative deviation:
+    std::vector<double> sum, difference;
+
+    for (int i= 0; i < (int) backprop.size(); i++)
+    {
+	sum.push_back( pow( ( numerical.at(i)) + backprop.at(i)  , 2)  );
+	difference.push_back( pow( ( numerical.at(i) - backprop.at(i)) , 2) );
+    }
+
+    double modSum = 0, modDif = 0;
+    for (int i= 0; i < (int) backprop.size(); i++)
+    {
+	modSum+=sum.at(i);
+	modDif+=difference.at(i);
+    }
+
+    std::cout << "Relative difference is: " << sqrt(modDif) / sqrt(modSum) << std::endl;
+
+    //--Restore the previous configuration:
+    nn = prevNN;
+    nn->setWeights( prevWeights );
+    trainingSet = prevTraining;
+
+    //-- Return if passed the test or not:
+    if ( sqrt(modDif) / sqrt(modSum) < 1e-4 )
+	return true;
+    else
+	return false;
 }
 
 void NNTrainer::randomWeights()
