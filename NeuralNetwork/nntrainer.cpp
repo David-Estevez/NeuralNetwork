@@ -21,10 +21,11 @@ void NNTrainer::getTrainingExamples(std::vector<TrainingExample> &trainingSet)
     this->trainingSet = &trainingSet;
 }
 
+
 //-- Cost and gradient calculations
 //-------------------------------------------------------------------------
 
-double NNTrainer::costFunction( double lambda)
+double NNTrainer::costFunction(const double lambda)
 {
    double cost = 0;
    int numExamples = trainingSet->size();
@@ -62,7 +63,7 @@ double NNTrainer::costFunction( double lambda)
    return cost;
 }
 
-std::vector<double> NNTrainer::gradient()
+std::vector<double> NNTrainer::gradient(const double lambda)
 {
     int numExamples = trainingSet->size();
     //-- Create n matrices with the dimensions of the weight matrices:
@@ -125,7 +126,25 @@ std::vector<double> NNTrainer::gradient()
     for (int l = 0; l < (int) Delta.size(); l++)
 	Delta.at(l) /= numExamples;
 
+    //-- Regularization
+    //------------------------------------------------------------------------
+    if (lambda != 0)
+    {
+	for (int l = 0; l < (int) Delta.size(); l++)
+	{
+	    Matrix aux(nn->getWeights().at(l)->getNumRows(), nn->getWeights().at(l)->getNumCols() );
+
+	    for (int j = 0; j < aux.getNumRows(); j++)
+		for (int k = 1; k < aux.getNumCols(); k++)
+		    aux.set( j, k, nn->getWeights().at(l)->get(j, k) * lambda / numExamples);
+
+	    Delta.at(l) += aux;
+	}
+    }
+
+
     //-- Unroll gradient:
+    //---------------------------------------------------------------------------
     std::vector<double> unrolled = Delta.front().unroll();
 
     for (int l = 1; l < (int) Delta.size(); l++)
@@ -137,12 +156,8 @@ return unrolled;
 
 }
 
-std::vector<double> NNTrainer::numericalGradient()
+std::vector<double> NNTrainer::numericalGradient(const double lambda, const double epsilon)
 {
-    //-- Increment to be applied:
-    const double epsilon = 1e-4;
-    const double lambda = 0;
-
     //-- Gradient vector
     std::vector<double> gradient;
 
@@ -197,7 +212,7 @@ std::vector<double> NNTrainer::numericalGradient()
     return gradient;
 }
 
-bool NNTrainer::checkGradient()
+bool NNTrainer::checkGradient( const double lambda)
 {
     //-- Routine to check the gradient
     //------------------------------------------------------------------------------------
@@ -265,8 +280,8 @@ bool NNTrainer::checkGradient()
     randomWeights();
 
        //-- Calculate gradients:
-    std::vector<double> backprop = gradient();
-    std::vector<double> numerical = numericalGradient();
+    std::vector<double> backprop = gradient( lambda );
+    std::vector<double> numerical = numericalGradient( lambda );
 
     std::cout << "Backprop gradient:" << std::endl;
     std::cout << backprop << std::endl;
@@ -365,35 +380,11 @@ double NNTrainer::accuracy()
 
 //-- Internal math calculations:
 //-----------------------------------------------------------------------------------
-double NNTrainer::sigmoid(double n)
-{
-    return 1/( 1 + exp(-n));
-}
-
-std::vector<double> NNTrainer::sigmoid(std::vector<double> n)
-{
-    std::vector<double> result;
-
-    for (int i = 0; i < (int) n.size(); i++)
-	result.push_back( sigmoid(n.at(i) ));
-
-    return result;
-}
-
 double NNTrainer::sigmoidGradient(double n)
 {
     return n * (1 - n);
 }
 
-std::vector<double> NNTrainer::sigmoidGradient(std::vector<double> n)
-{
-    std::vector<double> result;
-
-    for (int i = 0; i < (int) n.size(); i++)
-	result.push_back( sigmoid( n.at(i) ) * (1-sigmoid( n.at(i) )) );
-
-    return result;
-}
 
 double NNTrainer::calculateRandomRange(int layer)
 {

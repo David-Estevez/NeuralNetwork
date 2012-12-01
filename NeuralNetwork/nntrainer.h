@@ -78,6 +78,7 @@ public:
     /*!
      * \brief Trains the weigths of the NeuralNetwork.
      *
+     * \todo Remove debug routines.
      */
     virtual void trainNetwork() = 0;
 
@@ -94,35 +95,42 @@ protected:
     /*!
      * \brief Returns the cost of all the examples with the current weight set.
      *
-     * \param lambda Regularization term coefficient
+     * \param lambda Regularization coefficient to avoid overfitting.
      * \return Cost of all the training examples with current weight set
      */
-    double costFunction( double lambda = 0);
+    double costFunction(const double lambda = 0);
 
     /*!
      * \brief Returns the gradient of the cost function with the current weight set.
      *
+     *
+     * \param lambda Regularization coefficient to avoid overfitting.
      * \return Gradient of cost function given the current weight set.
      */
-    std::vector<double> gradient();
+    std::vector<double> gradient(const double lambda = 0);
 
     /*!
      * \brief Calculates the numerical gradient to check the gradient implementation.
      *
      * This function is used for debugging.
      *
+     * \param lambda Regularization coefficient to avoid overfitting.
+     * \param epsilon Increment to use when calculating the gradient.
+     *
      * \warning This way of calculating the gradient is expensive computationally. It
      * should be used only in small test networks for testing the backpropagation
      * implementation, not for optimization of weight set.
      */
-   std::vector<double> numericalGradient();
+   std::vector<double> numericalGradient(const double lambda = 0, const double epsilon = 1e-4);
 
    /*!
     * \brief Checks the computation of gradients with backprop in a small neural network.
     *
+    * \param lambda Regularization coefficient to avoid overfitting.
+    *
     * This funciont is used for debugging.
     */
-   bool checkGradient();
+   bool checkGradient(const double lambda = 0);
 
 public:
     /*!
@@ -152,16 +160,6 @@ private:
     //-- Internal math calculations:
     //-----------------------------------------------------------------------------------
     /*!
-     * \brief Calculates the sigmoid function of a number.
-     */
-    double sigmoid(double n);
-
-    /*!
-     * \brief Calculates the sigmoid function of a vector.
-     */
-    std::vector<double> sigmoid(std::vector<double> n);
-
-    /*!
      * \brief Calculates the derivative of the sigmoid function at point n.
      *
      * \note This is not the actual derivative, only works if the input is the output
@@ -169,11 +167,9 @@ private:
      */
     double sigmoidGradient(double n);
 
-    /*!
-     * \brief Calculates the derivative of the sigmoid function at points in vector n.
-     */
-    std::vector<double> sigmoidGradient(std::vector<double> n);
 
+    //-- Random number generation:
+    //-------------------------------------------------------------------------------------
     /*!
      * \brief Calculates the range of the random weights taking into account the network
      * dimensions.
@@ -184,7 +180,6 @@ private:
      */
     double calculateRandomRange(int layer );
 
-    //-- Random number
     /*!
       * \brief Uses the current time to initialize a seed for random numbers.
       */
