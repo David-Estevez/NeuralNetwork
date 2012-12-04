@@ -89,26 +89,28 @@ public:
      */
     double accuracy();
 
-protected:
     //-- Cost and gradient calculations
     //-------------------------------------------------------------------------
     /*!
      * \brief Returns the cost of all the examples with the current weight set.
      *
+     * \param theta Vector containing all the unrolled weights.
      * \param lambda Regularization coefficient to avoid overfitting.
      * \return Cost of all the training examples with current weight set
      */
-    double costFunction(const double lambda = 0);
+    double costFunction( const double lambda = 0, const std::vector<double> theta = std::vector<double>());
 
     /*!
      * \brief Returns the gradient of the cost function with the current weight set.
      *
      *
+     * \param theta Vector containing all the unrolled weights.
      * \param lambda Regularization coefficient to avoid overfitting.
      * \return Gradient of cost function given the current weight set.
      */
-    std::vector<double> gradient(const double lambda = 0);
+    std::vector<double> gradient( const double lambda = 0, const std::vector<double> theta = std::vector<double>());
 
+protected:
     /*!
      * \brief Calculates the numerical gradient to check the gradient implementation.
      *
@@ -132,7 +134,6 @@ protected:
     */
    bool checkGradient(const double lambda = 0);
 
-public:
     /*!
      * \brief Generates a new random weight set for training.
      *

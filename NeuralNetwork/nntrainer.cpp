@@ -25,11 +25,42 @@ void NNTrainer::getTrainingExamples(std::vector<TrainingExample> &trainingSet)
 //-- Cost and gradient calculations
 //-------------------------------------------------------------------------
 
-double NNTrainer::costFunction(const double lambda)
+double NNTrainer::costFunction(const double lambda,  const std::vector<double> theta)
 {
+    //-- If an unrolled vector is given, store it and use it:
+
    double cost = 0;
    int numExamples = trainingSet->size();
    int numLabels =  trainingSet->at(0).y.size();
+   int numWeights = 0;
+   std::vector<Matrix *> prevWeights;
+
+   //-- Calculate number of weights:
+   for (int i = 1; i < nn->getL(); i++)
+       numWeights += nn->getDimensions().at(i-1) * nn->getDimensions().at(i);
+
+   std::cout << "Debug: Number of weights:" << numWeights << std::endl;
+
+   if ( !theta.empty() && theta.size() == numWeights )
+   {
+       //-- Save old weights
+       prevWeights = nn->getWeights();
+
+       //-- Create weight matrices
+       std::vector<Matrix *> newWeights;
+       int lastPos = 0;
+
+       for (int i = 1; i < nn->getL(); i++)
+       {
+	   int nextPos = nn->getDimensions().at(i-1) * nn->getDimensions().at(i);
+	   Matrix * mat = new Matrix( std::vector<double>( theta.begin()+lastPos, theta.begin()+ nextPos ), nn->getDimensions().at(i) , nn->getDimensions().at(i-1)  );
+	   lastPos = nextPos;
+	   newWeights.push_back( mat );
+       }
+
+       //-- Assign new weights to neural network
+       nn->setWeights( newWeights);
+   }
 
    for (int i = 0; i < numExamples ; i++)
    {
@@ -60,11 +91,61 @@ double NNTrainer::costFunction(const double lambda)
        cost+=regCost;
    }
 
+   //-- Restore previous state:
+   if ( !theta.empty() && theta.size() == numWeights )
+   {
+       std::vector<Matrix *> newWeights = nn->getWeights();
+
+       //-- Restore old weights:
+       nn->setWeights( prevWeights);
+
+       //-- Deallocate memory:
+       for (int i =  nn->getL() - 1; i >= 0; i--)
+       {
+	   delete newWeights.at(i);
+       }
+   }
+
    return cost;
 }
 
-std::vector<double> NNTrainer::gradient(const double lambda)
+std::vector<double> NNTrainer::gradient( const double lambda,  const std::vector<double> theta)
 {
+
+    //-- If an unrolled vector is given, store it and use it:
+   int numWeights = 0;
+   std::vector<Matrix *> prevWeights;
+
+
+    //-- Calculate number of weights:
+    for (int i = 1; i < nn->getL(); i++)
+	numWeights += nn->getDimensions().at(i-1) * nn->getDimensions().at(i);
+
+    std::cout << "Debug: Number of weights:" << numWeights << std::endl;
+
+    //-- If a vector is given, convert that to matrices:
+    if ( !theta.empty() && theta.size() == numWeights )
+    {
+	//-- Save old weights
+	prevWeights = nn->getWeights();
+
+	//-- Create weight matrices
+	std::vector<Matrix *> newWeights;
+	int lastPos = 0;
+
+	for (int i = 1; i < nn->getL(); i++)
+	{
+	    int nextPos = nn->getDimensions().at(i-1) * nn->getDimensions().at(i);
+	    Matrix * mat = new Matrix( std::vector<double>( theta.begin()+lastPos, theta.begin()+ nextPos ), nn->getDimensions().at(i) , nn->getDimensions().at(i-1)  );
+	    lastPos = nextPos;
+	    newWeights.push_back( mat );
+	}
+
+	//-- Assign new weights to neural network
+	nn->setWeights( newWeights);
+    }
+
+
     int numExamples = trainingSet->size();
     //-- Create n matrices with the dimensions of the weight matrices:
     std::vector<Matrix> Delta;
@@ -151,6 +232,23 @@ std::vector<double> NNTrainer::gradient(const double lambda)
 	for (int j = 0; j < Delta.at(l).getNumRows(); j++)
 	    for (int k = 0; k < Delta.at(l).getNumCols(); k++)
 		unrolled.push_back( Delta.at(l).get(j, k));
+
+    //-- Restore previous state:
+    //----------------------------------------------------------------------------
+    if ( !theta.empty() && theta.size() == numWeights )
+    {
+	std::vector<Matrix *> newWeights = nn->getWeights();
+
+	//-- Restore old weights:
+	nn->setWeights( prevWeights);
+
+	//-- Deallocate memory:
+	for (int i =  nn->getL() - 1; i >= 0; i--)
+	{
+	    delete newWeights.at(i);
+	}
+    }
+
 
 return unrolled;
 
