@@ -94,11 +94,19 @@ public:
     /*!
      * \brief Returns the cost of all the examples with the current weight set.
      *
+     * \param lambda Regularization coefficient to avoid overfitting.
+     * \return Cost of all the training examples with current weight set
+     */
+    double costFunction( const double lambda = 0);
+
+    /*!
+     * \brief Returns the cost of all the examples with the current weight set.
+     *
      * \param theta Vector containing all the unrolled weights.
      * \param lambda Regularization coefficient to avoid overfitting.
      * \return Cost of all the training examples with current weight set
      */
-    double costFunction( const double lambda = 0, const std::vector<double> theta = std::vector<double>());
+    double costFunction( const std::vector<double> theta,  const double lambda = 0 );
 
     /*!
      * \brief Returns the gradient of the cost function with the current weight set.
@@ -108,7 +116,17 @@ public:
      * \param lambda Regularization coefficient to avoid overfitting.
      * \return Gradient of cost function given the current weight set.
      */
-    std::vector<double> gradient( const double lambda = 0, const std::vector<double> theta = std::vector<double>());
+    std::vector<double> gradient( const double lambda = 0);
+
+    /*!
+     * \brief Returns the gradient of the cost function with the current weight set.
+     *
+     *
+     * \param theta Vector containing all the unrolled weights.
+     * \param lambda Regularization coefficient to avoid overfitting.
+     * \return Gradient of cost function given the current weight set.
+     */
+    std::vector<double> gradient( const std::vector<double> theta,  const double lambda = 0);
 
 protected:
     /*!
@@ -157,6 +175,19 @@ private:
      */
     std::vector<double> weightSet;
 
+
+    //-- Convert unrolled weights to matrices vector:
+    //----------------------------------------------------------------------------------
+    /*!
+     * \brief Converts unrolled weights into a suitable matrix vector to set in the network.
+     *
+     * \warning This function reserves memory for the matrices that has to be deallocated
+     * manually later.
+     *
+     * \param theta Unrolled vector of weights.
+     * \return Matrix vector containing weights.
+     */
+    std::vector<Matrix *> unrolledToMatrices( std::vector< double> theta);
 
     //-- Internal math calculations:
     //-----------------------------------------------------------------------------------

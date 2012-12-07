@@ -25,127 +25,75 @@ void NNTrainer::getTrainingExamples(std::vector<TrainingExample> &trainingSet)
 //-- Cost and gradient calculations
 //-------------------------------------------------------------------------
 
-double NNTrainer::costFunction(const double lambda,  const std::vector<double> theta)
+double NNTrainer::costFunction(const double lambda)
 {
-    //-- If an unrolled vector is given, store it and use it:
+    double cost = 0;
+    int numExamples = trainingSet->size();
+    int numLabels =  trainingSet->at(0).y.size();
 
-   double cost = 0;
-   int numExamples = trainingSet->size();
-   int numLabels =  trainingSet->at(0).y.size();
-   int numWeights = 0;
-   std::vector<Matrix *> prevWeights;
+    for (int i = 0; i < numExamples ; i++)
+    {
+	//-- Set the input to the network:
+	nn->setInput( trainingSet->at(i).x );
 
-   //-- Calculate number of weights:
-   for (int i = 1; i < nn->getL(); i++)
-       numWeights += nn->getDimensions().at(i-1) * nn->getDimensions().at(i);
+	for (int j = 0; j < numLabels; j++)
+	    cost+=  ( -trainingSet->at(i).y.at(j) )*log( nn->getOutput().at(j) ) - (1 - trainingSet->at(i).y.at(j))*log( 1 - nn->getOutput().at(j) );
+     }
 
-   std::cout << "Debug: Number of weights:" << numWeights << std::endl;
+    cost /= numExamples;
 
-   if ( !theta.empty() && theta.size() == numWeights )
-   {
-       //-- Save old weights
-       prevWeights = nn->getWeights();
+    //-- Regularization
+    //------------------------------------------------------------------------
+    if (lambda != 0)
+    {
+	//-- Don't do calculations if lambda is not set
+	double regCost = 0;
 
-       //-- Create weight matrices
-       std::vector<Matrix *> newWeights;
-       int lastPos = 0;
+	for (int i = 1; i <  nn->getL(); i++)					//-- Input layer has no weight matrix associated
+	    for (int j = 0; j < nn->getDimensions().at(i); j++)
+		for (int k = 1; k < nn->getDimensions().at(i-1) + 1; k++ )	//-- We don't regularize bias units
+		    regCost += pow( nn->getWeights().at(i-1)->get( j, k), 2);
 
-       for (int i = 1; i < nn->getL(); i++)
-       {
-	   int nextPos = nn->getDimensions().at(i-1) * nn->getDimensions().at(i);
-	   Matrix * mat = new Matrix( std::vector<double>( theta.begin()+lastPos, theta.begin()+ nextPos ), nn->getDimensions().at(i) , nn->getDimensions().at(i-1)  );
-	   lastPos = nextPos;
-	   newWeights.push_back( mat );
-       }
 
-       //-- Assign new weights to neural network
-       nn->setWeights( newWeights);
-   }
+	regCost *= (lambda / (2 * numExamples ) );
 
-   for (int i = 0; i < numExamples ; i++)
-   {
-       //-- Set the input to the network:
-       nn->setInput( trainingSet->at(i).x );
-
-       for (int j = 0; j < numLabels; j++)
-	   cost+=  ( -trainingSet->at(i).y.at(j) )*log( nn->getOutput().at(j) ) - (1 - trainingSet->at(i).y.at(j))*log( 1 - nn->getOutput().at(j) );
+	cost+=regCost;
     }
 
-   cost /= numExamples;
+    return cost;
+}
 
-   //-- Regularization
-   //------------------------------------------------------------------------
-   if (lambda != 0)
+double NNTrainer::costFunction(  const std::vector<double> theta,  const double lambda)
+{
+    std::vector<Matrix *> prevWeights = nn->getWeights();
+    std::vector<Matrix *> newWeights = unrolledToMatrices( theta );
+    double cost = 0;
+
+    if ( !newWeights.empty() )
+    {
+	//-- Assign new weights to neural network:
+	nn->setWeights( newWeights);
+
+
+	//-- Actually calculate the cost:
+	cost = costFunction( lambda );
+
+    }
+
+   //-- Restore old weights:
+   nn->setWeights( prevWeights);
+
+   //-- Deallocate memory:
+   for (int i =  nn->getL() - 1; i >= 0; i--)
    {
-       //-- Don't do calculations if lambda is not set
-       double regCost = 0;
-
-       for (int i = 1; i <  nn->getL(); i++)					//-- Input layer has no weight matrix associated
-	   for (int j = 0; j < nn->getDimensions().at(i); j++)
-	       for (int k = 1; k < nn->getDimensions().at(i-1) + 1; k++ )	//-- We don't regularize bias units
-		   regCost += pow( nn->getWeights().at(i-1)->get( j, k), 2);
-
-
-       regCost *= (lambda / (2 * numExamples ) );
-
-       cost+=regCost;
-   }
-
-   //-- Restore previous state:
-   if ( !theta.empty() && theta.size() == numWeights )
-   {
-       std::vector<Matrix *> newWeights = nn->getWeights();
-
-       //-- Restore old weights:
-       nn->setWeights( prevWeights);
-
-       //-- Deallocate memory:
-       for (int i =  nn->getL() - 1; i >= 0; i--)
-       {
-	   delete newWeights.at(i);
-       }
+       delete newWeights.at(i);
    }
 
    return cost;
 }
 
-std::vector<double> NNTrainer::gradient( const double lambda,  const std::vector<double> theta)
+std::vector<double> NNTrainer::gradient( const double lambda)
 {
-
-    //-- If an unrolled vector is given, store it and use it:
-   int numWeights = 0;
-   std::vector<Matrix *> prevWeights;
-
-
-    //-- Calculate number of weights:
-    for (int i = 1; i < nn->getL(); i++)
-	numWeights += nn->getDimensions().at(i-1) * nn->getDimensions().at(i);
-
-    std::cout << "Debug: Number of weights:" << numWeights << std::endl;
-
-    //-- If a vector is given, convert that to matrices:
-    if ( !theta.empty() && theta.size() == numWeights )
-    {
-	//-- Save old weights
-	prevWeights = nn->getWeights();
-
-	//-- Create weight matrices
-	std::vector<Matrix *> newWeights;
-	int lastPos = 0;
-
-	for (int i = 1; i < nn->getL(); i++)
-	{
-	    int nextPos = nn->getDimensions().at(i-1) * nn->getDimensions().at(i);
-	    Matrix * mat = new Matrix( std::vector<double>( theta.begin()+lastPos, theta.begin()+ nextPos ), nn->getDimensions().at(i) , nn->getDimensions().at(i-1)  );
-	    lastPos = nextPos;
-	    newWeights.push_back( mat );
-	}
-
-	//-- Assign new weights to neural network
-	nn->setWeights( newWeights);
-    }
-
-
     int numExamples = trainingSet->size();
     //-- Create n matrices with the dimensions of the weight matrices:
     std::vector<Matrix> Delta;
@@ -233,24 +181,37 @@ std::vector<double> NNTrainer::gradient( const double lambda,  const std::vector
 	    for (int k = 0; k < Delta.at(l).getNumCols(); k++)
 		unrolled.push_back( Delta.at(l).get(j, k));
 
-    //-- Restore previous state:
-    //----------------------------------------------------------------------------
-    if ( !theta.empty() && theta.size() == numWeights )
+
+    return unrolled;
+}
+
+std::vector<double> NNTrainer::gradient( const std::vector<double> theta, const double lambda)
+{
+    std::vector<Matrix *> prevWeights = nn->getWeights();
+    std::vector<Matrix *> newWeights = unrolledToMatrices( theta );
+    std::vector<double> unrolled ;
+
+    if ( !newWeights.empty() )
     {
-	std::vector<Matrix *> newWeights = nn->getWeights();
+	//-- Assign new weights to neural network:
+	nn->setWeights( newWeights);
 
-	//-- Restore old weights:
-	nn->setWeights( prevWeights);
+	unrolled = gradient(lambda);
 
-	//-- Deallocate memory:
-	for (int i =  nn->getL() - 1; i >= 0; i--)
-	{
-	    delete newWeights.at(i);
-	}
+    }
+
+    //-- Restore old weights:
+    nn->setWeights( prevWeights);
+
+    //-- Deallocate memory:
+    for (int i =  nn->getL() - 1; i >= 0; i--)
+    {
+	delete newWeights.at(i);
     }
 
 
-return unrolled;
+
+    return unrolled;
 
 }
 
@@ -475,6 +436,41 @@ double NNTrainer::accuracy()
 
     return guessedOk / (double) numExamples;
 }
+
+
+
+//-- Convert unrolled weights to matrices vector:
+//----------------------------------------------------------------------------------
+std::vector<Matrix *> NNTrainer::unrolledToMatrices( std::vector< double> theta)
+{
+
+   std::vector<Matrix *> newWeights;
+
+   int numWeights = 0;
+
+   //-- Calculate number of weights:
+   for (int i = 1; i < nn->getL(); i++)
+       numWeights += nn->getDimensions().at(i-1) * nn->getDimensions().at(i);
+
+   std::cout << "Debug: Number of weights:" << numWeights << std::endl;
+
+   if ( !theta.empty() && theta.size() == numWeights )
+   {
+       //-- Create weight matrices
+       int lastPos = 0;
+
+       for (int i = 1; i < nn->getL(); i++)
+       {
+	   int nextPos = nn->getDimensions().at(i-1) * nn->getDimensions().at(i);
+	   Matrix * mat = new Matrix( std::vector<double>( theta.begin()+lastPos, theta.begin()+ nextPos ), nn->getDimensions().at(i) , nn->getDimensions().at(i-1)  );
+	   lastPos = nextPos;
+	   newWeights.push_back( mat );
+       }
+    }
+
+    return newWeights;
+}
+
 
 //-- Internal math calculations:
 //-----------------------------------------------------------------------------------
