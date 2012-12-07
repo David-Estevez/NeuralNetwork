@@ -122,6 +122,8 @@ void NNFileInput::loadTrainingExamples()
 	delete matrix1;
 	delete matrix2;
 
+	//-- Set training set of training module:
+	trainingModule->getTrainingExamples( trainingSet );
     }
 }
 

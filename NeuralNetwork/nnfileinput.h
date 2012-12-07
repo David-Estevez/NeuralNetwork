@@ -25,6 +25,7 @@
  * Loads the data for the input, weights and training examples from
  * different files.
  *
+ * \todo Document new functions.
  */
 class NNFileInput : public NNInput
 {
@@ -36,13 +37,26 @@ public:
      */
     NNFileInput() {}
 
+
     /*!
      * \brief Creates a file input interface and connects it to a NeuralNetwork.
      *
      * \param nn NeuralNetwork to connect to.
      */
-    NNFileInput(NeuralNetwork& nn): NNInput(nn) {}
+    NNFileInput(NeuralNetwork& nn): NNInput(nn) { }
 
+    /*!
+     * \brief Creates a file input interface and connects it to a NeuralNetwork and NNTrainer.
+     *
+     * \param nn NeuralNetwork to connect to.
+     * \param traininModule NNTrainer to connect to.
+     */
+    NNFileInput(NeuralNetwork& nn, NNTrainer& trainingModule): NNInput(nn) { this->trainingModule = &trainingModule; }
+
+
+    //-- Connectivity:
+    //---------------------------------------------------------------------------
+    void connectToTrainingModule( NNTrainer& trainingModule) { this->trainingModule = &trainingModule; }
 
     //-- Load data from files:
     //---------------------------------------------------------------------------
@@ -135,6 +149,9 @@ private:
      */
     std::vector<std::string> trainingSetFile;
 
+    //-- Pointer to the training module to use the training examples:
+    //--------------------------------------------------------------------------------
+    NNTrainer *trainingModule;
 
     //-- Load a matrix from a file:
     //--------------------------------------------------------------------------

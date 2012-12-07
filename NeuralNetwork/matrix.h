@@ -170,7 +170,7 @@ public:
     //-- Basic matrix operations: (to be implemented when/if needed)
     //---------------------------------------------------------------------------------------
     Matrix operator + (Matrix& );
-    Matrix operator - (Matrix& );
+    Matrix operator - (const Matrix );
     Matrix operator * (Matrix& );
 
     Matrix operator * (double );

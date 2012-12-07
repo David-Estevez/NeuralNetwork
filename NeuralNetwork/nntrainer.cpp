@@ -21,6 +21,44 @@ void NNTrainer::getTrainingExamples(std::vector<TrainingExample> &trainingSet)
     this->trainingSet = &trainingSet;
 }
 
+//-- Training
+//------------------------------------------------------------------
+void NNTrainer::trainNetwork()
+{
+    //-- Training parameters:
+    static const double alpha = 1;
+    static const int iter = 1000;
+    static const double lambda = 1;
+
+    std::cout << std::endl << "Training network:" << std::endl;
+
+    //-- Randomize weights
+    std::cout << "Randomize weights...";
+    randomWeights();
+    std::cout << "[ok]" << std::endl << "Starting Gradient Descend: " << std::endl;
+
+    //-- Start gradient descend:
+    for (int i = 0; i < iter; i++)
+    {
+
+	//-- Calculate gradient:
+	std::vector<double> grad = gradient( lambda );
+
+	//-- Convert the gradient in matrices:
+	std::vector<Matrix *> matGrad = unrolledToMatrices( grad );
+
+	//-- Operate matrices
+	for (int l = 0; l < (int) nn->getWeights().size(); l++)
+	    *nn->getWeights().at(l) = ( *nn->getWeights().at(l) ) - (*matGrad.at(l) * alpha);
+
+	//-- Periodically, show percentage completed and accuracy:
+	if ( i % 100 == 0)
+	{
+	    std::cout << "Completed: " << (double) ( i / iter ) << "% Current accuracy: "
+		      << accuracy() * 100 << "%" << std::endl;
+	}
+    }
+}
 
 //-- Cost and gradient calculations
 //-------------------------------------------------------------------------

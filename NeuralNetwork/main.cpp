@@ -27,7 +27,8 @@ int main( int argc, char *argv[])
     NeuralNetwork nn( sizeofnetwork);
 
    //-- Create input module
-    NNFileInput inputMod( nn );
+    NNTrainer trainingMod( nn );
+    NNFileInput inputMod( nn , trainingMod);
 
     //-- Add file paths
     inputMod.addWeightsFile( "../Sample data/Theta1.txt");
@@ -43,6 +44,8 @@ int main( int argc, char *argv[])
     inputMod.loadInput();
     inputMod.loadTrainingExamples();
 
+    //-- Train network
+    trainingMod.trainNetwork();
 
     //-- Create std output module:
     NNStdOutput outputMod( nn );

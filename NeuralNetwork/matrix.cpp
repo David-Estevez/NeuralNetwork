@@ -222,7 +222,7 @@ Matrix Matrix::operator +( Matrix& m)
     return result;
 }
 
-Matrix Matrix::operator -( Matrix& m)
+Matrix Matrix::operator -(const Matrix m)
 {
     //-- Create new matrix
     Matrix result( this->rows, this->cols);

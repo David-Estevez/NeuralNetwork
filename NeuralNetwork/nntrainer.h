@@ -78,9 +78,9 @@ public:
     /*!
      * \brief Trains the weigths of the NeuralNetwork.
      *
-     * \todo Remove debug routines.
+     * \todo Document this
      */
-    virtual void trainNetwork() = 0;
+    void trainNetwork();
 
     /*!
      * \brief Shows the ability of the current weights to fit a given training set.
