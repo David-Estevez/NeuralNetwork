@@ -27,8 +27,8 @@ void NNTrainer::trainNetwork()
 {
     //-- Training parameters:
     static const double alpha = 1;
-    static const int iter = 1000;
-    static const double lambda = 1;
+    static const int iter = 100;
+    static const double lambda = 0;
 
     std::cout << std::endl << "Training network:" << std::endl;
 
@@ -46,16 +46,27 @@ void NNTrainer::trainNetwork()
 
 	//-- Convert the gradient in matrices:
 	std::vector<Matrix *> matGrad = unrolledToMatrices( grad );
+	std::cout << "Increment: " << ( *matGrad.at(0) ).get(0,0) << std::endl;
 
 	//-- Operate matrices
 	for (int l = 0; l < (int) nn->getWeights().size(); l++)
+	{
+	    //-- Debug
+	    std::cout << "Layer(" << l << "), value before: " << nn->getWeights().at(l)->get( 0,0) << std::ends;
 	    *nn->getWeights().at(l) = ( *nn->getWeights().at(l) ) - (*matGrad.at(l) * alpha);
+	    std::cout << " value after: " << nn->getWeights().at(l)->get( 0,0) << std::ends;
+	    std::cout << " increment: " << (*matGrad.at(l) * alpha).get(0,0) << std::endl;
+	}
+
+	//-- Deallocate memory:
+	for (int l = (int) matGrad.size() - 1; l >= 0; l--)
+	    delete matGrad.at(l);
 
 	//-- Periodically, show percentage completed and accuracy:
-	if ( i % 100 == 0)
+	if ( (double) (i % 1) == 0)
 	{
-	    std::cout << "Completed: " << (double) ( i / iter ) << "% Current accuracy: "
-		      << accuracy() * 100 << "%" << std::endl;
+	    std::cout << "Completed: " <<  ( i / (double) iter ) * 100 << "% Current accuracy: "
+		      << accuracy() * 100 << "%" << " Current cost: " << costFunction(lambda)  << std::endl;
 	}
     }
 }
@@ -488,9 +499,7 @@ std::vector<Matrix *> NNTrainer::unrolledToMatrices( std::vector< double> theta)
 
    //-- Calculate number of weights:
    for (int i = 1; i < nn->getL(); i++)
-       numWeights += nn->getDimensions().at(i-1) * nn->getDimensions().at(i);
-
-   std::cout << "Debug: Number of weights:" << numWeights << std::endl;
+       numWeights += (nn->getDimensions().at(i-1) + 1) * nn->getDimensions().at(i);
 
    if ( !theta.empty() && theta.size() == numWeights )
    {
@@ -499,8 +508,8 @@ std::vector<Matrix *> NNTrainer::unrolledToMatrices( std::vector< double> theta)
 
        for (int i = 1; i < nn->getL(); i++)
        {
-	   int nextPos = nn->getDimensions().at(i-1) * nn->getDimensions().at(i);
-	   Matrix * mat = new Matrix( std::vector<double>( theta.begin()+lastPos, theta.begin()+ nextPos ), nn->getDimensions().at(i) , nn->getDimensions().at(i-1)  );
+	   int nextPos = lastPos + (nn->getDimensions().at(i-1) + 1) * nn->getDimensions().at(i);
+	   Matrix * mat = new Matrix( std::vector<double>( theta.begin()+lastPos, theta.begin()+ nextPos ), nn->getDimensions().at(i) , nn->getDimensions().at(i-1) + 1 );
 	   lastPos = nextPos;
 	   newWeights.push_back( mat );
        }
