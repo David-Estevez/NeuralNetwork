@@ -274,7 +274,7 @@ Matrix Matrix::operator *( double n)
     Matrix result( this->rows, this->cols);
 
     for (int i = 0; i < this->cols * this->rows; i++)
-	this->matrix[i] *= n;
+	result.matrix[i] = this->matrix[i] * n;
 
     return result;
 }
@@ -285,7 +285,7 @@ Matrix Matrix::operator /( double n)
     Matrix result( this->rows, this->cols);
 
     for (int i = 0; i < this->cols * this->rows; i++)
-	this->matrix[i] = this->matrix[i] / n;
+	result.matrix[i] = this->matrix[i] / n;
 
     return result;
 }

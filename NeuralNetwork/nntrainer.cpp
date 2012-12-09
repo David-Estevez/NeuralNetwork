@@ -27,15 +27,16 @@ void NNTrainer::trainNetwork()
 {
     //-- Training parameters:
     static const double alpha = 1;
-    static const int iter = 1000;
-    static const double lambda = 0;
+    static const int iter = 1;
+    static const double lambda = 1;
 
-    std::cout << std::endl << "Training network:" << std::endl;
+    std::cout << std::endl << "Training network:" << std::endl
+	      << "#####################################################" << std::endl;
 
     //-- Randomize weights
     std::cout << "Randomize weights...";
     randomWeights();
-    std::cout << "[ok]" << std::endl << "Starting Gradient Descend: " << std::endl;
+    std::cout  << "\033[0;32m" << "[ok]" << "\033[0m" << std::endl << "Starting Gradient Descend... " << std::endl << std::endl;
 
     //-- Start gradient descend:
     for (int i = 0; i < iter; i++)
@@ -46,32 +47,32 @@ void NNTrainer::trainNetwork()
 
 	//-- Convert the gradient in matrices:
 	std::vector<Matrix *> matGrad = unrolledToMatrices( grad );
-	Matrix aux = ( *matGrad.at(0) * 2);
-	//std::cout << "Increment: " << aux.get(0,0) << std::endl;
 
 	//-- Operate matrices
 	for (int l = 0; l < (int) nn->getWeights().size(); l++)
-	{
-	    //-- Debug
-	   // std::cout << "Layer(" << l << "), value before: " << nn->getWeights().at(l)->get( 0,0) << std::ends;
-	    *nn->getWeights().at(l) = ( *nn->getWeights().at(l) ) - *matGrad.at(l)  ;
-	   // std::cout << " value after: " << nn->getWeights().at(l)->get( 0,0) << std::ends;
-	   // std::cout << " increment: " << (*matGrad.at(l) * alpha).get(0,0) << std::endl;
-	}
+	    *nn->getWeights().at(l) = ( *nn->getWeights().at(l) ) - (*matGrad.at(l) * alpha) ;
+
 
 	//-- Deallocate memory:
 	for (int l = (int) matGrad.size() - 1; l >= 0; l--)
 	    delete matGrad.at(l);
 
 	//-- Periodically, show percentage completed and accuracy:
-	if ( (double) (i % 10) == 0)
+	if ( (double) (i % (iter/100)) == 0)
 	{
-	    std::cout << "\033[2J";
-	    std::cout << "\033[0;31m" << "Completed: " << "\033[0m" <<  ( i / (double) iter ) * 100 << "%"
-		      << "\033[0;31m" << " Current accuracy: " << "\033[0m" << accuracy() * 100 << "%"
-		      << "\033[0;31m" << " Current cost: " << "\033[0m" << costFunction(lambda)  << std::endl;
+	    std::cout << "\033[1A" <<  "\033[K";// << "\033[0;0H";
+	    std::cout << "Completed: "<< "\033[0;31m" <<  ( i / (double) iter ) * 100 << "%"  << "\033[0m"
+		      << " Current accuracy: "  << "\033[0;31m" << accuracy() * 100 << "%" << "\033[0m"
+		      << " Current cost: "  << "\033[0;31m" << costFunction(lambda)  << "\033[0m" << std::endl;
 	}
+
     }
+
+    std::cout << "Done. Final accuracy: " << accuracy() * 100 << "%" << std::endl
+	      << "Press enter to continue." << std::endl;
+    std::cin.get();
+
+
 }
 
 //-- Cost and gradient calculations
