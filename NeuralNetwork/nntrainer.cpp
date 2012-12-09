@@ -66,8 +66,10 @@ void NNTrainer::trainNetwork()
 	//-- Periodically, show percentage completed and accuracy:
 	if ( (double) (i % 10) == 0)
 	{
-	    std::cout << "Completed: " <<  ( i / (double) iter ) * 100 << "% Current accuracy: "
-		      << accuracy() * 100 << "%" << " Current cost: " << costFunction(lambda)  << std::endl;
+	    std::cout << "\033[2J";
+	    std::cout << "\033[0;31m" << "Completed: " << "\033[0m" <<  ( i / (double) iter ) * 100 << "%"
+		      << "\033[0;31m" << " Current accuracy: " << "\033[0m" << accuracy() * 100 << "%"
+		      << "\033[0;31m" << " Current cost: " << "\033[0m" << costFunction(lambda)  << std::endl;
 	}
     }
 }
