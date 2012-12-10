@@ -4,29 +4,16 @@
 #include "nnstdoutput.h"
 #include "nnfileoutput.h"
 #include "nntrainer.h"
+#include "terminalmenu.h"
 
 #include <iostream>
 #include <string>
 
-//-- ANSI terminal escape sequences:
-static const std::string CLEAR_SCREEN = "\033[2J";
-static const std::string HOME_SCREEN = "\033[0;0H";
-static const std::string RESET_FORMAT = "\033[0m";
-static const std::string BOLD = "\033[1m";
-static const std::string PURPLE = "\033[0;35m";
-
-
-void showMainMenu( int selPos = -1 );
+void menuSetup( );
 
 int main( int argc, char *argv[])
 {
-    int pos = -1;
-    do
-    {
-	showMainMenu( pos );
-	std::cin >> pos;
-    }
-    while (pos != -1);
+    menuSetup();
 
     if (argc == 2)
     {
@@ -41,7 +28,7 @@ int main( int argc, char *argv[])
 
     NeuralNetwork nn( sizeofnetwork);
 
-   //-- Create input module
+    //-- Create input module
     NNTrainer trainingMod( nn );
     NNFileInput inputMod( nn , trainingMod);
 
@@ -60,12 +47,17 @@ int main( int argc, char *argv[])
     inputMod.loadTrainingExamples();
 
     //-- Train network
-    trainingMod.trainNetwork();
+  // trainingMod.trainNetwork();
 
     //-- Create std output module:
     NNStdOutput outputMod( nn );
 
+    TerminalInterface interface( "Input");
+    interface.show();
+    std::cout << std::endl << "\033[1A";
     outputMod.outputInput();
+    std::cin.get();
+
     outputMod.outputGuess();
 
     NNFileOutput outputMod2( nn);
@@ -77,9 +69,6 @@ int main( int argc, char *argv[])
    // outputMod2.outputInput();
    // outputMod2.outputGuess();
 
-
-
-
     }
     else
     {
@@ -88,37 +77,27 @@ int main( int argc, char *argv[])
     return 0;
 }
 
-void showMainMenu( int selPos )
+void menuSetup( )
 {
-    //-- Clear terminal:
-    std::cout << CLEAR_SCREEN;
-    std::cout << HOME_SCREEN;
-    std::cout << RESET_FORMAT;
 
-    //-- Display menu:
-    for (int i = 0; i < 80 ; i++)
-	std::cout << '#';
+    TerminalMenu mainMenu ( "Neural Network in C++" );
+    mainMenu.addOption( "Network configuration" );
+    mainMenu.addOption( "Guess number" );
+    mainMenu.addOption( "Train Neural Network" );
+    mainMenu.addOption( "Save" );
+    mainMenu.addOption( "Exit" );
 
-    std::cout << std::endl << PURPLE << BOLD <<  "Neural Network in C++" << RESET_FORMAT << std::endl;
+    int pos = -1;
+    do
+    {
+	mainMenu.setCurrent( pos );
+	mainMenu.show();
+	std::cin >> pos;
+    }
+    while (pos != -1);
 
-    for (int i = 0; i < 80 ; i++)
-	std::cout << '#';
-
-    //-- Choices:
-    std::cout << std::endl;
-    if (selPos == 0)	{ std::cout << '>' << BOLD; } else { std::cout << RESET_FORMAT; }
-    std::cout << "Network configuration" << std::endl;
-
-    if (selPos == 1)	{ std::cout << '>' << BOLD; } else { std::cout << RESET_FORMAT; }
-    std::cout << "Guess number" << std::endl;
-
-    if (selPos == 2)	{ std::cout << '>' << BOLD; } else { std::cout << RESET_FORMAT; }
-    std::cout << "Train Neural Network" << std::endl;
-
-    if (selPos == 3)	{ std::cout << '>' << BOLD; } else { std::cout << RESET_FORMAT; }
-    std::cout << "Save" << std::endl;
-
-    if (selPos == 4)	{ std::cout << '>' << BOLD; } else { std::cout << RESET_FORMAT; }
-    std::cout << "Exit" << std::endl;
-
+    TerminalMenu otherMenu ("Other menu");
+    otherMenu.show();
 }
+
+

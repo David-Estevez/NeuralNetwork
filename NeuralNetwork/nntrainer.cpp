@@ -30,8 +30,8 @@ void NNTrainer::trainNetwork()
     static const int iter = 1;
     static const double lambda = 1;
 
-    std::cout << std::endl << "Training network:" << std::endl
-	      << "#####################################################" << std::endl;
+   // std::cout << std::endl << "Training network:" << std::endl
+   //      << "#####################################################" << std::endl;
 
     //-- Randomize weights
     std::cout << "Randomize weights...";
