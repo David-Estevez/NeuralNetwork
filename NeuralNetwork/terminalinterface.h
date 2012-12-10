@@ -12,7 +12,7 @@ public:
 
     void setTitle(const std::string newTitle );
 
-    virtual void show();
+    virtual int show();
 
 private:
     std::string menuTitle;

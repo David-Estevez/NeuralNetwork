@@ -5,6 +5,7 @@
 #include "nnfileoutput.h"
 #include "nntrainer.h"
 #include "terminalmenu.h"
+#include "terminaltextedit.h"
 
 #include <iostream>
 #include <string>
@@ -98,6 +99,13 @@ void menuSetup( )
 
     TerminalMenu otherMenu ("Other menu");
     otherMenu.show();
+    std::cin.get();
+
+    std::string path = "../Sample data/file.txt";
+    TerminalTextEdit editPathMenu( "Edit file path", path);
+    editPathMenu.show();
+    std::cout << path;
+    std::cin.get();
 }
 
 

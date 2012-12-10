@@ -17,7 +17,7 @@ public:
     void addOption(const std::string newOption);
     void setCurrent(const int num);
 
-    void show();
+    int show();
 
 private:
     std::vector<std::string> options;

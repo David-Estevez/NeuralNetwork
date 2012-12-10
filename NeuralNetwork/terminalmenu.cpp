@@ -12,7 +12,7 @@ TerminalMenu::TerminalMenu(const std::string title ) : TerminalInterface(title)
     currentOption = -1;
 }
 
-void TerminalMenu::show()
+int TerminalMenu::show()
 {
     TerminalInterface::show();
 
@@ -28,6 +28,8 @@ void TerminalMenu::show()
 
     }
     std::cout << RESET_FORMAT;
+
+    return currentOption;
 }
 
 void TerminalMenu::addOption( const std::string newOption)

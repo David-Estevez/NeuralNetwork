@@ -14,7 +14,7 @@ void TerminalInterface::setTitle(const std::string newTitle)
     menuTitle = newTitle;
 }
 
-void TerminalInterface::show()
+int TerminalInterface::show()
 {
     //-- Clear terminal:
     std::cout << CLEAR_SCREEN;
@@ -31,6 +31,8 @@ void TerminalInterface::show()
 	std::cout << '#';
 
     std::cout << RESET_FORMAT;
+
+    return 1;
 }
 
 //-- ANSI terminal escape sequences:
