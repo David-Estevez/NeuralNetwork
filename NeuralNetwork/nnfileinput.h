@@ -129,6 +129,10 @@ public:
      */
     void setTrainingSetFile( const std::string filePath, const int n);
 
+    //! \todo Document this:
+    std::vector<std::string> getWeightsFile( ) {return weightsFile; }
+    std::string getInputFile() {return inputFile; }
+    std::vector<std::string> getTrainingSetFile() { return trainingSetFile;}
 
 private:
     //-- Variables storing files path:

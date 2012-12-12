@@ -29,7 +29,22 @@ int TerminalMenu::show()
     }
     std::cout << RESET_FORMAT;
 
-    return currentOption;
+    //-- Select choice:
+    int choice;
+    std::cin >> choice;
+
+    if (numOptions == 0)
+	return -1;
+
+    if ( choice > -1 && choice < numOptions)
+	return choice;
+    else
+    {
+	choice = show();
+	return choice;
+    }
+
+    //return currentOption;
 }
 
 void TerminalMenu::addOption( const std::string newOption)
