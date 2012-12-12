@@ -74,7 +74,7 @@ int main( int argc, char *argv[])
     TerminalMenu saveMenu ( "Save data to file");
     saveMenu.addOption( "Save weights to file");
     saveMenu.addOption( "Save guess to file");
-    saveMenu.addOption( "Save current selected input as ascii image");
+    saveMenu.addOption( "Save current selected input as ascii image in file");
     saveMenu.addOption( "Return");
 
     //-- Load default data:
@@ -200,9 +200,95 @@ int main( int argc, char *argv[])
 	{
 	    //-- Train network
 	}
-	else if ( nextMenu_l1 == 3 )
+	else if ( nextMenu_l1 == 3 )	//-- Save data into a file
 	{
-	    //-- Save data
+	    //-- Save data into a file
+	    //-----------------------------------------------
+	    if (nextMenu_l2 == -1)
+		nextMenu_l2 = saveMenu.show();
+
+	    if ( nextMenu_l2 == 0)  //-- Save weights to file
+	    {
+		//-- Save weights to file
+		//----------------------------------------
+
+		//-- Get previous value of file path (without the end of name format)
+		std::string newPath = outputFileMod.getWeightsFile().at(0).substr( 0, outputFileMod.getWeightsFile().at(0).find("-0.txt") );
+		newPath += ".txt";
+
+		//-- Create menu:
+		TerminalTextEdit filePathTextEdit( "Choose file path for weight matrices files:", newPath);
+
+		filePathTextEdit.show();
+
+		//-- Save file:
+		if ( !newPath.empty() )
+		{
+		    outputFileMod.setWeightsFile( newPath);
+		    std::cout << newPath << std::endl;
+		    std::cout << outputFileMod.getWeightsFile().at(0) << std::endl;
+		    int aux;
+		    std::cin >> aux;
+		    outputFileMod.outputWeights();
+		}
+
+		nextMenu_l2 = -1;
+	    }
+	    else if (nextMenu_l2 == 1) //-- Save guess to file
+	    {
+		    //-- Save guess to file
+		    //----------------------------------------
+
+		    //-- Get previous value of file path
+		    std::string newPath = outputFileMod.getGuessFile();
+
+		    //-- Create menu:
+		    TerminalTextEdit filePathTextEdit( "Choose file path for guess file:", newPath);
+
+		    filePathTextEdit.show();
+
+		    //-- Save file:
+		    if ( !newPath.empty() )
+		    {
+			outputFileMod.setGuessFile( newPath);
+			outputFileMod.outputGuess();
+		    }
+
+		    nextMenu_l2 = -1;
+	    }
+	    else if (nextMenu_l2 == 2) //-- Save ascii image to file
+	    {
+		//-- Save ascii image to file
+		//----------------------------------------
+
+		//-- Get previous value of file path
+		std::string newPath = outputFileMod.getInputFile();
+
+		//-- Create menu:
+		TerminalTextEdit filePathTextEdit( "Choose file path for ascii image file:", newPath);
+
+		filePathTextEdit.show();
+
+		//-- Save file:
+		if ( !newPath.empty() )
+		{
+		    outputFileMod.setInputFile( newPath);
+		    outputFileMod.outputInput();
+		}
+
+		nextMenu_l2 = -1;
+	    }
+	    else if (nextMenu_l2 == 3) //-- Return to upper level
+	    {
+		//-- Return to upper level:
+		nextMenu_l1 = nextMenu_l2 = -1;
+	    }
+	    else		       //-- Otherwise stay at this level
+	    {
+		//-- Return to this level:
+		nextMenu_l2 = -1;
+	    }
+
 	}
 	else if ( nextMenu_l1 == 4 )
 	{

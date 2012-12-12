@@ -10,6 +10,8 @@ void NNFileOutput::addWeightsFile( const std::string filePath)
 
 void NNFileOutput::setWeightsFile(const std::string filePath)
 {
+    weightsFile.clear();
+
     //--Generate the paths from filePath
     for (int i = 0; i < (int) nn->getL() - 1; i++)
     {

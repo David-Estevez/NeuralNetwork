@@ -87,6 +87,11 @@ public:
     void setInputFile( const std::string filePath);
 
 
+    //! \todo Document this and make it nice:
+    std::vector<std::string> getWeightsFile() { return weightsFile; }
+    std::string getGuessFile( ) { return guessFile; }
+    std::string getInputFile( ) { return inputFile; }
+
     //-- File Output interface:
     //------------------------------------------------------------------
     /*!
