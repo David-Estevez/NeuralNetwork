@@ -68,6 +68,13 @@ public:
      */
     ~NNTrainer() {}
 
+    //-- Data interface
+    //------------------------------------------------------
+    void setAlpha( double alpha);
+    void setIter(int iter);
+    void setLambda( double lambda);
+
+
     //-- Interface with other modules
     //-------------------------------------------------------------------------
     /*!
@@ -217,6 +224,12 @@ private:
       */
     void initializeRandomSeed();
 
+    //-- Training parameters:
+    //--------------------------------------------------------------------------------------
+    //! \todo Document this
+    double alpha;
+    int iter;
+    double global_lambda;
 };
 
 #endif // NNTRAINER_H

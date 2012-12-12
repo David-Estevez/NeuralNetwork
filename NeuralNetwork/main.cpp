@@ -198,7 +198,34 @@ int main( int argc, char *argv[])
 	}
 	else if ( nextMenu_l1 == 2)
 	{
-	    //-- Train network
+	    //-- Show header:
+	    TerminalInterface header( "Training Neural Network");
+	    header.show();
+
+	    std::cout << "Set number of iteration (default: 1000):>";
+	    int aux1;
+	    std::cin >> aux1;
+	    trainingMod.setIter( aux1);
+
+	    std::cout << "Set gradient descend severity alpha (default: 1):>";
+	    double aux2;
+	    std::cin >> aux2;
+	    trainingMod.setAlpha(aux2);
+
+	    std::cout << "Set regularization coefficient lambda (default: 1):>";
+	    std::cin >> aux2;
+	    trainingMod.setLambda(aux2);
+
+	    //-- Load training examples:
+	    inputMod.loadTrainingExamples();
+
+	    //-- Show header:
+	    header.show();
+
+	    //-- Train:
+	    trainingMod.trainNetwork();
+
+	    nextMenu_l1 = -1;
 	}
 	else if ( nextMenu_l1 == 3 )	//-- Save data into a file
 	{
@@ -225,10 +252,6 @@ int main( int argc, char *argv[])
 		if ( !newPath.empty() )
 		{
 		    outputFileMod.setWeightsFile( newPath);
-		    std::cout << newPath << std::endl;
-		    std::cout << outputFileMod.getWeightsFile().at(0) << std::endl;
-		    int aux;
-		    std::cin >> aux;
 		    outputFileMod.outputWeights();
 		}
 

@@ -6,11 +6,34 @@
 NNTrainer::NNTrainer()
 {
     initializeRandomSeed();
+    alpha = 1;
+    iter = 1000;
+    global_lambda = 1;
 }
 
 NNTrainer::NNTrainer(NeuralNetwork &nn) : NeuralNetworkIO( nn )
 {
     initializeRandomSeed();
+    alpha = 1;
+    iter = 1000;
+    global_lambda = 1;
+}
+
+//-- Data interface
+//-------------------------------------------------------------------
+void NNTrainer::setAlpha( double alpha)
+{
+    this->alpha = alpha;
+}
+
+void NNTrainer::setIter(int iter)
+{
+    this->iter = iter;
+}
+
+void NNTrainer::setLambda( double lambda)
+{
+    this->global_lambda = lambda;
 }
 
 //-- Interface with other modules
@@ -26,9 +49,7 @@ void NNTrainer::getTrainingExamples(std::vector<TrainingExample> &trainingSet)
 void NNTrainer::trainNetwork()
 {
     //-- Training parameters:
-    static const double alpha = 1;
-    static const int iter = 1;
-    static const double lambda = 1;
+
 
    // std::cout << std::endl << "Training network:" << std::endl
    //      << "#####################################################" << std::endl;
@@ -43,7 +64,7 @@ void NNTrainer::trainNetwork()
     {
 
 	//-- Calculate gradient:
-	std::vector<double> grad = gradient( lambda );
+	std::vector<double> grad = gradient( global_lambda );
 
 	//-- Convert the gradient in matrices:
 	std::vector<Matrix *> matGrad = unrolledToMatrices( grad );
@@ -63,7 +84,7 @@ void NNTrainer::trainNetwork()
 	    std::cout << "\033[1A" <<  "\033[K";// << "\033[0;0H";
 	    std::cout << "Completed: "<< "\033[0;31m" <<  ( i / (double) iter ) * 100 << "%"  << "\033[0m"
 		      << " Current accuracy: "  << "\033[0;31m" << accuracy() * 100 << "%" << "\033[0m"
-		      << " Current cost: "  << "\033[0;31m" << costFunction(lambda)  << "\033[0m" << std::endl;
+		      << " Current cost: "  << "\033[0;31m" << costFunction(global_lambda)  << "\033[0m" << std::endl;
 	}
 
     }
