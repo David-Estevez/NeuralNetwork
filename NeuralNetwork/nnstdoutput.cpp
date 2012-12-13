@@ -98,9 +98,6 @@ void NNStdOutput::outputInput()
     //-- Get input vector:
     std::vector<double> input = nn->getInput();
 
-    //-- Show input:
-    //std::cout << "Neural network input:" << std::endl;
-
     //-- Upper frame:
     for (int i = 0; i < (3 * cols + 2); i++)
 	std::cout << '#';
@@ -108,7 +105,7 @@ void NNStdOutput::outputInput()
     std::cout << std::endl << '#';
 
     //-- Input data itself:
-    for (int i = 0; i < input.size(); i++)
+    for (int i = 0; i < (int) input.size(); i++)
 	{
 	    //-- Character selection:
 	    if ( input.at(i) > 0 && input.at(i) < 0.33)
@@ -131,5 +128,4 @@ void NNStdOutput::outputInput()
     for (int i = 0; i < 3 * cols + 1; i++)
 	std::cout << '#';
 
-   // std::cout << std::endl;
 }

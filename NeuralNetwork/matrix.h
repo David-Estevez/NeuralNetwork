@@ -299,11 +299,11 @@ public:
 
 private:
     /*! \var int cols
-     * \brief Stores the number of columns in matrix
+     * \brief Stores the number of columns in matrix.
      */
 
     /*! \var int rows
-      * \brief Stores the number of rows in matrix
+      * \brief Stores the number of rows in matrix.
       */
 
     int cols, rows;

@@ -5,7 +5,7 @@
  * and send data to the outside using std output.
  *
  * \author David Estévez Fernández ( http://github.com/David-Estevez )
- * \date Nov 18th, 2012
+ * \date Dec 13th, 2012
  *
  */
 #ifndef NNSTDOUTPUT_H
@@ -47,7 +47,12 @@ public:
 
     //-- Data interface:
     //------------------------------------------------------------------------
-    //! Document this
+    /*!
+     * \brief Sets the position where the guess output will be drawn in terminal.
+     *
+     * \param col Column of terminal where the output will start.
+     * \param row Row of terminal where the output will start.
+     */
     void setDisplayCursor( int col, int row );
 
     //-- Std Output interface:
@@ -73,10 +78,14 @@ public:
     virtual void outputInput();
 
 private:
-    //!  \todo Document this
-    int displayColumn;
+    /*! \var int displayColumn
+     * \brief Stores the starting column of guess output.
+     */
 
-    int displayRow;
+    /*! \var int displayRow
+      * \brief Stores the starting row of guess output.
+      */
+    int displayColumn, displayRow;
 };
 
 #endif // NNSTDOUTPUT_H
