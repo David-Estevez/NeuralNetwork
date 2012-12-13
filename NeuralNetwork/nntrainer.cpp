@@ -49,20 +49,19 @@ void NNTrainer::getTrainingExamples(std::vector<TrainingExample> &trainingSet)
 void NNTrainer::trainNetwork()
 {
     //-- Training parameters:
-
-
-   // std::cout << std::endl << "Training network:" << std::endl
-   //      << "#####################################################" << std::endl;
-
+    //---------------------------------------------------------------
     //-- Randomize weights
     std::cout << "Randomize weights...";
     randomWeights();
-    std::cout  << "\033[0;32m" << "[ok]" << "\033[0m" << std::endl << "Starting Gradient Descend... " << std::endl << std::endl;
+    std::cout  << "\033[0;32m" << "[ok]" << "\033[0m" << std::endl
+	       << "Starting Gradient Descend... " << std::endl << std::endl;
+
+    //-- Calculate the frequency of information update:
+    int showPeriod = iter > 10 ? iter / 10 : iter;
 
     //-- Start gradient descend:
     for (int i = 0; i < iter; i++)
     {
-
 	//-- Calculate gradient:
 	std::vector<double> grad = gradient( global_lambda );
 
@@ -73,16 +72,15 @@ void NNTrainer::trainNetwork()
 	for (int l = 0; l < (int) nn->getWeights().size(); l++)
 	    *nn->getWeights().at(l) = ( *nn->getWeights().at(l) ) - (*matGrad.at(l) * alpha) ;
 
-
 	//-- Deallocate memory:
 	for (int l = (int) matGrad.size() - 1; l >= 0; l--)
 	    delete matGrad.at(l);
 
 	//-- Periodically, show percentage completed and accuracy:
-	if ( (double) (i % (iter/100)) == 0)
+	if ( (double) (i % showPeriod) == 0)
 	{
 	    std::cout << "\033[1A" <<  "\033[K";// << "\033[0;0H";
-	    std::cout << "Completed: "<< "\033[0;31m" <<  ( i / (double) iter ) * 100 << "%"  << "\033[0m"
+	    std::cout << "Completed: "<< "\033[0;31m" <<   (i / (double) iter ) * 100 << "%"  << "\033[0m"
 		      << " Current accuracy: "  << "\033[0;31m" << accuracy() * 100 << "%" << "\033[0m"
 		      << " Current cost: "  << "\033[0;31m" << costFunction(global_lambda)  << "\033[0m" << std::endl;
 	}
@@ -91,7 +89,8 @@ void NNTrainer::trainNetwork()
 
     std::cout << "Done. Final accuracy: " << accuracy() * 100 << "%" << std::endl
 	      << "Press enter to continue." << std::endl;
-    std::cin.get();
+
+    std::cin.ignore();
 
 
 }

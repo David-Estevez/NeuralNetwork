@@ -30,8 +30,17 @@ int TerminalMenu::show()
     std::cout << RESET_FORMAT;
 
     //-- Select choice:
-    int choice;
-    std::cin >> choice;
+    int choice = 0;
+
+    while (true) {
+      std::string input = "";
+      std::getline(std::cin, input);
+
+      // This code converts from string to number safely.
+      std::stringstream myStream(input);
+      if (myStream >> choice)
+	break;
+    }
 
     if (numOptions == 0)
 	return -1;

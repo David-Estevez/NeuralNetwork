@@ -10,6 +10,7 @@
 #include <iostream>
 #include <string>
 
+
 int main( )
 {
     //-- Setting up the neural network:
@@ -186,11 +187,8 @@ int main( )
 
 	    //-- Ask for input file:
 	    std::cout << "Choose input file:>";
-
-	    char buffer[256];
-	    std::cin.ignore();
-	    std::cin.getline(buffer, 256, '\n');
-	    std::string inputFile ( buffer);
+	    std::string inputFile = "";
+	    std::getline( std::cin, inputFile);
 
 	    if ( !inputFile.empty() )
 		inputMod.setInputFile( inputFile );
@@ -207,8 +205,8 @@ int main( )
 	    outputMod.setDisplayCursor( 64, 4);
 	    outputMod.outputGuess();
 
+
 	    std::cin.ignore();
-	    std::cin.get();
 
 	    nextMenu_l1 = -1;
 	}
@@ -223,16 +221,49 @@ int main( )
 	    std::cout << std::endl;
 	    std::cout << "Set number of iteration (default: 1000):>";
 	    int aux1;
-	    std::cin >> aux1;
+
+	    while (true)
+	    {
+	       std::string input = "";
+	       std::getline( std::cin, input);
+
+	       // This code converts from string to number safely.
+	       std::stringstream myStream(input);
+	       if (myStream >> aux1)
+		 break;
+	    }
+
 	    trainingMod.setIter( aux1);
 
 	    std::cout << "Set gradient descend severity alpha (default: 1):>";
 	    double aux2;
-	    std::cin >> aux2;
+
+	    while (true)
+	    {
+	       std::string input = "";
+	       std::getline( std::cin, input);
+
+	       // This code converts from string to number safely.
+	       std::stringstream myStream(input);
+	       if (myStream >> aux2)
+		 break;
+	    }
+
 	    trainingMod.setAlpha(aux2);
 
 	    std::cout << "Set regularization coefficient lambda (default: 1):>";
-	    std::cin >> aux2;
+
+	    while (true)
+	    {
+	       std::string input = "";
+	       std::getline( std::cin, input);
+
+	       // This code converts from string to number safely.
+	       std::stringstream myStream(input);
+	       if (myStream >> aux1)
+		 break;
+	    }
+
 	    trainingMod.setLambda(aux2);
 
 	    //-- Load training examples:

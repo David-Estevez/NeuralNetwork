@@ -27,13 +27,7 @@ int TerminalTextEdit::show()
 
     std::cout << std::endl << "New value: ";
 
-
-    char buffer[256];
-
-    std::cin.ignore();
-    std::cin.getline(buffer, 256, '\n');
-
-    *textToEdit = std::string( buffer);
+    std::getline( std::cin, *textToEdit);
 
     return 0;
 }
