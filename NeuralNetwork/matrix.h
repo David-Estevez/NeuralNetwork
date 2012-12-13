@@ -4,7 +4,7 @@
  * Provides basic matrix functionality, such as element, row and column values placement/return.
  *
  * \author David Estévez Fernández ( http://github.com/David-Estevez )
- * \date Nov 15th, 2012
+ * \date Nov 30th, 2012
  *
  */
 
@@ -17,9 +17,9 @@
 /*! \class Matrix
  *  \brief Bidimensional matrix of doubles.
  *
- * It has functions for single value, row or column modification and return.
+ * It has functions for single value, row or column modification and return, as well
+ * as support for basic arithmetics operations.
  *
- * \todo Add basic matrix arithmetics if needed.
  */
 
 class Matrix
@@ -169,17 +169,87 @@ public:
 
     //-- Basic matrix operations: (to be implemented when/if needed)
     //---------------------------------------------------------------------------------------
-    Matrix operator + (Matrix& );
-    Matrix operator - (const Matrix );
-    Matrix operator * (Matrix& );
+    /*!
+     * \brief Sum two matrices.
+     *
+     * \warning Dimensions must be compatible.
+     *
+     * \param m Matrix to sum.
+     * \return Result of the sum of the matrices.
+     */
+    Matrix operator + (const Matrix& m);
 
-    Matrix operator * (double );
-    Matrix operator / (double );
+    /*!
+     * \brief Substract two matrices.
+     *
+     * \warning Dimensions must be compatible.
+     *
+     * \param m Matrix to substract.
+     * \return Result of the substraction of the matrices.
+     */
+    Matrix operator - (const Matrix& m);
 
-    Matrix& operator += (Matrix& );
-    Matrix& operator -= (Matrix& );
-    Matrix& operator *= (double );
-    Matrix& operator /= (double );
+    /*!
+     * \brief Calculates the product of two matrices.
+     *
+     * \warning Dimensions must be compatible.
+     *
+     * \param m Matrix to multiply.
+     * \return Result of the product of the matrices.
+     */
+    Matrix operator * (const Matrix& m);
+
+    /*!
+     * \brief Multiply each element by a constant.
+     *
+     * \param n Constant to multiply.
+     * \return Result of the operation.
+     */
+    Matrix operator * (const double n);
+
+    /*!
+     * \brief Divide each element by a constant.
+     *
+     * \param n Constant to divide by.
+     * \return Result of the operation.
+     */
+    Matrix operator / (const double n);
+
+    /*!
+     * \brief Add another matrix to this.
+     *
+     * \warning Dimensions must be compatible.
+     *
+     * \param m Matrix to sum.
+     * \return Reference to this.
+     */
+    Matrix& operator += (const Matrix& m);
+
+    /*!
+     * \brief Substract another matrix to this.
+     *
+     * \warning Dimensions must be compatible.
+     *
+     * \param m Matrix to substract.
+     * \return Reference to this.
+     */
+    Matrix& operator -= (const Matrix& m);
+
+    /*!
+     * \brief Multiply a constant to this elementwise.
+     *
+     * \param n Constant to multiply.
+     * \return Reference to this.
+     */
+    Matrix& operator *= (const double n);
+
+    /*!
+     * \brief Divide a constant to this elementwise.
+     *
+     * \param n Constant to divide by.
+     * \return Reference to this.
+     */
+    Matrix& operator /= (const double n);
 
 
     /*!
@@ -191,7 +261,7 @@ public:
      * \return True if both are equal, false otherwise.
      *
      */
-    bool operator == (Matrix& otherMat);
+    bool operator == (const Matrix& otherMat);
 
     /*!
      * \brief Checks if two matrices are different, element-wise.
@@ -202,7 +272,7 @@ public:
      * \return True if both are different, false otherwise.
      *
      */
-    bool operator != (Matrix& otherMat);
+    bool operator != (const Matrix& otherMat);
 
     /*!
      * \brief Asign to this matrix the value of other matrix.
@@ -211,7 +281,11 @@ public:
      */
     void operator = (const Matrix& otherMatrix);
 
-
+    /*!
+     * \brief Calculate the transpose matrix of this.
+     *
+     * \return Transpose matrix of this.
+     */
     Matrix transpose();
 
     /*!
@@ -250,7 +324,6 @@ private:
  * \param out Output stream to which we are passing the data we want to represent.
  * \param data Vector containing the data passed to the output stream.
  *
- * \todo Make this function to be a template.
  */
 std::ostream& operator << (std::ostream& out, std::vector<double> data);
 std::ostream& operator << (std::ostream& out, std::vector<int> data);

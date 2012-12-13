@@ -14,7 +14,6 @@ void TerminalTextEdit::setTextToEdit(std::string& textToEdit)
     this->textToEdit = &textToEdit;
 }
 
-/*! \todo This function only inputs a word, not a full line */
 int TerminalTextEdit::show()
 {
     TerminalInterface::show();

@@ -61,15 +61,10 @@ public:
      */
     NNTrainer( NeuralNetwork& nn);
 
-    /*!
-     * \brief Default destructor.
-     *
-     * \todo Implement or remove.
-     */
-    ~NNTrainer() {}
 
     //-- Data interface
     //------------------------------------------------------
+    //! Document this
     void setAlpha( double alpha);
     void setIter(int iter);
     void setLambda( double lambda);

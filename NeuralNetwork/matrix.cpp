@@ -203,7 +203,7 @@ void Matrix::setCol(const std::vector<double> col, const int index)
 }
 
 
-Matrix Matrix::operator +( Matrix& m)
+Matrix Matrix::operator +(const Matrix& m)
 {
     //-- Create new matrix
     Matrix result( this->rows, this->cols);
@@ -222,7 +222,7 @@ Matrix Matrix::operator +( Matrix& m)
     return result;
 }
 
-Matrix Matrix::operator -(const Matrix m)
+Matrix Matrix::operator -(const Matrix& m)
 {
     //-- Create new matrix
     Matrix result( this->rows, this->cols);
@@ -241,7 +241,7 @@ Matrix Matrix::operator -(const Matrix m)
     return result;
 }
 
-Matrix Matrix::operator *( Matrix& m)
+Matrix Matrix::operator *(const Matrix& m)
 {
 
     if ( this->cols == m.rows )
@@ -268,7 +268,7 @@ Matrix Matrix::operator *( Matrix& m)
     }
 }
 
-Matrix Matrix::operator *( double n)
+Matrix Matrix::operator *(const double n)
 {
     //-- Create new matrix
     Matrix result( this->rows, this->cols);
@@ -279,7 +279,7 @@ Matrix Matrix::operator *( double n)
     return result;
 }
 
-Matrix Matrix::operator /( double n)
+Matrix Matrix::operator /(const double n)
 {
     //-- Create new matrix
     Matrix result( this->rows, this->cols);
@@ -293,7 +293,7 @@ Matrix Matrix::operator /( double n)
 //-- Comparison operators
 //--------------------------------------------------------------------
 
-bool Matrix::operator == (Matrix& otherMat)
+bool Matrix::operator == (const Matrix& otherMat)
 {
     //-- Element-wise comparison:
     int i = 0;
@@ -307,7 +307,7 @@ bool Matrix::operator == (Matrix& otherMat)
 }
 
 
-bool Matrix::operator != (Matrix& otherMat)
+bool Matrix::operator != (const Matrix& otherMat)
 {
     //-- If it is not equal, then it is different
     return !(*this == otherMat);
@@ -330,7 +330,7 @@ void Matrix::operator =(const Matrix& otherMatrix)
 //-- Operator + = operators:
 //------------------------------------------------------------------------------
 
-Matrix& Matrix::operator += (Matrix& m)
+Matrix& Matrix::operator += (const Matrix& m)
 {
     if ( this->cols == m.cols && this->rows == m.rows)
     {
@@ -346,7 +346,7 @@ Matrix& Matrix::operator += (Matrix& m)
     return *this;
 }
 
-Matrix& Matrix::operator -= (Matrix& m)
+Matrix& Matrix::operator -= (const Matrix& m)
 {
     if ( this->cols == m.cols && this->rows == m.rows)
     {
@@ -362,7 +362,7 @@ Matrix& Matrix::operator -= (Matrix& m)
     return *this;
 }
 
-Matrix& Matrix::operator *= (double n)
+Matrix& Matrix::operator *= (const double n)
 {
     for (int i = 0; i < this->cols * this->rows; i++)
 	this->matrix[i] *= n;
@@ -370,7 +370,7 @@ Matrix& Matrix::operator *= (double n)
     return *this;
 }
 
-Matrix& Matrix::operator /= (double n)
+Matrix& Matrix::operator /= (const double n)
 {
     for (int i = 0; i < this->cols * this->rows; i++)
 	this->matrix[i] /= n;
@@ -434,4 +434,3 @@ std::ostream& operator << ( std::ostream& out, std::vector<int> data)
 
     return out;
 }
-

@@ -165,8 +165,6 @@ private:
      * \warning Matrices created with this function have to be deallocated later.
      *
      * \param filePath String containing the path to the file.
-     *
-     * \todo Load directly the data in a matrix, without using vectors.
      */
     Matrix* loadMatrix( const std::string filePath);
 

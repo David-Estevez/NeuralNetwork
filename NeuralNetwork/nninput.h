@@ -6,8 +6,6 @@
  *
  * \author David Estévez Fernández ( http://github.com/David-Estevez )
  * \date Nov 17th, 2012
- *
- * \todo Move the definition of TrainingExample to a NNTraining file.
  */
 #ifndef NNINPUT_H
 #define NNINPUT_H
