@@ -525,7 +525,7 @@ std::vector<Matrix *> NNTrainer::unrolledToMatrices( std::vector< double> theta)
    for (int i = 1; i < nn->getL(); i++)
        numWeights += (nn->getDimensions().at(i-1) + 1) * nn->getDimensions().at(i);
 
-   if ( !theta.empty() && theta.size() == numWeights )
+   if ( !theta.empty() && (int) theta.size() == numWeights )
    {
        //-- Create weight matrices
        int lastPos = 0;

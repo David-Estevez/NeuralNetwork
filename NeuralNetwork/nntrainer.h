@@ -5,7 +5,7 @@
  * for developing other trainers with other algorithms.
  *
  * \author David Estévez Fernández ( http://github.com/David-Estevez )
- * \date Nov 25th, 2012
+ * \date Dec 9th, 2012
  *
  */
 
@@ -64,9 +64,25 @@ public:
 
     //-- Data interface
     //------------------------------------------------------
-    //! Document this
+    /*!
+     * \brief Sets the value of gradient coefficient alpha.
+     *
+     * \param alpha Value to set.
+     */
     void setAlpha( double alpha);
+
+    /*!
+     * \brief Sets the number of iterations of gradient descend.
+     *
+     * \param iter Number of iterations.
+     */
     void setIter(int iter);
+
+    /*!
+     * \briefSets the value of regularizaton parameter lambda.
+     *
+     * \param lambda Regularization parameter lambda.
+     */
     void setLambda( double lambda);
 
 
@@ -169,14 +185,6 @@ private:
      */
     std::vector<TrainingExample>* trainingSet;
 
-    /*!
-     * \var std::vector<double> weightSet
-     * \brief Unrolled vector containing all the weights of the neural network.
-     *
-     * \todo Erase it if not used
-     */
-    std::vector<double> weightSet;
-
 
     //-- Convert unrolled weights to matrices vector:
     //----------------------------------------------------------------------------------
@@ -221,9 +229,19 @@ private:
 
     //-- Training parameters:
     //--------------------------------------------------------------------------------------
-    //! \todo Document this
+    /*! \var double alpha
+     *	\brief Attenuation coefficient for gradient.
+     */
     double alpha;
+
+    /*! \var int iter
+     *	\brief Number of iterations of gradient descend.
+     */
     int iter;
+
+    /*! \var double global_lambda
+	\brief Regularization coefficient to be applied to gradient calculation.
+     */
     double global_lambda;
 };
 
