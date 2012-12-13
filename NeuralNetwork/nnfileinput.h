@@ -5,7 +5,7 @@
  * different files.
  *
  * \author David Estévez Fernández ( http://github.com/David-Estevez )
- * \date Nov 18th, 2012
+ * \date Nov 26th, 2012
  *
  */
 #ifndef NNFILEINPUT_H
@@ -25,7 +25,6 @@
  * Loads the data for the input, weights and training examples from
  * different files.
  *
- * \todo Document new functions.
  */
 class NNFileInput : public NNInput
 {
@@ -129,10 +128,28 @@ public:
      */
     void setTrainingSetFile( const std::string filePath, const int n);
 
-    //! \todo Document this:
-    std::vector<std::string> getWeightsFile( ) {return weightsFile; }
-    std::string getInputFile() {return inputFile; }
-    std::vector<std::string> getTrainingSetFile() { return trainingSetFile;}
+    //-- Data interface
+    //---------------------------------------------------------------------------
+    /*!
+     * \brief Return all file paths for weights files.
+     *
+     * \return Vector of strings containing all file paths for weights files.
+     */
+    std::vector<std::string> getWeightsFile( );
+
+    /*!
+     * \brief Return file path for input file.
+     *
+     * \return String containing file path for input file.
+     */
+    std::string getInputFile();
+
+    /*!
+     * \brief Return all file paths for the training set.
+     *
+     * \return Vector of strings containing all file paths for the training set.
+     */
+    std::vector<std::string> getTrainingSetFile();
 
 private:
     //-- Variables storing files path:

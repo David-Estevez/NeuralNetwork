@@ -251,6 +251,8 @@ Matrix* NNFileInput::loadMatrix(const std::string filePath)
 }
 
 //-- Functions for storing the file path
+//-----------------------------------------------------------------------------------------
+
 void NNFileInput::addWeightsFile(const std::string filePath)
 {
     weightsFile.push_back(filePath);
@@ -274,4 +276,22 @@ void NNFileInput::addTrainingSetFile(const std::string filePath)
 void NNFileInput::setTrainingSetFile(const std::string filePath, const int n)
 {
     trainingSetFile.at(n) = filePath;
+}
+
+//-- Data interface
+//------------------------------------------------------------------------------------------
+std::vector<std::string> NNFileInput::getWeightsFile( )
+{
+    return weightsFile;
+}
+
+std::string NNFileInput::getInputFile()
+{
+    return inputFile;
+}
+
+
+std::vector<std::string> NNFileInput::getTrainingSetFile()
+{
+    return trainingSetFile;
 }
