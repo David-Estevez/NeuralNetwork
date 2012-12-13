@@ -186,8 +186,11 @@ int main( )
 
 	    //-- Ask for input file:
 	    std::cout << "Choose input file:>";
-	    std::string inputFile;
-	    std::cin >> inputFile;
+
+	    char buffer[256];
+	    std::cin.ignore();
+	    std::cin.getline(buffer, 256, '\n');
+	    std::string inputFile ( buffer);
 
 	    if ( !inputFile.empty() )
 		inputMod.setInputFile( inputFile );
@@ -204,7 +207,7 @@ int main( )
 	    outputMod.setDisplayCursor( 64, 4);
 	    outputMod.outputGuess();
 
-	    std::cin.get(); //-- Only one of this does not work
+	    std::cin.ignore();
 	    std::cin.get();
 
 	    nextMenu_l1 = -1;
