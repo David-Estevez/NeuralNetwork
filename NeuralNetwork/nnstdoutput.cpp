@@ -1,5 +1,13 @@
 #include "nnstdoutput.h"
 
+//-- Data interface
+//------------------------------------------------------------------------
+void NNStdOutput::setDisplayCursor(int col, int row)
+{
+    displayColumn = col;
+    displayRow = row;
+}
+
 //-- Std Output interface:
 //------------------------------------------------------------------------
 void NNStdOutput::outputWeights()
@@ -21,9 +29,34 @@ void NNStdOutput::outputGuess()
     std::cout.precision(2);
     std::cout.setf( std::ios::fixed );
 
+    //-- Set position to output the text:
+    std::string escapeSetCursor, escapeRelMovement;
+
+    if ( displayColumn == -1 || displayRow == -1)
+    {
+	escapeSetCursor = escapeRelMovement == "";
+    }
+    else
+    {
+	//-- Num to char conversion:
+	char charDisplayCol[3], charDisplayRow[3];
+
+	sprintf( charDisplayCol, "%d", displayColumn);
+	sprintf( charDisplayRow, "%d", displayRow);
+
+	escapeSetCursor = "\033[" + std::string(charDisplayRow) +
+			    ";" + std::string( charDisplayCol) + "H";
+
+	sprintf( charDisplayCol, "%d", displayColumn-1);
+	escapeRelMovement = "\033[" + std::string( charDisplayCol ) + "C";
+    }
+
+
     //-- Display complete statistics while looking for highest:
-    std::cout << "Neural Network results: " << std::endl
-	      << "-----------------------------" << std::endl;
+    std::cout << escapeSetCursor;
+    std::cout << "Results (%): " << std::endl;
+    std::cout << escapeRelMovement;
+    std::cout << "-----------------" << std::endl;
 
     //-- Store the highest at each step:
     double highest = nn->getOutput().at(0);
@@ -32,8 +65,10 @@ void NNStdOutput::outputGuess()
     for (int i = 0; i < (int) nn->getOutput().size(); i++)
     {
 	//-- Display element:
-	std::cout << "Category " << i+1 << ": "
-		 << nn->getOutput().at(i) * 100 << std::endl;
+	std::cout << escapeRelMovement;
+	std::cout << "Category " << (i != nn->getOutput().size()-1?i+1:0) ;
+	std::cout << ": "
+		 << nn->getOutput().at(i) * 100<< std::endl;
 
 	//-- Look for highest
 	if ( nn->getOutput().at(i) > highest)
@@ -44,11 +79,16 @@ void NNStdOutput::outputGuess()
     }
 
     // -- Output results:
-    std::cout << "Neural Network guess:" << std::endl
-	      << "-----------------------------" << std::endl
-	      << "Input data belongs to category ";
-    std::cout << highest_pos+1 << ", with " << highest * 100 << "% confidence." << std::endl;
 
+    std::cout << escapeRelMovement;
+    std::cout << "-----------------" << std::endl;
+    std::cout << escapeRelMovement << "Guess:" << std::endl;
+    std::cout << escapeRelMovement << std::endl;
+    std::cout << escapeRelMovement;
+    std::cout << "Category " << ( highest_pos != nn->getOutput().size()-1?highest_pos+1:0)
+	      << std::endl;
+    std::cout << escapeRelMovement << std::endl;
+    std::cout << escapeRelMovement;
 }
 
 void NNStdOutput::outputInput()

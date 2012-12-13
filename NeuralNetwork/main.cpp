@@ -10,9 +10,7 @@
 #include <iostream>
 #include <string>
 
-void menuSetup( );
-
-int main( int argc, char *argv[])
+int main( )
 {
     //-- Setting up the neural network:
     //----------------------------------------------------
@@ -34,16 +32,7 @@ int main( int argc, char *argv[])
     inputMod.addWeightsFile( "../Sample data/Theta1.txt");
     inputMod.addWeightsFile( "../Sample data/Theta2.txt");
 
-    if (argc == 2)
-    {
-	//-- Load some file if specified:
-	inputMod.setInputFile( argv[1] );
-    }
-    else
-    {
-	//-- Load default data
-	inputMod.setInputFile( "../Sample data/input.txt");
-    }
+    inputMod.setInputFile( "../Sample data/input.txt");
 
     inputMod.addTrainingSetFile( "../Sample data/examples_input.txt");
     inputMod.addTrainingSetFile( "../Sample data/examples_output_2.txt");
@@ -187,21 +176,48 @@ int main( int argc, char *argv[])
 	    }
 
 	}
-	else if (nextMenu_l1 == 1 )
+	else if ( nextMenu_l1 == 1) //-- Guess number
 	{
 	    //-- Guess number
-	    TerminalInterface interface( "Input");
+	    //--------------------------------------------------
+	    //-- Show header:
+	    TerminalInterface interface( "Input file selection");
+	    interface.show();
+
+	    //-- Ask for input file:
+	    std::cout << "Choose input file:>";
+	    std::string inputFile;
+	    std::cin >> inputFile;
+
+	    if ( !inputFile.empty() )
+		inputMod.setInputFile( inputFile );
+
+	    inputMod.loadInput();
+
+	    //-- Display input:
+	    interface.setTitle("Neural Network guess");
 	    interface.show();
 	    std::cout << std::endl << "\033[1A";
 	    outputMod.outputInput();
+
+	    //-- Display guess:
+	    outputMod.setDisplayCursor( 64, 4);
+	    outputMod.outputGuess();
+
+	    std::cin.get(); //-- Only one of this does not work
 	    std::cin.get();
+
+	    nextMenu_l1 = -1;
 	}
-	else if ( nextMenu_l1 == 2)
+	else if ( nextMenu_l1 == 2) //-- Training network
 	{
+	    //-- Training network
+	    //----------------------------------------------------------------------
 	    //-- Show header:
 	    TerminalInterface header( "Training Neural Network");
 	    header.show();
 
+	    std::cout << std::endl;
 	    std::cout << "Set number of iteration (default: 1000):>";
 	    int aux1;
 	    std::cin >> aux1;
@@ -221,13 +237,14 @@ int main( int argc, char *argv[])
 
 	    //-- Show header:
 	    header.show();
+	    std::cout << std::endl;
 
 	    //-- Train:
 	    trainingMod.trainNetwork();
 
 	    nextMenu_l1 = -1;
 	}
-	else if ( nextMenu_l1 == 3 )	//-- Save data into a file
+	else if ( nextMenu_l1 == 3) //-- Save data into a file
 	{
 	    //-- Save data into a file
 	    //-----------------------------------------------
@@ -313,7 +330,7 @@ int main( int argc, char *argv[])
 	    }
 
 	}
-	else if ( nextMenu_l1 == 4 )
+	else if ( nextMenu_l1 == 4) //-- Exit
 	{
 	    running = false;
 	}
@@ -323,33 +340,5 @@ int main( int argc, char *argv[])
 	}
     }
 
-    //-- Train network
-    // trainingMod.trainNetwork();
-
-    //-- Create std output module:
-
-
-    //outputMod.outputGuess();
-
-   // outputFileMod.outputWeights();
-   // outputFileMod.outputInput();
-   // outputFileMod.outputGuess();
-
     return 0;
 }
-
-void menuSetup( )
-{
-    TerminalMenu otherMenu ("Other menu");
-    otherMenu.show();
-    std::cout << std::cin.get();
-    std::cin.get();
-
-    std::string path = "../Sample data/file.txt";
-    TerminalTextEdit editPathMenu( "Edit file path", path);
-    editPathMenu.show();
-    std::cout << path;
-    std::cin.get();
-}
-
-

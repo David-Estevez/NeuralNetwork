@@ -14,6 +14,7 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
+#include <cstdio>
 
 #include "nnoutput.h"
 #include "neuralnetwork.h"
@@ -34,15 +35,20 @@ public:
     /*!
      * \brief Default constructor
      */
-    NNStdOutput() {}
+    NNStdOutput() { displayColumn = -1; }
 
     /*!
      * \brief Creates an std output interface and connects it to a NeuralNetwork.
      *
      * \param nn NeuralNetwork to connect to.
      */
-    NNStdOutput( NeuralNetwork& nn): NNOutput( nn) {}
+    NNStdOutput( NeuralNetwork& nn): NNOutput( nn) { displayColumn = -1;}
 
+
+    //-- Data interface:
+    //------------------------------------------------------------------------
+    //! Document this
+    void setDisplayCursor( int col, int row );
 
     //-- Std Output interface:
     //------------------------------------------------------------------------
@@ -65,6 +71,12 @@ public:
      * the std output.
      */
     virtual void outputInput();
+
+private:
+    //!  \todo Document this
+    int displayColumn;
+
+    int displayRow;
 };
 
 #endif // NNSTDOUTPUT_H
