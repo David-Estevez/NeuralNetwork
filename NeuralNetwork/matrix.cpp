@@ -33,7 +33,7 @@ Matrix::Matrix(const Matrix& otherMatrix)
 Matrix::Matrix(const std::vector<double> dataVector, const int rows, const int cols)
 {
     //-- Check dimensions of vector and new matrix to be consistent:
-    if ( dataVector.size() == rows*cols)
+    if ( (int) dataVector.size() == rows*cols)
     {
 	//--Store dimensions:
 	this->rows = rows;

@@ -5,7 +5,7 @@
  * a file.
  *
  * \author David Estévez Fernández ( http://github.com/David-Estevez )
- * \date Nov 19th, 2012
+ * \date Dec 12th, 2012
  *
  */
 #ifndef NNFILEOUTPUT_H
@@ -87,10 +87,29 @@ public:
     void setInputFile( const std::string filePath);
 
 
-    //! \todo Document this and make it nice:
-    std::vector<std::string> getWeightsFile() { return weightsFile; }
-    std::string getGuessFile( ) { return guessFile; }
-    std::string getInputFile( ) { return inputFile; }
+    //-- Data interface
+    //---------------------------------------------------------------------------
+    /*!
+     * \brief Return all file paths for weights files.
+     *
+     * \return Vector of strings containing all file paths for weights files.
+     */
+    std::vector<std::string> getWeightsFile();
+
+    /*!
+     * \brief Return file path for guess file.
+     *
+     * \return String containing file path for guess file.
+     */
+    std::string getGuessFile( );
+
+    /*!
+     * \brief Return file path for input as ascii image file.
+     *
+     * \return String containing file path for input as ascii image file.
+     */
+    std::string getInputFile( );
+
 
     //-- File Output interface:
     //------------------------------------------------------------------
@@ -112,7 +131,7 @@ public:
     /*!
      * \brief Takes input vector data from the NeuralNetwork and saves it to a file.
      *
-     * The input data will be stored as a picture composed of characters.
+     * The input data will be stored as a picture composed of ascii characters.
      * Only useful for data visualization.
      */
     virtual void outputInput();

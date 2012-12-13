@@ -39,6 +39,22 @@ void NNFileOutput::setInputFile( const std::string filePath)
     inputFile = filePath;
 }
 
+//-- Data interface
+//---------------------------------------------------------------------------
+std::vector<std::string> NNFileOutput::getWeightsFile()
+{
+    return weightsFile;
+}
+
+std::string NNFileOutput::getGuessFile( )
+{
+    return guessFile;
+}
+
+std::string NNFileOutput::getInputFile( )
+{
+    return inputFile;
+}
 
 //-- File Output interface:
 //------------------------------------------------------------------
@@ -124,7 +140,7 @@ void NNFileOutput::outputInput()
 	file << std::endl << '#';
 
 	//-- Input data itself:
-	for (int i = 0; i < input.size(); i++)
+	for (int i = 0; i < (int) input.size(); i++)
 	    {
 		//-- Character selection:
 		if ( input.at(i) > 0 && input.at(i) < 0.33)

@@ -5,7 +5,7 @@
  * different files.
  *
  * \author David Estévez Fernández ( http://github.com/David-Estevez )
- * \date Nov 26th, 2012
+ * \date Dec 12th, 2012
  *
  */
 #ifndef NNFILEINPUT_H
