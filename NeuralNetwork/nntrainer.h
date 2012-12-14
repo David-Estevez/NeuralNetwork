@@ -47,7 +47,7 @@ struct TrainingExample
 class NNTrainer : NeuralNetworkIO
 {
 public:
-    //-- Constructors & Destructor
+    //-- Constructors
     //--------------------------------------------------
     /*!
      * \brief Default constructor.
@@ -96,7 +96,9 @@ public:
     /*!
      * \brief Trains the weigths of the NeuralNetwork.
      *
-     * \todo Document this
+     *  Uses a gradient descend algorithm to train the NeuralNetwork weights,
+     *  according to the training parameters alpha, iter, and lambda and a loaded
+     *  training set.
      */
     void trainNetwork();
 
