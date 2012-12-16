@@ -28,6 +28,7 @@ int TerminalTextEdit::show()
     TerminalInterface::show();
 
     //-- Display previous value for string
+    std::cout << std::endl;
     std::cout << "Previous value: ";
     if ( textToEdit->empty() )
 	std::cout << "\'Empty\'";

@@ -23,7 +23,7 @@ int TerminalMenu::show()
 	for (int i = 0; i < (int) options.size(); i++)
 	{
 	    if (currentOption == i)	{ std::cout << '>' << HIGHLIGHT ; } else { std::cout << RESET_FORMAT; }
-	    std::cout << options.at(i) << std::endl;
+	    std::cout << i << ". " << options.at(i) << std::endl;
 	}
 
     }

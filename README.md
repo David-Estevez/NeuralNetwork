@@ -25,7 +25,9 @@ This is a work for a programming subject at University Carlos III of Spain.
 
 2. Dependencies
 ----------------------------------------------------------------------
-There are no extra dependencies.
+There are no extra dependencies to make the neural network work, but in order to visualize the
+interface properly a terminal with ANSI escape secuences capabilities is required, such as xterm 
+or the gnome default terminal, gnome-terminal.
 
 3. Compilation
 ----------------------------------------------------------------------

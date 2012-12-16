@@ -31,7 +31,7 @@ PROJECT_NAME           = NeuralNetwork
 # This could be handy for archiving the generated documentation or
 # if some version control system is used.
 
-PROJECT_NUMBER         = 0.1
+PROJECT_NUMBER         = 1.0
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer
@@ -51,7 +51,7 @@ PROJECT_LOGO           =
 # If a relative path is entered, it will be relative to the location
 # where doxygen was started. If left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = "../doc""
+OUTPUT_DIRECTORY       = "../doc"
 
 # If the CREATE_SUBDIRS tag is set to YES, then doxygen will create
 # 4096 sub-directories (in 2 levels) under the output directory of each output
@@ -118,7 +118,7 @@ INLINE_INHERITED_MEMB  = NO
 # path before files name in the file list and in the header files. If set
 # to NO the shortest path that makes the file name unique will be used.
 
-FULL_PATH_NAMES        = YES
+FULL_PATH_NAMES        = NO
 
 # If the FULL_PATH_NAMES tag is set to YES then the STRIP_FROM_PATH tag
 # can be used to strip a user-defined part of the path. Stripping is
@@ -127,7 +127,7 @@ FULL_PATH_NAMES        = YES
 # If left blank the directory from which doxygen is run is used as the
 # path to strip.
 
-STRIP_FROM_PATH        =
+STRIP_FROM_PATH        = 
 
 # The STRIP_FROM_INC_PATH tag can be used to strip a user-defined part of
 # the path mentioned in the documentation of a class, which tells
@@ -178,7 +178,7 @@ INHERIT_DOCS           = YES
 # a new page for each member. If set to NO, the documentation of a member will
 # be part of the file/class/namespace that contains it.
 
-SEPARATE_MEMBER_PAGES  = NO
+SEPARATE_MEMBER_PAGES  = YES
 
 # The TAB_SIZE tag can be used to set the number of spaces in a tab.
 # Doxygen uses this value to replace tabs by spaces in code fragments.
@@ -522,14 +522,14 @@ SHOW_DIRECTORIES       = NO
 # This will remove the Files entry from the Quick Index and from the
 # Folder Tree View (if specified). The default is YES.
 
-SHOW_FILES             = YES
+SHOW_FILES             = NO
 
 # Set the SHOW_NAMESPACES tag to NO to disable the generation of the
 # Namespaces page.
 # This will remove the Namespaces entry from the Quick Index
 # and from the Folder Tree View (if specified). The default is YES.
 
-SHOW_NAMESPACES        = YES
+SHOW_NAMESPACES        = NO
 
 # The FILE_VERSION_FILTER tag can be used to specify a program or script that
 # doxygen should invoke to get the current version for each file (typically from
@@ -740,7 +740,7 @@ SOURCE_BROWSER         = NO
 # Setting the INLINE_SOURCES tag to YES will include the body
 # of functions and classes directly in the documentation.
 
-INLINE_SOURCES         = YES
+INLINE_SOURCES         = NO
 
 # Setting the STRIP_CODE_COMMENTS tag to YES (the default) will instruct
 # doxygen to hide any special comment blocks from generated source code
@@ -1186,7 +1186,7 @@ MAKEINDEX_CMD_NAME     = makeindex
 # LaTeX documents. This may be useful for small projects and may help to
 # save some trees in general.
 
-COMPACT_LATEX          = NO
+COMPACT_LATEX          = YES
 
 # The PAPER_TYPE tag can be used to set the paper type that is used
 # by the printer. Possible values are: a4, letter, legal and
@@ -1218,7 +1218,7 @@ LATEX_FOOTER           =
 # contain links (just like the HTML output) instead of page references
 # This makes the output suitable for online browsing using a pdf viewer.
 
-PDF_HYPERLINKS         = YES
+PDF_HYPERLINKS         = NO
 
 # If the USE_PDFLATEX tag is set to YES, pdflatex will be used instead of
 # plain latex in the generated Makefile. Set this option to YES to get a
@@ -1244,7 +1244,7 @@ LATEX_HIDE_INDICES     = NO
 # Note that which sources are shown also depends on other settings
 # such as SOURCE_BROWSER.
 
-LATEX_SOURCE_CODE      = NO
+LATEX_SOURCE_CODE      = YES
 
 #---------------------------------------------------------------------------
 # configuration options related to the RTF output
@@ -1559,7 +1559,7 @@ DOT_NUM_THREADS        = 0
 # DOTFONTPATH environment variable or by setting DOT_FONTPATH to the directory
 # containing the font.
 
-DOT_FONTNAME           = Helvetica
+DOT_FONTNAME           = Monospace
 
 # The DOT_FONTSIZE tag can be used to set the size of the font of dot graphs.
 # The default size is 10pt.
@@ -1585,7 +1585,7 @@ CLASS_GRAPH            = YES
 # indirect implementation dependencies (inheritance, containment, and
 # class references variables) of the class with other documented classes.
 
-COLLABORATION_GRAPH    = YES
+COLLABORATION_GRAPH    = NO
 
 # If the GROUP_GRAPHS and HAVE_DOT tags are set to YES then doxygen
 # will generate a graph for groups, showing the direct groups dependencies
@@ -1623,7 +1623,7 @@ INCLUDED_BY_GRAPH      = YES
 # the time of a run. So in most cases it will be better to enable call graphs
 # for selected functions only using the \callgraph command.
 
-CALL_GRAPH             = YES
+CALL_GRAPH             = NO
 
 # If the CALLER_GRAPH and HAVE_DOT tags are set to YES then
 # doxygen will generate a caller dependency graph for every global function
