@@ -52,8 +52,6 @@ int TerminalMenu::show()
 	choice = show();
 	return choice;
     }
-
-    //return currentOption;
 }
 
 void TerminalMenu::addOption( const std::string newOption)

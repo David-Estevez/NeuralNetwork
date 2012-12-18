@@ -30,27 +30,32 @@ class NNInput: public NeuralNetworkIO
 {
 protected:
     //-- Constructors:
-    //-----------------------------------------------------------------
-
-    /*! \brief Default constructor
-     */
-    NNInput() {}
-
+    //----------------------------------------------------------------
     /*!
      * \brief Creates an input interface and connects it to a NeuralNetwork.
      *
      * \param nn NeuralNetwork to connect to.
      */
-    NNInput(NeuralNetwork& nn): NeuralNetworkIO(nn) {}
+    NNInput(NeuralNetwork& nn);
 
+    /*!
+     * \brief Creates a input interface and connects it to a NeuralNetwork and NNTrainer.
+     *
+     * \param nn NeuralNetwork to connect to.
+     * \param traininModule NNTrainer to connect to.
+     */
+    NNInput(NeuralNetwork& nn, NNTrainer& trainingModule);
 
     //-- Destructor:
     //------------------------------------------------------------------
     /*!
      * \brief Default destructor
      */
-    ~NNInput();
+    virtual ~NNInput();
 
+    //-- Connectivity:
+    //---------------------------------------------------------------------------
+    void connectToTrainingModule( NNTrainer& trainingModule);
 
     //-- Input interface:
     //------------------------------------------------------------------
@@ -85,7 +90,6 @@ protected:
      */
     virtual void loadTrainingExamples() = 0;
 
-public: //-- Fix this later --//
     //-- Data storage:
     //------------------------------------------------------------------
     /*! \var std::vector<Matrix *> weights
@@ -105,6 +109,15 @@ public: //-- Fix this later --//
      * the NeuralNetwork
      */
     std::vector<TrainingExample> trainingSet;
+
+    /*! \var NNTrainer *trainingModule
+     * \brief Pointer to the training module to use the training examples:
+     */
+    NNTrainer *trainingModule;
+
+private:
+    //! Default constructor is private
+    NNInput();
 };
 
 #endif // NNINPUT_H

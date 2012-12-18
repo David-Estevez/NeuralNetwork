@@ -476,7 +476,7 @@ double NNTrainer::accuracy()
 	int highest = 0;
 	double highestValue = nn->getOutput().at(0);
 
-	for (int j = 1; j < (int) nn->getOutput().size() ; j++)
+	for (int j = 0; j < (int) nn->getOutput().size() ; j++)
 	    if ( nn->getOutput().at(j) > highestValue)
 	    {
 		highest = j;

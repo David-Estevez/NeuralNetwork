@@ -104,24 +104,27 @@ void NNStdOutput::outputInput()
 
     std::cout << std::endl << '#';
 
-    //-- Input data itself:
-    for (int i = 0; i < (int) input.size(); i++)
+    //-- Create a matrix of cols x cols:
+    Matrix data( input, cols, cols);
+
+    for (int i = 0; i < cols; i++)
+    {
+	for(int j = 0; j < cols; j++)
 	{
 	    //-- Character selection:
-	    if ( input.at(i) > 0 && input.at(i) < 0.33)
+	    if ( data.get(j, i) > 0 && data.get(j, i) < 0.33)
 		std::cout << " · ";
-	    else if (input.at(i) > 0 && input.at(i) < 0.66)
+	    else if (data.get(j, i) > 0 && data.get(j, i) < 0.66)
 		std::cout << " % ";
-	    else if (input.at(i) > 0.66 )
+	    else if (data.get(j, i) > 0.66 )
 		std::cout << " # ";
-	    else if (input.at(i) < 0)
+	    else if (data.get(j, i) < 0)
 		std::cout << " - ";
 	    else
 		std::cout << "   ";
-
-	    //-- Line break:
-	    if ( i != 0 && (i+1) % cols == 0)
-		std::cout << '#' << std::endl << '#';
+	}
+	//-- Line break:
+	std::cout << '#' << std::endl << '#';
     }
 
     //-- Lower frame

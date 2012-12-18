@@ -1,5 +1,32 @@
 #include "nninput.h"
 
+//-- Constructors:
+//------------------------------------------------------------------------------------------
+
+NNInput::NNInput(NeuralNetwork& nn): NeuralNetworkIO(nn)
+{
+    //-- Initialize input vector pointer:
+    input = 0;
+
+    //-- Initialize weights matrix pointers vector:
+    for (int i = 0; i < (int) nn.getDimensions().size() - 1; i++ )
+	weights.push_back(0);
+ }
+
+NNInput::NNInput(NeuralNetwork& nn, NNTrainer& trainingModule) : NeuralNetworkIO(nn)
+{
+    //-- Initialize input vector pointer:
+    input = 0;
+
+    //-- Initialize weights matrix pointers vector:
+    for (int i = 0; i < (int) nn.getDimensions().size() - 1; i++ )
+	weights.push_back(0);
+
+    this->trainingModule = &trainingModule;
+}
+
+//-- Destructor:
+//-------------------------------------------------------------------------------------------
 NNInput::~NNInput()
 {
     //-- If allocated, free variables:
@@ -12,3 +39,11 @@ NNInput::~NNInput()
 	delete input;
 
 }
+
+//-- Connectivity:
+//---------------------------------------------------------------------------
+void NNInput::connectToTrainingModule( NNTrainer& trainingModule)
+{
+    this->trainingModule = &trainingModule;
+}
+

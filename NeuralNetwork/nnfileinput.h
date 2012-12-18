@@ -1,5 +1,5 @@
-/*! \file nninput.h
- *  \brief File support for  NeuralNetwork data input.
+/*! \file nnfileinput.h
+ *  \brief File support for NeuralNetwork data input.
  *
  * Loads the data for the input, weights and training examples from
  * different files.
@@ -32,17 +32,11 @@ public:
     //-- Constructors:
     //---------------------------------------------------------------------------
     /*!
-     * \brief Default constructor
-     */
-    NNFileInput() {}
-
-
-    /*!
      * \brief Creates a file input interface and connects it to a NeuralNetwork.
      *
      * \param nn NeuralNetwork to connect to.
      */
-    NNFileInput(NeuralNetwork& nn): NNInput(nn) { }
+    NNFileInput(NeuralNetwork& nn);
 
     /*!
      * \brief Creates a file input interface and connects it to a NeuralNetwork and NNTrainer.
@@ -50,47 +44,13 @@ public:
      * \param nn NeuralNetwork to connect to.
      * \param traininModule NNTrainer to connect to.
      */
-    NNFileInput(NeuralNetwork& nn, NNTrainer& trainingModule): NNInput(nn) { this->trainingModule = &trainingModule; }
-
-
-    //-- Connectivity:
-    //---------------------------------------------------------------------------
-    void connectToTrainingModule( NNTrainer& trainingModule) { this->trainingModule = &trainingModule; }
-
-    //-- Load data from files:
-    //---------------------------------------------------------------------------
-    /*!
-     * \brief Loads the input data of the NeuralNetwork from a file, and sends it
-     * to the network.
-     */
-    virtual void loadWeights();
-
-    /*!
-     * \brief Loads the weights of the NeuralNetwork from a file, and sends them
-     * to the network.
-     *
-     * \todo If dimensions are nonconsistent, it stills tries to load the data.
-     */
-    virtual void loadTrainingExamples();
-
-    /*!
-     * \brief Loads the training examples data for the NeuralNetwork from a file,
-     * and sends it to the network.
-     */
-    virtual void loadInput();
+    NNFileInput(NeuralNetwork& nn, NNTrainer& trainingModule);
 
 
     //-- Store the files path:
     //---------------------------------------------------------------------------
     /*!
-     * \brief Adds one path containing weight matrix data.
-     *
-     * \param filePath String containing the path to the file.
-     */
-    void addWeightsFile( const std::string filePath);
-
-    /*!
-     * \brief Selects the path containing the nth weight matrix data.
+     * \brief Edits the path containing the nth weight matrix data.
      *
      * \param filePath String containing the path to the file.
      * \param n Index of path to change.
@@ -110,18 +70,11 @@ public:
      */
     void setInputFile( const std::string filePath);
 
-
     /*!
-     * \brief Selects the path containing the training set data.
+     * \brief Edits the path containing the nth training set data.
      *
-     * \param filePath String containing the path to the file.
-     *
-     *  \todo This may have to change after training of the network is implemented.
-     */
-    void addTrainingSetFile( const std::string filePath);
-
-    /*!
-     * \brief Selects the path containing the nth training set data.
+     * The position with index 0 is for the inputs of the network, and the
+     * position with index 1 is for the expected outputs of the network.
      *
      * \param filePath String containing the path to the file.
      * \param n Index of path to change.
@@ -151,7 +104,30 @@ public:
      */
     std::vector<std::string> getTrainingSetFile();
 
-private:
+private:    
+    //-- Load data from files:
+    //---------------------------------------------------------------------------
+    /*!
+     * \brief Loads the input data of the NeuralNetwork from a file, and sends it
+     * to the network.
+     */
+    virtual void loadWeights();
+
+    /*!
+     * \brief Loads the weights of the NeuralNetwork from a file, and sends them
+     * to the network.
+     *
+     * \todo If dimensions are nonconsistent, it stills tries to load the data.
+     */
+    virtual void loadTrainingExamples();
+
+    /*!
+     * \brief Loads the training examples data for the NeuralNetwork from a file,
+     * and sends it to the network.
+     */
+    virtual void loadInput();
+
+
     //-- Variables storing files path:
     //---------------------------------------------------------------------------
     /*! \var std::vector<std::string> weightsFile
@@ -170,10 +146,6 @@ private:
      */
     std::vector<std::string> trainingSetFile;
 
-    //-- Pointer to the training module to use the training examples:
-    //--------------------------------------------------------------------------------
-    NNTrainer *trainingModule;
-
     //-- Load a matrix from a file:
     //--------------------------------------------------------------------------
     /*!
@@ -184,6 +156,9 @@ private:
      * \param filePath String containing the path to the file.
      */
     Matrix* loadMatrix( const std::string filePath);
+
+    //! Default constructor is private
+    NNFileInput();
 
 
 };

@@ -20,8 +20,6 @@ SOURCES += \
     layer.cpp \
     matrix.cpp \
     neuralnetwork.cpp \
-    neuralnetworkio.cpp \
-    nnoutput.cpp \
     nninput.cpp \
     nnfileinput.cpp \
     nnstdoutput.cpp \

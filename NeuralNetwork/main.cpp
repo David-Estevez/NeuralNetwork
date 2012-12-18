@@ -30,13 +30,11 @@ int main( )
     NNFileOutput outputFileMod( nn);
 
     //-- Set the default values for the file paths:
-    inputMod.addWeightsFile( "../Sample data/Theta1.txt");
-    inputMod.addWeightsFile( "../Sample data/Theta2.txt");
+    inputMod.setWeightsFile( "../Sample data/Theta1.txt", 0);
+    inputMod.setWeightsFile( "../Sample data/Theta2.txt", 1);
 
-    inputMod.setInputFile( "../Sample data/input.txt");
-
-    inputMod.addTrainingSetFile( "../Sample data/examples_input.txt");
-    inputMod.addTrainingSetFile( "../Sample data/examples_output_2.txt");
+    inputMod.setTrainingSetFile( "../Sample data/examples_input.txt", 0);
+    inputMod.setTrainingSetFile( "../Sample data/examples_output_2.txt", 1);
 
     outputFileMod.setWeightsFile( "../Test/myFile.txt");
     outputFileMod.setInputFile( "../Test/myInput.txt");
@@ -66,12 +64,6 @@ int main( )
     saveMenu.addOption( "Save guess to file");
     saveMenu.addOption( "Save current selected input as ascii image in file");
     saveMenu.addOption( "Return");
-
-    //-- Load default data:
-    //--------------------------------------------------------------------------
-    inputMod.loadWeights();
-    inputMod.loadInput();
-    inputMod.loadTrainingExamples();
 
     //-- Main loop:
     //--------------------------------------------------------------------------
@@ -120,6 +112,10 @@ int main( )
 		    if (!newWeightFile.empty())
 		    {
 			inputMod.setWeightsFile(  newWeightFile, nextMenu_l3 );
+
+			std::cout << "New accuracy: "<< trainingMod.accuracy() << std::endl;
+			std::cin.ignore();
+			std::cin.ignore();
 		    }
 
 		    nextMenu_l3 = -1;
@@ -186,14 +182,12 @@ int main( )
 	    interface.show();
 
 	    //-- Ask for input file:
-	    std::cout << "Choose input file:>";
+	    std::cout << std::endl << "Choose input file:>";
 	    std::string inputFile = "";
 	    std::getline( std::cin, inputFile);
 
 	    if ( !inputFile.empty() )
 		inputMod.setInputFile( inputFile );
-
-	    inputMod.loadInput();
 
 	    //-- Display input:
 	    interface.setTitle("Neural Network guess");
@@ -265,9 +259,6 @@ int main( )
 	    }
 
 	    trainingMod.setLambda(aux2);
-
-	    //-- Load training examples:
-	    inputMod.loadTrainingExamples();
 
 	    //-- Show header:
 	    header.show();

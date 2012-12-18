@@ -1,7 +1,42 @@
 #include "nnfileinput.h"
 
+
+//-- Constructors:
+//---------------------------------------------------------------------------
+NNFileInput::NNFileInput(NeuralNetwork& nn): NNInput(nn)
+{
+    //-- Initialize variables storing file paths:
+    for( int i = 0; i < (int) weights.size(); i++)
+	weightsFile.push_back("");
+
+    for (int i = 0; i < 2; i++)
+	trainingSetFile.push_back("");
+}
+
+NNFileInput::NNFileInput(NeuralNetwork& nn, NNTrainer& trainingModule): NNInput(nn, trainingModule)
+{
+    //-- Initialize variables storing file paths:
+    for( int i = 0; i < (int) weights.size(); i++)
+	weightsFile.push_back("");
+
+    for (int i = 0; i < 2; i++)
+	trainingSetFile.push_back("");
+}
+
+
+//-- Load data from files:
+//---------------------------------------------------------------------------
 void NNFileInput::loadWeights()
 {
+    //-- If there are some matrices already loaded, erase them first:
+    if ( !weights.empty() )
+    {
+	for (int i = 0; i < (int) weights.size(); i++)
+		delete weights.at(i);
+
+	weights.clear();
+    }
+
     //-- Load weight matrices:
     for (int i = 0; i < (int) weightsFile.size(); i++)
 	weights.push_back( loadMatrix( weightsFile.at(i) ));
@@ -12,6 +47,13 @@ void NNFileInput::loadWeights()
 
 void NNFileInput::loadInput()
 {   
+    //-- If there is already an input vector, erase it before store another one:
+    if (input == 0)
+    {
+	delete input;
+	input = 0;
+    }
+
     //-- Load input vector
     input = loadMatrix( inputFile ) ;
 
@@ -30,6 +72,11 @@ void NNFileInput::loadTrainingExamples()
     }
     else
     {
+	if ( !trainingSet.empty() )
+	{
+	    trainingSet.clear();
+	}
+
 	//-- Load both files as matrices:
 	Matrix* matrix1 = loadMatrix( trainingSetFile.at(0) );
 	Matrix* matrix2 = loadMatrix( trainingSetFile.at(1) );
@@ -253,29 +300,66 @@ Matrix* NNFileInput::loadMatrix(const std::string filePath)
 //-- Functions for storing the file path
 //-----------------------------------------------------------------------------------------
 
-void NNFileInput::addWeightsFile(const std::string filePath)
-{
-    weightsFile.push_back(filePath);
-}
-
 void NNFileInput::setWeightsFile(const std::string filePath, const int n)
 {
-    weightsFile.at( n) = filePath;
+    if ( n >= 0 && n < (int) weightsFile.size() )
+    {
+	weightsFile.at(n) = filePath;
+
+	//-- If all of them are set, load matrices:
+	bool set = true;
+	int i = 0;
+
+	while( set && i < (int) weightsFile.size())
+	{
+	    if ( weightsFile.at(i) == "" )
+		set = false;
+	    i++;
+	}
+
+	if (set)
+	    loadWeights();
+    }
+    else
+    {
+	std::cerr <<"[NNFileInput]Error: File path index not valid!" << std::endl;
+    }
 }
 
 void NNFileInput::setInputFile(const std::string filePath)
 {
     inputFile = filePath;
-}
 
-void NNFileInput::addTrainingSetFile(const std::string filePath)
-{
-    trainingSetFile.push_back( filePath);
+    if (inputFile != "" )
+	loadInput();
 }
 
 void NNFileInput::setTrainingSetFile(const std::string filePath, const int n)
 {
-    trainingSetFile.at(n) = filePath;
+
+    //-- Check index
+    if ( n >= 0 && n < (int) trainingSetFile.size() )
+    {
+	trainingSetFile.at(n) = filePath;
+
+	//-- If all of them are set, load training set data:
+	bool set = true;
+	int i = 0;
+
+	while( set && i < (int) trainingSetFile.size())
+	{
+	    if ( trainingSetFile.at(i) == "" )
+		set = false;
+	    i++;
+	}
+
+	if (set)
+	    loadTrainingExamples();
+    }
+    else
+    {
+	std::cerr <<"[NNFileInput]Error: File path index not valid!" << std::endl;
+    }
 }
 
 //-- Data interface
