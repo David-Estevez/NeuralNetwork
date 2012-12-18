@@ -54,6 +54,8 @@ Then: `g++ *.cpp -o NeuralNetwork`
 * To select one option in the menu just type the index of that option (starting at 0) and 
 press enter key.
 
+* There are test input files at "../Sample data", named 'x1.txt', 'x2.txt', etc.
+
 * For more information please read the documentation file.
 
 5. Version log
